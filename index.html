@@ -194,7 +194,7 @@ var T = {
     hAddL: "A moment that moved you", hAddPh: "A moment you fell for him again", hNotes: "Private notes", hNotesPh: "Just for you", saveNotes: "Save notes",
     hMyMoments: "Moments you shared",
     // settings
-    setL: "Settings", names: "Names", reset: "Start over", resetSure: "Erase everything on this phone?", yesErase: "Yes, erase", cancel: "Cancel", backup: "Copy a backup", restore: "Restore from backup", restorePh: "Paste a backup here", restoreBtn: "Restore",
+    setL: "Settings", names: "Names", reset: "Start over", resetSure: "Erase everything on this phone?", yesErase: "Yes, erase", cancel: "Cancel", backup: "Copy a backup", restore: "Restore from backup", restorePh: "Paste your backup link here", restoreBtn: "Restore", bkL: "Backup", bkC: "Reinstalling or changing phones? Save a backup link now. Open it later and everything comes back.", bkWa: "Send a backup to myself", wBackup: "My Curious About Her backup. Open this link to get everything back 🔒", bkAskT: "Restore this backup?", bkAskC: "It will replace what is on this phone now.", bkYes: "Yes, restore", bkDone: "Everything is back ♡", bkBad: "This backup could not be read", bkHint: "If the link opens in the browser and not in the app, copy it and paste it here.",
     // whatsapp texts
     wInvite: "I picked a moment you'll want to guess… 🔒", wMoment: "Another moment for you to guess 🔒", wQuestion: "I have a question for you ♡", wAnswer: "Here's my answer ♡", wNote: "I wrote you something ♡", wListened: "I listened ♥", wReaction: "Here's how it felt ♡", wEdit: "I fixed something small ✎", tStory: "Our moments", wTip: "A little tip for you ♡", tTips: "Tips", tSettingsS: "⚙",
     copied: "Link copied", sentNote: "Opening WhatsApp…", savedToast: "Saved", copyLink: "Or copy the link", got: "Got it",
@@ -232,7 +232,7 @@ var T = {
     hListened: "הוא הקשיב ♥", noteFrom: "פתק מ{n}", react: "ספרי לו איך הרגשת", reactPh: "איך זה הרגיש?", addMore: "הוסיפי עוד רגע", addMoreS: "זה מתחיל לו סיבוב חדש",
     hAddL: "רגע שריגש אותך", hAddPh: "רגע שהתאהבת בו מחדש", hNotes: "הערות פרטיות", hNotesPh: "רק בשבילך", saveNotes: "שמירה",
     hMyMoments: "רגעים ששיתפת",
-    setL: "הגדרות", names: "שמות", reset: "להתחיל מחדש", resetSure: "למחוק הכל מהטלפון הזה?", yesErase: "כן, למחוק", cancel: "ביטול", backup: "העתקת גיבוי", restore: "שחזור מגיבוי", restorePh: "הדביקו כאן גיבוי", restoreBtn: "שחזור",
+    setL: "הגדרות", names: "שמות", reset: "להתחיל מחדש", resetSure: "למחוק הכל מהטלפון הזה?", yesErase: "כן, למחוק", cancel: "ביטול", backup: "העתקת גיבוי", restore: "שחזור מגיבוי", restorePh: "הדביקו כאן את קישור הגיבוי", restoreBtn: "שחזור", bkL: "גיבוי", bkC: "מתקינים מחדש או מחליפים טלפון? שמרו עכשיו קישור גיבוי. פותחים אותו אחר כך והכל חוזר.", bkWa: "לשלוח לעצמי גיבוי", wBackup: "הגיבוי שלי ב-Curious About Her. פותחים את הקישור והכל חוזר 🔒", bkAskT: "לשחזר את הגיבוי?", bkAskC: "הוא יחליף את מה שיש עכשיו בטלפון הזה.", bkYes: "כן, לשחזר", bkDone: "הכל חזר ♡", bkBad: "לא הצלחנו לקרוא את הגיבוי", bkHint: "אם הקישור נפתח בדפדפן ולא באפליקציה, העתיקו אותו והדביקו כאן.",
     wInvite: "בחרתי רגע שתרצה לנחש… 🔒", wMoment: "עוד רגע בשבילך לנחש 🔒", wQuestion: "יש לי שאלה בשבילך ♡", wAnswer: "הנה התשובה שלי ♡", wNote: "כתבתי לך משהו ♡", wListened: "הקשבתי ♥", wReaction: "ככה זה הרגיש ♡", wEdit: "תיקנתי משהו קטן ✎", tStory: "הרגעים שלנו", wTip: "טיפ קטן בשבילך ♡", tTips: "טיפים", tSettingsS: "⚙",
     copied: "הקישור הועתק", sentNote: "פותח את וואטסאפ…", savedToast: "נשמר", copyLink: "או העתקת הקישור", got: "הבנתי",
     oldLink: "הקישור הזה כבר נפתח.", otherCouple: "הקישור הזה שייך לאפליקציה של מישהו אחר.",
@@ -275,6 +275,12 @@ function send(type, data, waKey) {
 }
 function receive() {
   var h = location.hash || "";
+  if (h.indexOf("#r=") === 0) {
+    var bk = readBackup(h); history.replaceState(null, "", baseUrl());
+    if (!bk) { V.screen = "notice"; V.tmp.notice = t("bkBad"); return true; }
+    if (!S.role || !S.moments.length) { doRestoreFrom(bk); return true; }
+    V.tmp.pendingRestore = bk; V.screen = "restoreAsk"; return true;
+  }
   var i = h.indexOf("m=");
   if (i < 0) return false;
   var msg; try { msg = dec(h.slice(i + 2)); } catch (e) { return false; }
@@ -385,7 +391,7 @@ SC.welcome = function () {
     '<p class="lab" style="margin-top:8px">' + t("whoAreYou") + '</p><div class="seg2"><button data-role="him" class="' + (V.tmp.role === "him" ? "sel" : "") + '">' + t("imHim") + '</button><button data-role="her" class="' + (V.tmp.role === "her" ? "sel" : "") + '">' + t("imHer") + '</button></div>' +
     '<input type="text" id="me" placeholder="' + esc(t("yourName")) + '" value="' + esc(S.me) + '">' +
     '<input type="text" id="partner" placeholder="' + esc(V.tmp.role === "her" ? t("hisName") : V.tmp.role === "him" ? t("herName") : t("partnerName")) + '" value="' + esc(S.partner) + '">' +
-    btn(t("start"), "startApp", !V.tmp.role) + '<p class="txt center" style="font-size:12px">' + t("privacy") + '</p></div>' };
+    btn(t("start"), "startApp", !V.tmp.role) + '<p class="txt center" style="font-size:12px">' + t("privacy") + '</p>' + restoreBlock() + '</div>' };
 };
 SC.whoLink = function () {
   var m = V.pending;
@@ -569,8 +575,7 @@ SC.tips = function () {
 SC.settings = function () {
   var h = orbs() + tabs() + '<p class="mid">' + t("setL") + '</p><p class="lab">' + t("language") + '</p><div class="seg2"><button data-lang="en" class="' + (S.lang === "en" ? "sel" : "") + '">English</button><button data-lang="he" class="he ' + (S.lang === "he" ? "sel" : "") + '">עברית</button></div>' +
     '<p class="lab">' + t("names") + '</p><input type="text" id="me" placeholder="' + esc(t("yourName")) + '" value="' + esc(S.me) + '"><input type="text" id="partner" placeholder="' + esc(S.role === "her" ? t("hisName") : t("herName")) + '" value="' + esc(S.partner) + '">' + btn(t("save"), "saveNames") +
-    '<p class="lab" style="margin-top:8px">' + t("backup") + '</p>' + ghost(t("backup"), "backup") +
-    (V.tmp.restoring ? '<textarea id="restore" placeholder="' + esc(t("restorePh")) + '"></textarea>' + btn(t("restoreBtn"), "doRestore") : ghost(t("restore"), "restoreOpen")) +
+    '<p class="lab" style="margin-top:8px">' + t("bkL") + '</p><p class="txt">' + t("bkC") + '</p>' + btn(t("bkWa"), "backupSend") + ghost(t("backup"), "backup") + restoreBlock() +
     (V.tmp.sure ? '<div class="box">' + t("resetSure") + '</div><div class="seg2"><button data-act="doReset">' + t("yesErase") + '</button><button data-act="cancelReset">' + t("cancel") + '</button></div>' : ghost(t("reset"), "askReset"));
   return { cls: "calm", html: h };
 };
@@ -711,6 +716,11 @@ SC.story = function () {
     (cards ? '<div class="list">' + cards + '</div>' : '<div class="empty">' + x("storyEmpty") + '</div>') };
 };
 function pairLine() { return S.me || S.partner ? '<p class="lab mutedlab">' + esc(t("hiPair").replace("{me}", S.me || "").replace("{p}", S.partner || "")) + '</p>' : ""; }
+function restoreBlock() { return V.tmp.restoring ? '<p class="txt" style="font-size:13px">' + t("bkHint") + '</p><textarea id="restore" placeholder="' + esc(t("restorePh")) + '"></textarea>' + btn(t("restoreBtn"), "doRestore") : ghost(t("restore"), "restoreOpen"); }
+function backupLink() { return baseUrl() + "#r=" + enc(S); }
+function readBackup(str) { str = String(str || "").trim(); var i = str.indexOf("#r="); if (i > -1) str = str.slice(i + 3); try { var d = dec(str); return d && d.moments ? d : null; } catch (e) { return null; } }
+function doRestoreFrom(d) { var lang = S.lang; S = Object.assign(blank(), d); if (!S.lang) S.lang = lang; persist(); V.tmp = {}; V.back = []; V.fwd = []; V.mid = null; V.tab = "moments"; V.screen = S.role ? "home" : "welcome"; toast(t("bkDone")); }
+SC.restoreAsk = function () { return { cls: "calm", html: orbs() + '<p class="mid" style="margin-top:60px">' + t("bkAskT") + '</p><p class="txt">' + t("bkAskC") + '</p><div class="push">' + btn(t("bkYes"), "restoreYes") + ghost(t("cancel"), "restoreNo") + '</div>' }; };
 function copyLinkBlock() { return V.lastLink ? '<p class="lab mutedlab">' + t("copyLink") + '</p><div class="copybox" data-act="copyLink">' + esc(V.lastLink) + '</div>' : ""; }
 
 /* ===================== Actions ===================== */
@@ -770,9 +780,16 @@ var A = {
   herIntro2: function () { go("herIntro2"); }, herIntro3: function () { go("herIntro3"); },
   herIntroDone: function () { S.introHer = true; persist(); if (V.mid && byId(V.mid) && byId(V.mid).status === "asked") go("answer"); else go("home"); },
   saveNames: function () { S.me = val("me"); S.partner = val("partner"); persist(); toast(t("savedToast")); },
-  backup: function () { var b = enc(S); copy(b); },
+  backup: function () { copy(backupLink()); },
+  backupSend: function () {
+    var text = t("wBackup") + "\n" + backupLink();
+    if (navigator.share) { navigator.share({ text: text }).catch(function () {}); return; }
+    var wa = "https://wa.me/?text=" + encodeURIComponent(text), w = null; try { w = window.open(wa, "_blank"); } catch (e) {} if (!w) window.location.href = wa;
+  },
+  restoreYes: function () { var d = V.tmp.pendingRestore; if (d) doRestoreFrom(d); render(true); },
+  restoreNo: function () { V.tmp.pendingRestore = null; V.screen = S.role ? "home" : "welcome"; render(true); },
   restoreOpen: function () { V.tmp.restoring = true; render(); },
-  doRestore: function () { try { var d = dec(val("restore")); if (d && d.moments) { S = Object.assign(blank(), d); persist(); V.tmp.restoring = false; toast(t("savedToast")); go("home"); } } catch (e) {} },
+  doRestore: function () { var d = readBackup(val("restore")); if (!d) return toast(t("bkBad")); doRestoreFrom(d); render(true); },
   askReset: function () { V.tmp.sure = true; render(); }, cancelReset: function () { V.tmp.sure = false; render(); },
   doReset: function () { try { localStorage.removeItem(KEY); } catch (e) {} S = blank(); V = { screen: "welcome", mid: null, tab: "moments", tmp: {}, back: [], fwd: [] }; render(); },
   copyLink: function () { copy(V.lastLink); }
