@@ -134,6 +134,19 @@ textarea:focus, input:focus { border-color: var(--acc); }
 .lock { opacity: .5; border-style: dashed; }
 .empty { border: 1px dashed var(--line); border-radius: 15px; padding: 16px; color: var(--muted); font-size: 14px; text-align: center; }
 .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); border-radius: 999px; padding: 10px 18px; font-size: 14px; z-index: 9; }
+.hero { border-radius: 26px; padding: 22px 20px 20px; background: linear-gradient(140deg, #f472b6 0%, #ec4899 45%, #8b5cf6 100%); color: #fff; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 16px 40px rgba(236,72,153,.28); }
+.hero .hi { font-weight: 200; font-size: 40px; line-height: 1.05; letter-spacing: -.02em; margin: 0; }
+.hero .mood { font-size: 20px; font-weight: 400; line-height: 1.35; margin: 0; }
+.hero .stat { font-size: 13px; opacity: .85; margin: 0; }
+.hero .daily { font-size: 15px; line-height: 1.45; margin: 4px 0 0; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.35); font-style: italic; }
+.hero .cta { font: inherit; font-weight: 600; font-size: 16px; color: #b5306f; background: #fff; border: 0; border-radius: 15px; padding: 13px; cursor: pointer; margin-top: 4px; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tile { position: relative; min-height: 124px; border: 0; border-radius: 22px; padding: 16px; font: inherit; color: #2b1a3a; text-align: start; display: flex; flex-direction: column; justify-content: space-between; gap: 8px; cursor: pointer; }
+.tile .ic { font-size: 28px; line-height: 1; }
+.tile b { display: block; font-size: 17px; font-weight: 600; line-height: 1.2; }
+.tile small { display: block; font-size: 13px; color: #6d5a7c; margin-top: 2px; }
+.tile .badge { position: absolute; top: 12px; inset-inline-end: 12px; min-width: 24px; height: 24px; border-radius: 12px; background: #ec4899; color: #fff; font-size: 13px; font-weight: 600; display: grid; place-items: center; padding: 0 7px; }
+.t1 { background: #fde0ef; } .t2 { background: #ebe2ff; } .t3 { background: #ffe6d6; } .t4 { background: #dff3ec; }
 .copybox { font-size: 12px; word-break: break-all; color: var(--muted); background: var(--field); border: 1px solid var(--line); border-radius: 12px; padding: 10px; user-select: all; }
 button:focus-visible, textarea:focus-visible, input:focus-visible { outline: 2px solid #ec4899; outline-offset: 2px; }
 @media (prefers-reduced-motion: no-preference) { #app.anim { animation: in .3s ease; } @keyframes in { from { opacity: .3; transform: translateY(6px); } } }
@@ -176,7 +189,7 @@ var T = {
     drawsL: "What draws her", drawsEmpty: "Every moment you finish adds something here.", more: "More to discover as you ask",
     // her side
     hi1: "He's curious about you.", hi2: "Answer his questions. Share what moved you.", hi3: "Your private notes stay yours.", hi3s: "They never leave this phone.", seeQBtn: "See his question",
-    hHome: "From him", hNone: "Nothing new from him yet", hFrom: "A question from {n}", hAnsPh: "Your answer", send: "Send on WhatsApp",
+    hHome: "From him", hubTab: "Home", hNone: "Nothing new from him yet", hFrom: "A question from {n}", hAnsPh: "Your answer", send: "Send on WhatsApp",
     hListened: "He listened ♥", noteFrom: "A note from {n}", react: "Tell him how it felt", reactPh: "How did it feel?", addMore: "Add another moment", addMoreS: "It starts his next round",
     hAddL: "A moment that moved you", hAddPh: "A moment you fell for him again", hNotes: "Private notes", hNotesPh: "Just for you", saveNotes: "Save notes",
     hMyMoments: "Moments you shared",
@@ -215,7 +228,7 @@ var T = {
     m6: "איך זה התקבל?", whatPh: "מה קרה? (לא חובה)", letHer: "תן לה לדעת שהקשבת ♥", finish: "סיום",
     drawsL: "מה מושך אותה", drawsEmpty: "כל רגע שתסיים יוסיף משהו כאן.", more: "עוד יתגלו ככל שתשאל",
     hi1: "הוא סקרן לגבייך.", hi2: "עני על השאלות שלו. שתפי מה ריגש אותך.", hi3: "ההערות הפרטיות שלך נשארות שלך.", hi3s: "הן לא יוצאות מהטלפון הזה.", seeQBtn: "לשאלה שלו",
-    hHome: "ממנו", hNone: "עדיין אין משהו חדש ממנו", hFrom: "שאלה מ{n}", hAnsPh: "התשובה שלך", send: "שליחה בוואטסאפ",
+    hHome: "ממנו", hubTab: "בית", hNone: "עדיין אין משהו חדש ממנו", hFrom: "שאלה מ{n}", hAnsPh: "התשובה שלך", send: "שליחה בוואטסאפ",
     hListened: "הוא הקשיב ♥", noteFrom: "פתק מ{n}", react: "ספרי לו איך הרגשת", reactPh: "איך זה הרגיש?", addMore: "הוסיפי עוד רגע", addMoreS: "זה מתחיל לו סיבוב חדש",
     hAddL: "רגע שריגש אותך", hAddPh: "רגע שהתאהבת בו מחדש", hNotes: "הערות פרטיות", hNotesPh: "רק בשבילך", saveNotes: "שמירה",
     hMyMoments: "רגעים ששיתפת",
@@ -360,7 +373,7 @@ function pillFor(m) {
 }
 function tabs() {
   var a = [["moments", "tMoments"], ["draws", "tDraws"], ["tips", "tTips"], ["settings", "tSettingsS"]];
-  if (S.role === "her") a = [["moments", "hHome"], ["story", "tStory"], ["tips", "tTips"], ["settings", "tSettingsS"]];
+  if (S.role === "her") a = [["moments", "hubTab"], ["inbox", "hHome"], ["story", "tStory"], ["tips", "tTips"], ["settings", "tSettingsS"]];
   return '<div class="tabs">' + a.map(function (x) { return '<button class="' + (V.tab === x[0] ? "on" : "") + '" data-tab="' + x[0] + '">' + t(x[1]) + '</button>'; }).join("") + '</div>';
 }
 
@@ -407,6 +420,10 @@ var CX = {
     drawsC: "Everything you've learned about what draws her to you.",
     hFirstStep: "Step 1 of 2 · Your moment", hFirstC: "Think of a moment he made you fall for him all over again. He won't see it until he guesses.", hFirstBtn: "Next: invite him",
     hInvStep: "Step 2 of 2 · Invite him", hInvC: "Send {n} your locked moment, and let's see if he cracks it.", hInvBtn: "Send the invite on WhatsApp", later: "Later",
+    hubHi: "Hi {me}", hubAsk: "{n} is curious about you. A question is waiting for you.", hubLis: "{n} listened. He has something to tell you.", hubWait: "{n} is trying to guess your moment. Let him work for it.", hubIdle: "You're the mystery {n} is trying to solve.",
+    hubAskBtn: "Answer him ♡", hubLisBtn: "See what he said ♡", hubStat: "Questions from him: {q} · Times he listened: {l}",
+    hubD0: "Being asked about yourself feels good. Enjoy it.", hubD1: "He's learning you, one moment at a time.", hubD2: "Your moments are the map. He's the one exploring.", hubD3: "Some things are worth being asked about twice.", hubD4: "Tonight, notice one small thing he gets right.",
+    tiFrom: "From him", tiFromS: "{k} new", tiFromNone: "Nothing new yet", tiStory: "Our moments", tiStoryS: "{k} moments together", tiAdd: "Send a moment", tiAddS: "Let him guess", tiTips: "Tips", tiTipsS: "For him, from you",
     hHomeC: "This is where he shows up: his questions, his notes, his curiosity about you.", hAddC: "Drop him another locked moment. Each one starts a new round.", hAddBtn: "Send it to him on WhatsApp", hNotesC: "Just for you. Not him, not anyone.",
     ansL: "A question from {n}", ansC: "{n} is curious about you. Answer however you like, there's no wrong answer.", ansBtn: "Send my answer on WhatsApp",
     lisL: "{n} listened", lisC: "{n} heard you, and here's what he made of it.", lisReactBtn: "Send it back to him on WhatsApp", lisMore: "Add another moment",
@@ -437,6 +454,10 @@ var CX = {
     drawsC: "כל מה שלמדת על מה מושך אותה אליך.",
     hFirstStep: "שלב 1 מתוך 2 · הרגע שלך", hFirstC: "חשבי על רגע שבו התאהבת בו מחדש. הוא לא יראה אותו עד שינחש.", hFirstBtn: "הבא: להזמין אותו",
     hInvStep: "שלב 2 מתוך 2 · הזמיני אותו", hInvC: "שלחי ל{n} את הרגע הנעול שלך, ובואי נראה אם הוא יפצח אותו.", hInvBtn: "שלחי את ההזמנה בוואטסאפ", later: "אחר כך",
+    hubHi: "היי {me}", hubAsk: "{n} סקרן לגבייך. מחכה לך שאלה ממנו.", hubLis: "{n} הקשיב. יש לו משהו להגיד לך.", hubWait: "{n} מנסה לנחש את הרגע שלך. תני לו להתאמץ קצת.", hubIdle: "את התעלומה ש{n} מנסה לפצח.",
+    hubAskBtn: "לענות לו ♡", hubLisBtn: "לראות מה הוא אמר ♡", hubStat: "שאלות ממנו: {q} · פעמים שהקשיב: {l}",
+    hubD0: "כשמתעניינים בך, זה מרגיש טוב. תיהני מזה.", hubD1: "הוא לומד אותך, רגע אחרי רגע.", hubD2: "הרגעים שלך הם המפה. הוא זה שמגלה.", hubD3: "יש דברים ששווה שישאלו עליהם פעמיים.", hubD4: "הערב, שימי לב לדבר קטן אחד שהוא עושה נכון.",
+    tiFrom: "ממנו", tiFromS: "{k} חדשים", tiFromNone: "עדיין אין חדש", tiStory: "הרגעים שלנו", tiStoryS: "{k} רגעים ביחד", tiAdd: "שלחי לו רגע", tiAddS: "שינחש", tiTips: "טיפים", tiTipsS: "בשבילו, ממך",
     hHomeC: "כאן הוא מופיע: השאלות שלו, הפתקים שלו, הסקרנות שלו לגבייך.", hAddC: "שלחי לו עוד רגע נעול. כל אחד מתחיל סיבוב חדש.", hAddBtn: "שלחי לו בוואטסאפ", hNotesC: "רק בשבילך. לא בשבילו, לא בשביל אף אחד.",
     ansL: "שאלה מ{n}", ansC: "{n} סקרן לגבייך. עני איך שבא לך, אין תשובה לא נכונה.", ansBtn: "שלחי את התשובה בוואטסאפ",
     lisL: "{n} הקשיב", lisC: "{n} הקשיב לך, וזה מה שיצא לו מזה.", lisReactBtn: "שלחי לו בחזרה בוואטסאפ", lisMore: "הוסיפי עוד רגע",
@@ -619,6 +640,7 @@ SC.herHome = function () {
   if (V.tab === "settings") return SC.settings();
   if (V.tab === "story") return SC.story();
   if (V.tab === "tips") return SC.tips();
+  if (V.tab !== "inbox") return SC.herHub();
   var asked = S.moments.filter(function (m) { return m.status === "asked"; });
   var listened = S.moments.filter(function (m) { return m.status === "listened"; });
   var mine = S.moments.filter(function (m) { return m.from === "her" && m.status !== "asked" && m.status !== "listened"; });
@@ -627,6 +649,27 @@ SC.herHome = function () {
     (mine.length ? '<p class="lab mutedlab">' + t("hMyMoments") + '</p><div class="list">' + mine.map(function (m) { return '<div class="chip" style="cursor:default"><span>' + esc(m.title) + '</span><span class="pill">' + (m.status === "sent" ? "🔒 " + t("waitingGuess") : "🔒") + '</span></div>'; }).join("") + '</div>' : "") +
     '<p class="lab" style="margin-top:6px">' + t("hAddL") + '</p><p class="ctx">' + esc(x("hAddC")) + '</p>' + field("herMoment", t("hAddPh"), "", false) + btn(x("hAddBtn"), "herAddMoment") +
     '<p class="lab" style="margin-top:6px">🔒 ' + t("hNotes") + '</p><p class="ctx">' + esc(x("hNotesC")) + '</p><textarea id="notes" placeholder="' + esc(t("hNotesPh")) + '">' + esc(S.notes) + '</textarea>' + ghost(t("saveNotes"), "saveNotes");
+  return { cls: "calm", html: h };
+};
+SC.herHub = function () {
+  var asked = S.moments.filter(function (m) { return m.status === "asked"; });
+  var listened = S.moments.filter(function (m) { return m.status === "listened"; });
+  var waiting = S.moments.filter(function (m) { return m.from === "her" && m.status === "sent"; });
+  var story = S.moments.filter(function (m) { return m.from === "her" || m.question || m.note || m.status === "listened"; });
+  var nQ = S.moments.filter(function (m) { return m.question; }).length;
+  var mood = asked.length ? "hubAsk" : listened.length ? "hubLis" : waiting.length ? "hubWait" : "hubIdle";
+  var cta = asked.length ? '<button class="cta" data-act="answer:' + asked[0].id + '">' + esc(x("hubAskBtn")) + '</button>' : listened.length ? '<button class="cta" data-act="listened:' + listened[0].id + '">' + esc(x("hubLisBtn")) + '</button>' : "";
+  var daily = x("hubD" + (Math.floor(Date.now() / 864e5) % 5));
+  var stat = nQ || listened.length ? '<p class="stat">' + esc(x("hubStat").replace("{q}", nQ).replace("{l}", listened.length)) + '</p>' : "";
+  var newN = asked.length + listened.length;
+  var tile = function (cls, ic, lab, sub, attr, badge) { return '<button class="tile ' + cls + '" ' + attr + '>' + (badge ? '<span class="badge">' + badge + '</span>' : "") + '<span class="ic">' + ic + '</span><span><b>' + esc(lab) + '</b><small>' + esc(sub) + '</small></span></button>'; };
+  var h = orbs() + tabs() + pairLine() +
+    '<div class="hero"><p class="hi">' + esc(x("hubHi").replace("{me}", S.me || "♡")) + '</p><p class="mood">' + esc(x(mood)) + '</p>' + stat + cta + '<p class="daily">✦ ' + esc(daily) + '</p></div>' +
+    '<div class="tiles">' +
+    tile("t1", "💌", x("tiFrom"), newN ? x("tiFromS").replace("{k}", newN) : x("tiFromNone"), 'data-tab="inbox"', newN) +
+    tile("t2", "📖", x("tiStory"), x("tiStoryS").replace("{k}", story.length), 'data-tab="story"') +
+    tile("t3", "🔒", x("tiAdd"), x("tiAddS"), 'data-act="toAddMore"') +
+    tile("t4", "✨", x("tiTips"), x("tiTipsS"), 'data-tab="tips"') + '</div>';
   return { cls: "calm", html: h };
 };
 SC.answer = function () { var m = M(); if (!m) return SC.home(); return { cls: "calm", html: orbs() + hdr(x("ansL"), x("ansC")) + '<p class="mid">' + esc(m.question) + '</p>' + field("herAns", t("hAnsPh"), m.answer, true) + '<div class="push">' + btn(x("ansBtn"), "sendAnswer") + ghost(bk() + t("backHome"), "home") + '</div>' }; };
