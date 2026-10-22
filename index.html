@@ -147,6 +147,12 @@ textarea:focus, input:focus { border-color: var(--acc); }
 .tile small { display: block; font-size: 13px; color: #6d5a7c; margin-top: 2px; }
 .tile .badge { position: absolute; top: 12px; inset-inline-end: 12px; min-width: 24px; height: 24px; border-radius: 12px; background: #ec4899; color: #fff; font-size: 13px; font-weight: 600; display: grid; place-items: center; padding: 0 7px; }
 .t1 { background: #fde0ef; } .t2 { background: #ebe2ff; } .t3 { background: #ffe6d6; } .t4 { background: #dff3ec; }
+.fromcard { border-radius: 20px; padding: 16px 18px; background: var(--grad); color: #fff; box-shadow: 0 10px 28px rgba(236,72,153,.28); display: flex; flex-direction: column; gap: 6px; text-align: start; width: 100%; border: 0; font: inherit; }
+.fromcard .ft { font-size: 18px; line-height: 1.4; font-weight: 400; }
+.fromcard .fl { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; opacity: .9; display: flex; justify-content: space-between; }
+body[dir="rtl"] .fromcard .fl { letter-spacing: .02em; font-size: 13px; }
+.fromcard .nw { background: #fff; color: #c0267a; border-radius: 999px; padding: 1px 9px; font-size: 11px; }
+button.fromcard { cursor: pointer; }
 .compose { border-color: var(--acc); gap: 10px; }
 .minisend { font: inherit; font-size: 12px; font-weight: 600; color: #fff; background: var(--grad); border: 0; border-radius: 999px; padding: 6px 11px; cursor: pointer; white-space: nowrap; }
 .copybox { font-size: 12px; word-break: break-all; color: var(--muted); background: var(--field); border: 1px solid var(--line); border-radius: 12px; padding: 10px; user-select: all; }
@@ -590,6 +596,7 @@ function herCoachAll() {
   S.moments.forEach(function (m) { herCoach(m).forEach(function (c) { if (!seen[c.k]) { seen[c.k] = 1; all.push(c); } }); });
   return all;
 }
+function fromCard(tp, act) { var tag = act ? "button" : "div"; return '<' + tag + ' class="fromcard"' + (act ? ' data-act="' + act + '"' : "") + '><span class="fl"><span>♡ ' + esc(x("tFrom")) + '</span>' + (tp.seen ? "" : '<span class="nw">' + esc(x("tNew")) + '</span>') + '</span><span class="ft">' + esc(tp.text) + '</span></' + tag + '>'; }
 function coachBox(c) { return c ? '<div class="tip">✦ <b>' + esc(x("coachTag")) + ':</b> ' + esc(c.text) + '</div>' : ""; }
 SC.tips = function () {
   var him = S.role === "him", P = S.partner || (him ? "" : "");
@@ -604,12 +611,12 @@ SC.tips = function () {
   var row = function (txt, pill, del) { return '<div class="chip" style="cursor:default;align-items:flex-start"><span>' + esc(txt) + '</span>' + (pill ? '<span class="pill">' + esc(pill) + '</span>' : "") + (del ? '<button class="edit" data-edit="tip:' + del + '">✎</button><button class="edit" data-deltip="' + del + '">✕</button>' : "") + '</div>'; };
   var sec = function (lab, items, emptyKey) { return '<p class="lab" style="margin-top:8px">' + esc(lab) + '</p>' + (items.length ? '<div class="list">' + items.join("") + '</div>' : '<div class="empty">' + esc(x(emptyKey)) + '</div>'); };
   var saved = mine.filter(function (tp) { return !tp.sent; }), sent = mine.filter(function (tp) { return tp.sent; });
-  var fromRows = theirs.map(function (tp) { return row(tp.text, tp.seen ? "♡" : "♡ " + x("tNew")); });
+  var fromRows = theirs.map(function (tp) { return fromCard(tp); });
   if (theirs.some(function (tp) { return !tp.seen; })) { theirs.forEach(function (tp) { tp.seen = true; }); persist(); }
   var G = function (k) { return x(k + (him ? "Him" : "Her")); };
   var savedRow = function (tp) { return '<div class="chip" style="cursor:default;align-items:center"><span>' + esc(tp.text) + '</span><span style="display:flex;gap:6px;align-items:center;flex-shrink:0"><button class="minisend" data-sendtip="' + tp.id + '">' + esc(G("tSendOne")) + '</button><button class="edit" data-edit="tip:' + tp.id + '">✎</button><button class="edit" data-deltip="' + tp.id + '">✕</button></span></div>'; };
   return { cls: "calm", html: orbs() + tabs() + '<p class="big">' + x("tipsT") + '</p>' +
-    (theirs.length ? '<p class="lab">♡ ' + esc(x("tFrom")) + '</p><div class="list">' + fromRows.join("") + '</div>' : "") +
+    (theirs.length ? '<div class="list">' + fromRows.join("") + '</div>' : "") +
     '<div class="storycard compose"><p class="lab">♡ ' + esc(G("tTo")) + '</p><p class="txt" style="font-size:14px;margin-top:-4px">' + esc(G("tToC")) + '</p>' + field("tipTxt", x(him ? "tAddPhHim" : "tAddPhHer"), "", true) +
     '<button class="btn" data-act="tipSend">' + esc(G("tNow")) + '</button><button class="chip" data-act="tipKeep" style="justify-content:center">' + esc(G("tLater")) + '</button></div>' +
     '<p class="lab" style="margin-top:8px">' + esc(x("tSavedL")) + '</p>' + (saved.length ? '<div class="list">' + saved.map(savedRow).join("") + '</div>' : '<div class="empty">' + esc(x("tSavedEmpty")) + '</div>') +
@@ -700,7 +707,7 @@ SC.herHome = function () {
   var h = orbs() + tabs() + pairLine() + '<p class="mid">' + t("hHome") + '</p><p class="ctx">' + esc(x("hHomeC")) + '</p>' +
     (asked.length || listened.length ? '<div class="list">' + asked.map(function (m) { return chip(esc(m.question), "answer:" + m.id, "rec", '<span class="pill">♡</span>'); }).join("") + listened.map(function (m) { return chip(esc(x("lisL")) + (m.note ? " · ✉" : ""), "listened:" + m.id, "", ""); }).join("") + '</div>' : (S.tips || []).some(function (tp) { return tp.from === "him"; }) ? "" : '<div class="empty">' + t("hNone") + '</div>') +
     (mine.length ? '<p class="lab mutedlab">' + t("hMyMoments") + '</p><div class="list">' + mine.map(function (m) { return '<div class="chip" style="cursor:default"><span>' + esc(m.title) + '</span><span class="pill">' + (m.status === "sent" ? "🔒 " + t("waitingGuess") : "🔒") + '</span></div>'; }).join("") + '</div>' : "") +
-    ((S.tips || []).some(function (tp) { return tp.from === "him"; }) ? '<p class="lab mutedlab">♡ ' + esc(x("hTipsL")) + '</p><div class="list">' + (S.tips || []).filter(function (tp) { return tp.from === "him"; }).map(function (tp) { return chip(esc(tp.text), "goTips", tp.seen ? "" : "rec", '<span class="pill">' + (tp.seen ? "♡" : "♡ " + esc(x("tNew"))) + '</span>'); }).join("") + '</div>' : "") +
+    ((S.tips || []).some(function (tp) { return tp.from === "him"; }) ? '<p class="lab mutedlab">♡ ' + esc(x("hTipsL")) + '</p><div class="list">' + (S.tips || []).filter(function (tp) { return tp.from === "him"; }).map(function (tp) { return fromCard(tp, "goTips"); }).join("") + '</div>' : "") +
     '<p class="lab" style="margin-top:6px">' + t("hAddL") + '</p><p class="ctx">' + esc(x("hAddC")) + '</p>' + field("herMoment", t("hAddPh"), "", false) + btn(x("hAddBtn"), "herAddMoment") +
     '<p class="lab" style="margin-top:6px">🔒 ' + t("hNotes") + '</p><p class="ctx">' + esc(x("hNotesC")) + '</p><textarea id="notes" placeholder="' + esc(t("hNotesPh")) + '">' + esc(S.notes) + '</textarea>' + ghost(t("saveNotes"), "saveNotes");
   return { cls: "calm", html: h };
