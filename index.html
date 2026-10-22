@@ -47,6 +47,10 @@ body[dir="rtl"] .lab { letter-spacing: .03em; font-size: 14px; }
 .mid { font-weight: 200; font-size: 27px; line-height: 1.15; letter-spacing: -.01em; margin: 0; text-wrap: balance; }
 body[dir="rtl"] .big, body[dir="rtl"] .mid { letter-spacing: 0; line-height: 1.18; }
 .brand { font-weight: 200; font-size: 44px; line-height: 1; letter-spacing: -.03em; margin: 0; }
+.navrow { display: flex; justify-content: space-between; align-items: center; margin: -6px 0 2px; }
+.navb { font: inherit; font-size: 15px; color: var(--ink); background: var(--field); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+.navb:disabled { opacity: .35; }
+body[dir="rtl"] .navb { direction: rtl; }
 .howto { border-radius: 18px; padding: 14px 16px; background: var(--soft); border-inline-start: 4px solid var(--pink); display: flex; flex-direction: column; gap: 8px; margin: 2px 0 6px; }
 body.her .howto { border-inline-start-color: var(--acc); }
 .ctx { font-size: 20px; font-weight: 400; line-height: 1.4; color: var(--ink); margin: 0; }
@@ -221,7 +225,7 @@ var S = load();
 function blank() { return { lang: (navigator.language || "").indexOf("he") === 0 ? "he" : "en", role: null, me: "", partner: "", couple: "", moments: [], draws: [], notes: "", seen: [], introHim: false, introHer: false }; }
 function load() { try { var d = JSON.parse(localStorage.getItem(KEY)); if (d && d.moments) return Object.assign(blank(), d); } catch (e) {} return blank(); }
 function persist() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
-var V = { screen: "welcome", mid: null, tab: "moments", tmp: {} };
+var V = { screen: "welcome", mid: null, tab: "moments", tmp: {}, back: [], fwd: [] };
 function t(k, n) { var s = T[S.lang][k]; if (s == null) s = T.en[k]; return typeof s === "string" ? s.replace("{n}", n == null ? (S.partner || "") : n) : s; }
 function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 function raw(k) { return T[S.lang][k] || T.en[k]; }
@@ -328,6 +332,7 @@ function startMic(btn, id) {
 function val(id) { var e = document.getElementById(id); return e ? e.value.trim() : ""; }
 
 /* ===================== Pieces ===================== */
+function bk() { return S.lang === "he" ? "› " : "‹ "; }
 function orbs() { return '<i class="orb o1"></i><i class="orb o2"></i>'; }
 function dots(n) { var s = ""; for (var i = 0; i < 3; i++) s += '<i class="' + (i === n ? "on" : "") + '"></i>'; return '<div class="dots">' + s + '</div>'; }
 function chip(label, act, cls, extra) { return '<button class="chip ' + (cls || "") + '" data-act="' + act + '"><span>' + label + '</span>' + (extra || "") + '</button>'; }
@@ -392,7 +397,7 @@ var CX = {
     hHomeC: "His questions and notes show up here. They also reach you on WhatsApp.", hAddC: "He gets it locked, and tries to guess it.", hAddBtn: "Send it to him on WhatsApp", hNotesC: "Only you can see these.",
     ansL: "A question from {n}", ansC: "{n} is trying to understand you better. Answer however you like.", ansBtn: "Send my answer on WhatsApp",
     lisL: "{n} listened", lisC: "{n} heard your answer and told you what he felt.", lisReactBtn: "Send him how it felt", lisMore: "Add another moment",
-    gotItDo: "Got it, let's do it",
+    gotItDo: "Got it, let's do it", navBack: "Back", navFwd: "Next",
     storyT: "Our moments", storyC: "Everything between you: what he guessed, asked, learned and said.", storyEmpty: "Your moments and his words will collect here.",
     stMoments: "moments you shared", stQuestions: "questions he asked", stNotes: "times he listened",
     yourMoment: "Your moment", hisMoment: "His moment", stCurious: "He's curious", stAnswered: "You answered",
@@ -422,7 +427,7 @@ var CX = {
     hHomeC: "השאלות והפתקים שלו מופיעים כאן. הם מגיעים אלייך גם בוואטסאפ.", hAddC: "הוא יקבל אותו נעול וינסה לנחש.", hAddBtn: "שלחי לו בוואטסאפ", hNotesC: "רק את רואה את זה.",
     ansL: "שאלה מ{n}", ansC: "{n} מנסה להבין אותך יותר טוב. עני איך שבא לך.", ansBtn: "שלחי את התשובה בוואטסאפ",
     lisL: "{n} הקשיב", lisC: "{n} שמע את התשובה שלך וסיפר לך מה הרגיש.", lisReactBtn: "ספרי לו איך הרגשת", lisMore: "הוסיפי עוד רגע",
-    gotItDo: "הבנתי, יאללה",
+    gotItDo: "הבנתי, יאללה", navBack: "חזרה", navFwd: "קדימה",
     storyT: "הרגעים שלנו", storyC: "כל מה שקרה ביניכם: מה הוא ניחש, שאל, למד ואמר.", storyEmpty: "הרגעים שלך והמילים שלו יתאספו כאן.",
     stMoments: "רגעים ששיתפת", stQuestions: "שאלות ששאל", stNotes: "פעמים שהקשיב",
     yourMoment: "הרגע שלך", hisMoment: "הרגע שלו", stCurious: "הוא סקרן", stAnswered: "ענית",
@@ -447,7 +452,7 @@ SC.sealed = function () {
     '<div class="sealed"><div class="row2 lab" style="margin-bottom:8px"><span>' + t("herMoment") + '</span><span>🔒</span></div><div class="blur">' + esc(m.title) + '</div></div><p class="txt">' + t("canGuess") + '</p>' +
     '<div class="push">' + btn(t("guessBtn"), "toGuess") + ghost(t("justShow"), "doReveal") + '</div>' };
 };
-SC.guess = function () { return { cls: "calm", html: orbs() + hdr(t("guessL"), x("guessC")) + '<p class="mid">' + t("guessQ") + '</p><p class="txt">' + t("guessHint") + '</p>' + field("guess", t("guessPh"), "", true) + '<div class="push">' + btn(t("reveal"), "doReveal") + '</div>' }; };
+SC.guess = function () { return { cls: "calm", html: orbs() + hdr(t("guessL"), x("guessC")) + '<p class="mid">' + t("guessQ") + '</p><p class="txt">' + t("guessHint") + '</p>' + field("guess", t("guessPh"), (M() || {}).guess, true) + '<div class="push">' + btn(t("reveal"), "doReveal") + '</div>' }; };
 SC.reveal = function () {
   var m = M(); var sc = V.tmp.score;
   return { cls: "", html: orbs() + hdr(x("revealL"), x("revealC")) + '<div class="quote">' + esc(m.title) + '</div>' +
@@ -490,10 +495,10 @@ SC.settings = function () {
 };
 /* --- his steps --- */
 function momentLine(m) { return '<div class="box" style="padding:10px 14px"><span class="txt">' + t("tMoment") + ':</span> ' + esc(m.title) + '</div>'; }
-SC.why = function () { var m = M(); return { cls: "calm", html: orbs() + hdr(x("st2"), x("whyC"), x("whyB")) + momentLine(m) + '<p class="mid">' + t("m2") + '</p>' + field("why", t("whyPh"), m.why, true) + '<div class="push">' + chip(x("whyKnow"), "iKnow") + chip(x("whyDont"), "iDont", "rec") + ghost("‹ " + t("backHome"), "home") + '</div>' }; };
+SC.why = function () { var m = M(); return { cls: "calm", html: orbs() + hdr(x("st2"), x("whyC"), x("whyB")) + momentLine(m) + '<p class="mid">' + t("m2") + '</p>' + field("why", t("whyPh"), m.why, true) + '<div class="push">' + chip(x("whyKnow"), "iKnow") + chip(x("whyDont"), "iDont", "rec") + ghost(bk() + t("backHome"), "home") + '</div>' }; };
 SC.ask = function () {
   var m = M(); var q = m.question || (m.from === "her" ? t("askQher") : t("askQ0").replace("{m}", S.lang === "he" ? m.title : lc(m.title)));
-  return { cls: "calm", html: orbs() + hdr(x("st3"), x("askC"), x("askB")) + momentLine(m) + '<p class="mid">' + t("m3") + '</p>' + field("q", "", q, true) + '<div class="push">' + chip(x("askPerson"), "askInPerson", "rec", "<small>" + x("askPersonS") + "</small>") + chip(x("askSend"), "askSend", "", "<small>" + x("askSendS") + "</small>") + ghost("‹ " + t("backHome"), "home") + '</div>' };
+  return { cls: "calm", html: orbs() + hdr(x("st3"), x("askC"), x("askB")) + momentLine(m) + '<p class="mid">' + t("m3") + '</p>' + field("q", "", q, true) + '<div class="push">' + chip(x("askPerson"), "askInPerson", "rec", "<small>" + x("askPersonS") + "</small>") + chip(x("askSend"), "askSend", "", "<small>" + x("askSendS") + "</small>") + ghost(bk() + t("backHome"), "home") + '</div>' };
 };
 SC.record = function () { var m = M(); return { cls: "calm", html: orbs() + hdr(x("st3"), x("recC"), x("recB")) + '<p class="mid">' + t("recQ") + '</p><p class="txt">' + esc(m.question) + '</p>' + field("ans", t("recPh"), m.answer, true) + '<div class="push">' + btn(x("recBtn"), "saveRecord") + '</div>' }; };
 SC.sent = function () { return { cls: "", html: orbs() + hdr(x("st3"), x("sentC")) + '<p class="big">' + x("sentT") + '</p><div class="quote">' + esc(M().question) + '</div><p class="txt">' + t("sentTxt") + '</p>' + copyLinkBlock() + '<div class="push">' + btn(t("backHome"), "home") + '</div>' }; };
@@ -537,7 +542,7 @@ SC.herHome = function () {
     '<p class="lab" style="margin-top:6px">🔒 ' + t("hNotes") + '</p><p class="ctx">' + esc(x("hNotesC")) + '</p><textarea id="notes" placeholder="' + esc(t("hNotesPh")) + '">' + esc(S.notes) + '</textarea>' + ghost(t("saveNotes"), "saveNotes");
   return { cls: "calm", html: h };
 };
-SC.answer = function () { var m = M(); if (!m) return SC.home(); return { cls: "calm", html: orbs() + hdr(x("ansL"), x("ansC")) + '<p class="mid">' + esc(m.question) + '</p>' + field("herAns", t("hAnsPh"), m.answer, true) + '<div class="push">' + btn(x("ansBtn"), "sendAnswer") + ghost("‹ " + t("backHome"), "home") + '</div>' }; };
+SC.answer = function () { var m = M(); if (!m) return SC.home(); return { cls: "calm", html: orbs() + hdr(x("ansL"), x("ansC")) + '<p class="mid">' + esc(m.question) + '</p>' + field("herAns", t("hAnsPh"), m.answer, true) + '<div class="push">' + btn(x("ansBtn"), "sendAnswer") + ghost(bk() + t("backHome"), "home") + '</div>' }; };
 SC.listened = function () {
   var m = M(); if (!m) return SC.home();
   return { cls: "", html: orbs() + hdr(x("lisL"), x("lisC")) + '<p class="big">' + t("hListened") + '</p>' + (m.title ? '<p class="txt">' + esc(m.title) + '</p>' : "") + (m.note ? '<p class="lab mutedlab">' + esc(t("noteFrom")) + '</p><div class="quote">' + esc(m.note) + '</div>' : "") +
@@ -624,7 +629,7 @@ var A = {
   restoreOpen: function () { V.tmp.restoring = true; render(); },
   doRestore: function () { try { var d = dec(val("restore")); if (d && d.moments) { S = Object.assign(blank(), d); persist(); V.tmp.restoring = false; toast(t("savedToast")); go("home"); } } catch (e) {} },
   askReset: function () { V.tmp.sure = true; render(); }, cancelReset: function () { V.tmp.sure = false; render(); },
-  doReset: function () { try { localStorage.removeItem(KEY); } catch (e) {} S = blank(); V = { screen: "welcome", mid: null, tab: "moments", tmp: {} }; render(); },
+  doReset: function () { try { localStorage.removeItem(KEY); } catch (e) {} S = blank(); V = { screen: "welcome", mid: null, tab: "moments", tmp: {}, back: [], fwd: [] }; render(); },
   copyLink: function () { copy(V.lastLink); }
 };
 function told(m, extra) { var d = { mid: m.id, title: m.title, q: m.question || "", a: m.answer || "", guess: m.guess || m.why || "", draw: m.draw || "" }; for (var k in extra) d[k] = extra[k]; return d; }
@@ -648,7 +653,12 @@ function toast(s) { var e = document.querySelector(".toast"); if (!e) { e = docu
 /* ===================== Render ===================== */
 var app = document.getElementById("app");
 var EXPLAIN = { why: ["st2", "whyC", "🔍", "whyB"], ask: ["st3", "askC", "💬", "askB"], learned: ["st4", "learnedC0", "✦", "learnedB"], feel: ["st5", "feelC", "♡", "feelB"], words: ["st5", "wordsC", "✎", "wordsB"], say: ["st5", "sayC", "🗣", "sayB"], rate: ["st6", "rateC", "♥", "rateB"] };
+function snap() { return { screen: V.screen, mid: V.mid, tab: V.tab, after: V.after }; }
+function restore(h) { V.screen = h.screen; V.mid = h.mid; V.tab = h.tab; V.after = h.after; render(true); window.scrollTo(0, 0); }
+function goBack() { if (!V.back.length) return; V.fwd.push(snap()); restore(V.back.pop()); }
+function goFwd() { if (!V.fwd.length) return; V.back.push(snap()); restore(V.fwd.pop()); }
 function go(s) {
+  if (V.screen && V.screen !== s && V.screen !== "whoLink" && V.screen !== "welcome" && V.screen !== "explain") { V.back.push(snap()); if (V.back.length > 40) V.back.shift(); V.fwd = []; try { history.pushState({ app: 1 }, ""); } catch (e) {} }
   S.seenSteps = S.seenSteps || {};
   if (S.role === "him" && EXPLAIN[s] && !S.seenSteps[s]) { V.after = s; s = "explain"; }
   V.screen = s; render(true); window.scrollTo(0, 0);
@@ -662,7 +672,9 @@ function render(anim) {
   document.documentElement.lang = S.lang;
   var meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = document.body.className === "her" ? "#fdfbfe" : "#0d0d12";
   app.className = (s.cls || "") + (anim ? " anim" : "");
-  app.innerHTML = s.html;
+  var root = V.screen === "welcome" || V.screen === "whoLink" || (V.screen === "home" && !V.back.length);
+  var nav = root || (!V.back.length && !V.fwd.length) ? "" : '<div class="navrow"><button class="navb" data-nav="back"' + (V.back.length ? "" : " disabled") + '>' + (S.lang === "he" ? "› " : "‹ ") + esc(x("navBack")) + '</button>' + (V.fwd.length ? '<button class="navb" data-nav="fwd">' + esc(x("navFwd")) + (S.lang === "he" ? " ‹" : " ›") + '</button>' : "<span></span>") + '</div>';
+  app.innerHTML = s.html.replace(/^(<i class="orb o1"><\/i><i class="orb o2"><\/i>)?/, function (m) { return m + nav; });
   bind();
 }
 function bind() {
@@ -676,6 +688,7 @@ function bind() {
       if (A[a]) A[a]();
     };
   });
+  app.querySelectorAll("[data-nav]").forEach(function (b) { b.onclick = function () { if (b.dataset.nav === "back") { try { history.back(); } catch (e) { goBack(); } } else goFwd(); }; });
   app.querySelectorAll("[data-edit]").forEach(function (b) { b.onclick = function () { var k = b.dataset.edit.split(":"); V.mid = k[1]; V.tmp.editField = k[0]; go("edit"); }; });
   app.querySelectorAll("[data-tab]").forEach(function (b) { b.onclick = function () { V.tab = b.dataset.tab; V.tmp.sure = false; V.tmp.restoring = false; go("home"); }; });
   app.querySelectorAll("[data-lang]").forEach(function (b) { b.onclick = function () { saveTyped(); S.lang = b.dataset.lang; persist(); render(); }; });
@@ -688,6 +701,7 @@ function bind() {
 function saveTyped() { if (document.getElementById("me")) S.me = val("me"); if (document.getElementById("partner")) S.partner = val("partner"); }
 
 /* ===================== Start ===================== */
+window.addEventListener("popstate", function () { if (V.back.length) goBack(); });
 window.addEventListener("hashchange", function () { if (receive()) render(true); });
 if (!receive()) V.screen = S.role ? "home" : "welcome";
 render(true);
