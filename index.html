@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d0d12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Curious About Her</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600&family=Heebo:wght@200;300;400;500;600&display=swap">
+<style>
+/* Layout: one phone screen at a time; his side dark, hers white; violet-to-pink accent on both. */
+:root {
+  --lat: "Manrope", "Heebo", -apple-system, "Segoe UI", sans-serif;
+  --heb: "Heebo", "Manrope", -apple-system, "Segoe UI", sans-serif;
+  --grad: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+  --pink: #f9a8d4;
+  --bg: #0d0d12; --card: #17171f; --ink: #f4f2fb; --muted: #9a98ab; --line: #2a2a36; --acc: #f9a8d4; --soft: rgba(139,92,246,.18);
+  --tipbg: #2b2416; --tipink: #ffd27a; --o1: #8b5cf6; --o2: #ec4899; --oo: .45; --field: rgba(255,255,255,.04);
+  color-scheme: dark;
+}
+body.her {
+  --bg: #fdfbfe; --card: #ffffff; --ink: #2b1a3a; --muted: #8a7798; --line: #ece2f5; --acc: #b5479a; --soft: #fbe6f3;
+  --tipbg: #fff3e3; --tipink: #7a4f12; --o1: #f9a8d4; --o2: #c4b5fd; --oo: .6; --field: #faf6fd;
+  color-scheme: light;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; min-height: 100%; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.5 var(--lat); }
+body[dir="rtl"] { font-family: var(--heb); }
+#app { position: relative; max-width: 480px; min-height: 100vh; min-height: 100dvh; margin: 0 auto; overflow: hidden;
+  padding: calc(18px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px));
+  display: flex; flex-direction: column; gap: 12px; }
+#app > * { position: relative; }
+.orb { position: absolute !important; border-radius: 50%; filter: blur(48px); pointer-events: none; opacity: var(--oo); z-index: 0; }
+.o1 { width: 280px; height: 280px; background: var(--o1); top: -80px; inset-inline-start: -90px; }
+.o2 { width: 260px; height: 260px; background: var(--o2); top: 180px; inset-inline-end: -120px; }
+.calm .orb { opacity: calc(var(--oo) * .4); }
+.top { display: flex; justify-content: space-between; align-items: center; min-height: 28px; }
+.lab { font-size: 11px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--acc); margin: 0; }
+body[dir="rtl"] .lab { letter-spacing: .03em; font-size: 12px; }
+.mutedlab { color: var(--muted); }
+.big { font-weight: 200; font-size: 34px; line-height: 1.08; letter-spacing: -.02em; margin: 0; text-wrap: balance; }
+.mid { font-weight: 200; font-size: 27px; line-height: 1.15; letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+body[dir="rtl"] .big, body[dir="rtl"] .mid { letter-spacing: 0; line-height: 1.18; }
+.brand { font-weight: 200; font-size: 44px; line-height: 1; letter-spacing: -.03em; margin: 0; }
+.txt { font-size: 14px; line-height: 1.5; color: var(--muted); margin: 0; }
+.center { text-align: center; }
+.chip { width: 100%; text-align: start; font: inherit; font-size: 15px; color: var(--ink); background: var(--field); border: 1px solid var(--line); border-radius: 15px; padding: 13px 15px; display: flex; justify-content: space-between; gap: 10px; align-items: center; cursor: pointer; }
+.chip.sel, .chip.rec { border-color: var(--acc); background: var(--soft); }
+.chip small { color: var(--muted); font-size: 12px; white-space: nowrap; }
+.pill { font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--acc); white-space: nowrap; }
+.list { display: flex; flex-direction: column; gap: 8px; }
+.fieldwrap { position: relative; }
+textarea, input[type=text] { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: var(--field); border: 1px solid var(--line); border-radius: 15px; padding: 13px 15px; outline: none; }
+textarea { min-height: 96px; resize: none; line-height: 1.45; }
+textarea:focus, input:focus { border-color: var(--acc); }
+.fieldwrap textarea, .fieldwrap input { padding-inline-end: 52px; }
+.mic { position: absolute; inset-inline-end: 8px; top: 8px; width: 38px; height: 38px; border-radius: 12px; border: 0; background: transparent; color: var(--acc); cursor: pointer; display: grid; place-items: center; }
+.mic svg { width: 20px; height: 20px; }
+.mic.on { background: var(--grad); color: #fff; animation: pulse 1.2s infinite; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(236,72,153,.15); } }
+.btn { width: 100%; font: inherit; font-weight: 500; font-size: 16px; color: #fff; background: var(--grad); border: 0; border-radius: 17px; padding: 16px; cursor: pointer; }
+.btn:disabled { opacity: .45; }
+.ghost { width: 100%; font: inherit; font-size: 14px; color: var(--muted); background: none; border: 0; padding: 10px; cursor: pointer; }
+.push { margin-top: auto; display: flex; flex-direction: column; gap: 8px; padding-top: 8px; }
+.sealed { border-radius: 20px; padding: 18px 16px; background: rgba(255,255,255,.06); border: 1px solid rgba(249,168,212,.45); box-shadow: 0 0 34px rgba(236,72,153,.22); }
+.sealed .blur { filter: blur(7px); font-weight: 300; font-size: 17px; line-height: 1.4; user-select: none; }
+.row2 { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.quote { border-radius: 20px; padding: 18px 16px; background: var(--field); border: 1px solid var(--line); font-weight: 300; font-size: 19px; line-height: 1.45; white-space: pre-wrap; }
+.box { border-radius: 16px; padding: 13px 15px; background: var(--field); border: 1px solid var(--line); font-size: 14px; line-height: 1.55; }
+.box b { font-weight: 600; color: var(--acc); }
+.tip { background: var(--tipbg); color: var(--tipink); border-radius: 15px; padding: 13px 15px; font-size: 14px; line-height: 1.45; }
+.score { font-size: 13px; font-weight: 500; color: var(--acc); }
+.sum { border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.45; background: var(--field); }
+.sum span { display: block; font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips button { font: inherit; font-size: 15px; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 9px 15px; cursor: pointer; }
+.chips button.sel { border-color: transparent; background: var(--grad); color: #fff; }
+.hearts { display: flex; gap: 12px; }
+.hearts button { font-size: 38px; line-height: 1; background: none; border: 0; padding: 0; cursor: pointer; color: var(--line); }
+.hearts button.on { color: #ec4899; text-shadow: 0 0 16px rgba(236,72,153,.45); }
+.steps { display: flex; flex-direction: column; gap: 10px; margin-top: 50px; }
+.steps span { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); border-radius: 15px; padding: 13px 15px; font-weight: 300; font-size: 19px; }
+.steps b { color: var(--pink); font-weight: 600; margin-inline-end: 8px; }
+.bars { display: flex; align-items: flex-end; gap: 10px; height: 150px; margin: 50px 10px 10px; }
+.bars i { flex: 1; border-radius: 8px 8px 3px 3px; background: linear-gradient(180deg, #f472b6, #8b5cf6); }
+.icon { font-size: 70px; text-align: center; margin-top: 80px; font-weight: 200; color: var(--acc); }
+.dots { display: flex; gap: 6px; }
+.dots i { width: 6px; height: 6px; border-radius: 6px; background: currentColor; opacity: .3; }
+.dots i.on { width: 18px; opacity: 1; }
+.mark { width: 58px; height: 58px; border-radius: 19px; background: var(--grad); display: grid; place-items: center; color: #fff; font-size: 28px; margin-top: 50px; box-shadow: 0 10px 30px rgba(236,72,153,.35); }
+.seg2 { display: flex; gap: 8px; }
+.seg2 button { flex: 1; font: inherit; font-size: 15px; color: var(--ink); background: var(--field); border: 1px solid var(--line); border-radius: 15px; padding: 13px; cursor: pointer; }
+.seg2 button.sel { border-color: var(--pink); background: rgba(236,72,153,.14); }
+.he { font-family: var(--heb); }
+.tabs { display: flex; gap: 6px; background: var(--field); border: 1px solid var(--line); border-radius: 16px; padding: 4px; }
+.tabs button { flex: 1; font: inherit; font-size: 13px; color: var(--muted); background: none; border: 0; border-radius: 12px; padding: 9px 6px; cursor: pointer; }
+.tabs button.on { background: var(--soft); color: var(--ink); }
+.iconbtn { font: inherit; font-size: 13px; color: var(--muted); background: none; border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; cursor: pointer; }
+.lock { opacity: .5; border-style: dashed; }
+.empty { border: 1px dashed var(--line); border-radius: 15px; padding: 16px; color: var(--muted); font-size: 14px; text-align: center; }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); border-radius: 999px; padding: 10px 18px; font-size: 14px; z-index: 9; }
+.copybox { font-size: 12px; word-break: break-all; color: var(--muted); background: var(--field); border: 1px solid var(--line); border-radius: 12px; padding: 10px; user-select: all; }
+button:focus-visible, textarea:focus-visible, input:focus-visible { outline: 2px solid #ec4899; outline-offset: 2px; }
+@media (prefers-reduced-motion: no-preference) { #app.anim { animation: in .3s ease; } @keyframes in { from { opacity: .3; transform: translateY(6px); } } }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ===================== Words (EN / HE) ===================== */
+var T = {
+  en: {
+    tag: "An app for two. He gets curious. She feels it.", sub: "Real moments. His own words. More passion.",
+    language: "Language", whoAreYou: "Who are you?", imHim: "I'm him", imHer: "I'm her", yourName: "Your name", partnerName: "Their name", hisName: "His name", herName: "Her name", start: "Start", privacy: "🔒 Everything stays on this phone",
+    // her start
+    hFirstL: "Your first moment", hFirstQ: "Was there a moment you fell for him again?", hFirstPh: "e.g. When he danced with my grandmother at my sister's wedding",
+    hInvL: "Invite him", hInvQ: "He'll get a sealed moment.", hInvTxt: "He sees that you picked a moment, not which one. He has to guess.", hInvPrev: "She picked a moment she couldn't keep her hands off you.", hInvBtn: "Send on WhatsApp",
+    // his invite
+    from: "An invite from {n}", fromNew: "A new moment from {n}", invBig: "She picked a moment she couldn't keep her hands off you.", herMoment: "Her moment", canGuess: "Can you guess which one?", guessBtn: "Take a guess",
+    guessL: "Your guess", guessQ: "When couldn't she keep her hands off you?", guessPh: "Your guess…", reveal: "Reveal her moment",
+    gotIt: "Got it ✦", notQuite: "Not quite", gotItSay: "✦ You know her.", notQuiteSay: "✦ Now you know something new.",
+    mission: "<b>Your mission:</b> find out what about this moment got her so into you, so you can bring it back.", go: "Let's go",
+    // his intro
+    skip: "Skip", i1: "Find out what really draws her to you.", i2: "Three steps. Real moments.", s1: "Pick a moment", s2: "Find out why", s3: "Tell her", i3: "The more you ask, the better you know her.", i3s: "Your “What draws her” list grows with every moment.", firstMoment: "Add your first moment", continueBtn: "Continue",
+    // his home
+    tMoments: "Moments", tDraws: "What draws her", tSettings: "Settings",
+    m1: "Was there a moment she couldn't keep her hands off you?", tryOne: "Try one of these", sugA: "Your first date", sugB: "A night she couldn't stop smiling", sugC: "When she looked at you across a room", ownPh: "Or your own moment", add: "Add",
+    fromHer: "From her", sealedPill: "Guess", waiting: "Waiting for her", answered: "She answered", saved: "Saved for later", done: "Told her", toldList: "Told her",
+    // steps
+    m2: "What happened just before?", whyPh: "Your guess (optional)", iKnow: "I know", iDont: "I don't know",
+    m3: "Ask her", askQ: "What did you feel when {m}?", askQ0: "What do you remember most about {m}?", askQher: "What do you remember most about that moment?", inPerson: "In person", best: "Best", sendHer: "Send to her",
+    recQ: "What did she say?", recPh: "Her words, as close as you remember", save: "Save",
+    sentQ: "Question sent", sentTxt: "Her answer will come back as a WhatsApp link. Tap it, and it opens here.", backHome: "Back to my moments",
+    m4: "What you learned", tMoment: "The moment", tGuess: "You guessed", tSaid: "She said", drawQ: "In a few words: what draws her?", drawPh: "e.g. kindness without being asked", next: "Next",
+    m5a: "How did it make you feel?", feelings: ["proud","moved","lucky","wanted","close","surprised","happy","tender"], pickUp: "Pick up to 3",
+    m5b: "Now in your words", seeQ: "What do you see in her now?", seePh: "Someone who…", knowQ: "What do you want her to know?", knowPh: "In your words",
+    m5c: "This is what you want to say", youFelt: "You felt", youSee: "You see her as", youWant: "You want her to know", tip: "Tip: start with the moment, then say what you felt.", tellLab: "How will you tell her?",
+    tell1: "Tell her in person", tell2: "Write her a note", tell2s: "She gets it on WhatsApp", tell3: "Keep it for a special moment", tell3s: "It waits on top of your list",
+    noteQ: "Your note", notePh: "Write it your way", sendNote: "Send on WhatsApp",
+    m6: "How did it land?", whatPh: "What happened? (optional)", letHer: "Let her know you listened ♥", finish: "Done",
+    drawsL: "What draws her", drawsEmpty: "Every moment you finish adds something here.", more: "More to discover as you ask",
+    // her side
+    hi1: "He's curious about you.", hi2: "Answer his questions. Share what moved you.", hi3: "Your private notes stay yours.", hi3s: "They never leave this phone.", seeQBtn: "See his question",
+    hHome: "From him", hNone: "Nothing new from him yet", hFrom: "A question from {n}", hAnsPh: "Your answer", send: "Send on WhatsApp",
+    hListened: "He listened ♥", noteFrom: "A note from {n}", react: "Tell him how it felt", reactPh: "How did it feel?", addMore: "Add another moment", addMoreS: "It starts his next round",
+    hAddL: "A moment that moved you", hAddPh: "A moment you fell for him again", hNotes: "Private notes", hNotesPh: "Just for you", saveNotes: "Save notes",
+    hMyMoments: "Moments you shared",
+    // settings
+    setL: "Settings", names: "Names", reset: "Start over", resetSure: "Erase everything on this phone?", yesErase: "Yes, erase", cancel: "Cancel", backup: "Copy a backup", restore: "Restore from backup", restorePh: "Paste a backup here", restoreBtn: "Restore",
+    // whatsapp texts
+    wInvite: "I picked a moment you'll want to guess… 🔒", wMoment: "Another moment for you to guess 🔒", wQuestion: "I have a question for you ♡", wAnswer: "Here's my answer ♡", wNote: "I wrote you something ♡", wListened: "I listened ♥", wReaction: "Here's how it felt ♡",
+    copied: "Link copied", sentNote: "Opening WhatsApp…", savedToast: "Saved", copyLink: "Or copy the link", got: "Got it",
+    oldLink: "This link was already opened.", otherCouple: "This link belongs to someone else's app."
+  },
+  he: {
+    tag: "אפליקציה לשניים. הוא נהיה סקרן. היא מרגישה את זה.", sub: "רגעים אמיתיים. מילים שלו. יותר תשוקה.",
+    language: "שפה", whoAreYou: "מי את/ה?", imHim: "אני הוא", imHer: "אני היא", yourName: "השם שלך", partnerName: "השם של בן/בת הזוג", hisName: "השם שלו", herName: "השם שלה", start: "מתחילים", privacy: "🔒 הכל נשאר בטלפון הזה",
+    hFirstL: "הרגע הראשון שלך", hFirstQ: "היה רגע שהתאהבת בו מחדש?", hFirstPh: "למשל: כשהוא רקד עם סבתא שלי בחתונה של אחותי",
+    hInvL: "הזמיני אותו", hInvQ: "הוא יקבל רגע נעול.", hInvTxt: "הוא רואה שבחרת רגע, אבל לא איזה. הוא צריך לנחש.", hInvPrev: "היא בחרה רגע שבו לא הצליחה להוריד ממך את הידיים.", hInvBtn: "שליחה בוואטסאפ",
+    from: "הזמנה מ{n}", fromNew: "רגע חדש מ{n}", invBig: "היא בחרה רגע שבו לא הצליחה להוריד ממך את הידיים.", herMoment: "הרגע שלה", canGuess: "תצליח לנחש איזה?", guessBtn: "לנחש",
+    guessL: "הניחוש שלך", guessQ: "מתי היא לא הצליחה להוריד ממך את הידיים?", guessPh: "הניחוש שלך…", reveal: "לגלות את הרגע שלה",
+    gotIt: "קלעתי ✦", notQuite: "לא בדיוק", gotItSay: "✦ אתה מכיר אותה.", notQuiteSay: "✦ עכשיו אתה יודע משהו חדש.",
+    mission: "<b>המשימה שלך:</b> לגלות מה ברגע הזה הדליק אותה כל כך, כדי שתוכל להחזיר את זה.", go: "יאללה, מתחילים",
+    skip: "דלג", i1: "גלה מה באמת מושך אותה אליך.", i2: "שלושה צעדים. רגעים אמיתיים.", s1: "בחר רגע", s2: "גלה למה", s3: "תגיד לה", i3: "ככל שתשאל יותר, תכיר אותה יותר.", i3s: "הרשימה ״מה מושך אותה״ שלך גדלה עם כל רגע.", firstMoment: "הוסף את הרגע הראשון", continueBtn: "המשך",
+    tMoments: "רגעים", tDraws: "מה מושך אותה", tSettings: "הגדרות",
+    m1: "היה רגע שהיא לא הצליחה להוריד ממך את הידיים?", tryOne: "נסה אחד מאלה", sugA: "הדייט הראשון", sugB: "ערב שהיא לא הפסיקה לחייך", sugC: "כשהיא הסתכלה עליך מהצד השני של החדר", ownPh: "או רגע משלך", add: "הוסף",
+    fromHer: "ממנה", sealedPill: "לנחש", waiting: "מחכה לה", answered: "היא ענתה", saved: "שמור לאחר כך", done: "סיפרת לה", toldList: "סיפרת לה",
+    m2: "מה קרה רגע לפני?", whyPh: "הניחוש שלך (לא חובה)", iKnow: "אני יודע", iDont: "אני לא יודע",
+    m3: "תשאל אותה", askQ: "מה הרגשת כש{m}?", askQ0: "מה את הכי זוכרת מ{m}?", askQher: "מה את הכי זוכרת מהרגע הזה?", inPerson: "פנים אל פנים", best: "הכי טוב", sendHer: "לשלוח לה",
+    recQ: "מה היא אמרה?", recPh: "המילים שלה, הכי קרוב שאתה זוכר", save: "שמור",
+    sentQ: "השאלה נשלחה", sentTxt: "התשובה שלה תגיע כקישור בוואטסאפ. לחיצה עליו תפתח אותה כאן.", backHome: "חזרה לרגעים שלי",
+    m4: "מה גילית", tMoment: "הרגע", tGuess: "ניחשת", tSaid: "היא אמרה", drawQ: "בכמה מילים: מה מושך אותה?", drawPh: "למשל: נדיבות בלי שמבקשים", next: "הבא",
+    m5a: "איך זה גרם לך להרגיש?", feelings: ["גאה","נרגש","בר מזל","נחשק","קרוב","מופתע","שמח","רך"], pickUp: "בחר עד 3",
+    m5b: "עכשיו במילים שלך", seeQ: "מה אתה רואה בה עכשיו?", seePh: "מישהי ש…", knowQ: "מה אתה רוצה שהיא תדע?", knowPh: "במילים שלך",
+    m5c: "זה מה שאתה רוצה להגיד", youFelt: "הרגשת", youSee: "אתה רואה בה", youWant: "אתה רוצה שהיא תדע", tip: "טיפ: תתחיל מהרגע, ואז תגיד מה הרגשת.", tellLab: "איך תגיד לה?",
+    tell1: "תגיד לה פנים אל פנים", tell2: "תכתוב לה פתק", tell2s: "היא תקבל בוואטסאפ", tell3: "תשמור לרגע מיוחד", tell3s: "זה יחכה בראש הרשימה",
+    noteQ: "הפתק שלך", notePh: "תכתוב בדרך שלך", sendNote: "שליחה בוואטסאפ",
+    m6: "איך זה התקבל?", whatPh: "מה קרה? (לא חובה)", letHer: "תן לה לדעת שהקשבת ♥", finish: "סיום",
+    drawsL: "מה מושך אותה", drawsEmpty: "כל רגע שתסיים יוסיף משהו כאן.", more: "עוד יתגלו ככל שתשאל",
+    hi1: "הוא סקרן לגבייך.", hi2: "עני על השאלות שלו. שתפי מה ריגש אותך.", hi3: "ההערות הפרטיות שלך נשארות שלך.", hi3s: "הן לא יוצאות מהטלפון הזה.", seeQBtn: "לשאלה שלו",
+    hHome: "ממנו", hNone: "עדיין אין משהו חדש ממנו", hFrom: "שאלה מ{n}", hAnsPh: "התשובה שלך", send: "שליחה בוואטסאפ",
+    hListened: "הוא הקשיב ♥", noteFrom: "פתק מ{n}", react: "ספרי לו איך הרגשת", reactPh: "איך זה הרגיש?", addMore: "הוסיפי עוד רגע", addMoreS: "זה מתחיל לו סיבוב חדש",
+    hAddL: "רגע שריגש אותך", hAddPh: "רגע שהתאהבת בו מחדש", hNotes: "הערות פרטיות", hNotesPh: "רק בשבילך", saveNotes: "שמירה",
+    hMyMoments: "רגעים ששיתפת",
+    setL: "הגדרות", names: "שמות", reset: "להתחיל מחדש", resetSure: "למחוק הכל מהטלפון הזה?", yesErase: "כן, למחוק", cancel: "ביטול", backup: "העתקת גיבוי", restore: "שחזור מגיבוי", restorePh: "הדביקו כאן גיבוי", restoreBtn: "שחזור",
+    wInvite: "בחרתי רגע שתרצה לנחש… 🔒", wMoment: "עוד רגע בשבילך לנחש 🔒", wQuestion: "יש לי שאלה בשבילך ♡", wAnswer: "הנה התשובה שלי ♡", wNote: "כתבתי לך משהו ♡", wListened: "הקשבתי ♥", wReaction: "ככה זה הרגיש ♡",
+    copied: "הקישור הועתק", sentNote: "פותח את וואטסאפ…", savedToast: "נשמר", copyLink: "או העתקת הקישור", got: "הבנתי",
+    oldLink: "הקישור הזה כבר נפתח.", otherCouple: "הקישור הזה שייך לאפליקציה של מישהו אחר."
+  }
+};
+
+/* ===================== State ===================== */
+var KEY = "cah1";
+var S = load();
+function blank() { return { lang: (navigator.language || "").indexOf("he") === 0 ? "he" : "en", role: null, me: "", partner: "", couple: "", moments: [], draws: [], notes: "", seen: [], introHim: false, introHer: false }; }
+function load() { try { var d = JSON.parse(localStorage.getItem(KEY)); if (d && d.moments) return Object.assign(blank(), d); } catch (e) {} return blank(); }
+function persist() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+var V = { screen: "welcome", mid: null, tab: "moments", tmp: {} };
+function t(k, n) { var s = T[S.lang][k]; if (s == null) s = T.en[k]; return typeof s === "string" ? s.replace("{n}", n == null ? (S.partner || "") : n) : s; }
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+function uid() { return Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4); }
+function byId(id) { for (var i = 0; i < S.moments.length; i++) if (S.moments[i].id === id) return S.moments[i]; return null; }
+function M() { return byId(V.mid); }
+
+/* ===================== Links (messages travel after the #) ===================== */
+function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+function dec(s) { s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; return JSON.parse(decodeURIComponent(escape(atob(s)))); }
+function baseUrl() { return location.origin + location.pathname; }
+function send(type, data, waKey) {
+  if (!S.couple) S.couple = uid();
+  var msg = { v: 1, c: S.couple, id: uid(), t: type, f: S.role, n: S.me, l: S.lang, p: S.partner, d: data };
+  var link = baseUrl() + "#m=" + enc(msg);
+  persist();
+  V.lastLink = link;
+  var text = t(waKey) + "\n" + link;
+  var wa = "https://wa.me/?text=" + encodeURIComponent(text);
+  toast(t("sentNote"));
+  var w = null; try { w = window.open(wa, "_blank"); } catch (e) {}
+  if (!w) window.location.href = wa;
+  return link;
+}
+function receive() {
+  var h = location.hash || "";
+  var i = h.indexOf("m=");
+  if (i < 0) return false;
+  var msg; try { msg = dec(h.slice(i + 2)); } catch (e) { return false; }
+  history.replaceState(null, "", baseUrl());
+  if (!msg || !msg.t) return false;
+  if (S.couple && msg.c !== S.couple) { V.screen = "notice"; V.tmp.notice = t("otherCouple"); return true; }
+  var already = S.seen.indexOf(msg.id) > -1;
+  if (!S.couple) S.couple = msg.c;
+  if (!S.role) { S.role = msg.f === "her" ? "him" : "her"; if (S.lang !== "he" && msg.l) S.lang = msg.l; }
+  if (!S.partner && msg.n) S.partner = msg.n;
+  if (!S.me && msg.p) S.me = msg.p;
+  if (!already) { S.seen.push(msg.id); if (S.seen.length > 300) S.seen = S.seen.slice(-300); apply(msg); }
+  else route(msg);
+  persist();
+  return true;
+}
+function apply(msg) {
+  var d = msg.d || {}, m;
+  if (msg.t === "invite" || msg.t === "moment") {
+    m = byId(d.mid);
+    if (!m) { m = { id: d.mid, title: d.title, from: "her", status: "sealed", createdAt: Date.now() }; S.moments.unshift(m); }
+  } else if (msg.t === "question") {
+    m = byId(d.mid);
+    if (!m) { m = { id: d.mid, title: d.title, from: d.from || "him", createdAt: Date.now() }; S.moments.unshift(m); }
+    m.question = d.q; m.status = "asked"; m.title = m.title || d.title;
+  } else if (msg.t === "answer") {
+    m = byId(d.mid); if (m) { m.answer = d.a; m.status = "answered"; }
+  } else if (msg.t === "note" || msg.t === "listened") {
+    m = byId(d.mid);
+    if (!m) { m = { id: d.mid, title: d.title, from: "him", createdAt: Date.now() }; S.moments.unshift(m); }
+    m.status = "listened"; if (d.note) m.note = d.note; m.listenedAt = Date.now();
+  } else if (msg.t === "reaction") {
+    m = byId(d.mid); if (m) m.reaction = d.text;
+  }
+  route(msg);
+}
+function route(msg) {
+  var d = msg.d || {};
+  V.mid = d.mid;
+  if (S.role === "him") {
+    if (msg.t === "invite" || msg.t === "moment") V.screen = "sealed";
+    else if (msg.t === "answer") V.screen = "learned";
+    else V.screen = "home";
+  } else {
+    if (msg.t === "question") V.screen = S.introHer ? "answer" : "herIntro1";
+    else if (msg.t === "note" || msg.t === "listened") V.screen = "listened";
+    else V.screen = "home";
+  }
+}
+
+/* ===================== Voice (speech to text, where the phone supports it) ===================== */
+var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+var rec = null;
+var MIC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>';
+function field(id, ph, val, tall) {
+  var input = tall ? '<textarea id="' + id + '" placeholder="' + esc(ph) + '">' + esc(val || "") + '</textarea>' : '<input type="text" id="' + id + '" placeholder="' + esc(ph) + '" value="' + esc(val || "") + '">';
+  return '<div class="fieldwrap">' + input + (SR ? '<button class="mic" type="button" data-mic="' + id + '" aria-label="Speak">' + MIC + '</button>' : "") + '</div>';
+}
+function startMic(btn, id) {
+  if (rec) { try { rec.stop(); } catch (e) {} rec = null; document.querySelectorAll(".mic.on").forEach(function (b) { b.classList.remove("on"); }); return; }
+  var box = document.getElementById(id); if (!box) return;
+  rec = new SR(); rec.lang = S.lang === "he" ? "he-IL" : "en-US"; rec.interimResults = true; rec.continuous = false;
+  var before = box.value ? box.value.replace(/\s+$/, "") + " " : "";
+  rec.onresult = function (e) { var s = ""; for (var i = 0; i < e.results.length; i++) s += e.results[i][0].transcript; box.value = before + s; };
+  rec.onend = function () { btn.classList.remove("on"); rec = null; };
+  rec.onerror = function () { btn.classList.remove("on"); rec = null; };
+  btn.classList.add("on");
+  try { rec.start(); } catch (e) { btn.classList.remove("on"); rec = null; }
+}
+function val(id) { var e = document.getElementById(id); return e ? e.value.trim() : ""; }
+
+/* ===================== Pieces ===================== */
+function orbs() { return '<i class="orb o1"></i><i class="orb o2"></i>'; }
+function dots(n) { var s = ""; for (var i = 0; i < 3; i++) s += '<i class="' + (i === n ? "on" : "") + '"></i>'; return '<div class="dots">' + s + '</div>'; }
+function chip(label, act, cls, extra) { return '<button class="chip ' + (cls || "") + '" data-act="' + act + '"><span>' + label + '</span>' + (extra || "") + '</button>'; }
+function btn(label, act, dis) { return '<button class="btn" data-act="' + act + '"' + (dis ? " disabled" : "") + '>' + label + '</button>'; }
+function ghost(label, act) { return '<button class="ghost" data-act="' + act + '">' + label + '</button>'; }
+function lc(s) { return s ? s.charAt(0).toLowerCase() + s.slice(1) : ""; }
+function pillFor(m) {
+  var k = { sealed: "sealedPill", asked: "waiting", answered: "answered", saved: "saved", done: "done" }[m.status];
+  if (k) return '<span class="pill">' + t(k) + (m.status === "done" && m.rating ? " · " + m.rating + "♥" : "") + '</span>';
+  if (m.from === "her") return '<span class="pill">' + t("fromHer") + '</span>';
+  return "";
+}
+function tabs() {
+  var a = [["moments", "tMoments"], ["draws", "tDraws"], ["settings", "tSettings"]];
+  if (S.role === "her") a = [["moments", "hHome"], ["settings", "tSettings"]];
+  return '<div class="tabs">' + a.map(function (x) { return '<button class="' + (V.tab === x[0] ? "on" : "") + '" data-tab="' + x[0] + '">' + t(x[1]) + '</button>'; }).join("") + '</div>';
+}
+
+/* ===================== Screens ===================== */
+var SC = {};
+SC.welcome = function () {
+  return { cls: "", html: orbs() + '<div class="mark">✦</div><p class="brand">Curious<br>About Her</p><p class="mid" style="font-size:22px">' + t("tag") + '</p><p class="txt">' + t("sub") + '</p>' +
+    '<div class="push"><p class="lab">' + t("language") + '</p><div class="seg2"><button data-lang="en" class="' + (S.lang === "en" ? "sel" : "") + '">English</button><button data-lang="he" class="he ' + (S.lang === "he" ? "sel" : "") + '">עברית</button></div>' +
+    '<p class="lab" style="margin-top:8px">' + t("whoAreYou") + '</p><div class="seg2"><button data-role="him" class="' + (V.tmp.role === "him" ? "sel" : "") + '">' + t("imHim") + '</button><button data-role="her" class="' + (V.tmp.role === "her" ? "sel" : "") + '">' + t("imHer") + '</button></div>' +
+    '<input type="text" id="me" placeholder="' + esc(t("yourName")) + '" value="' + esc(S.me) + '">' +
+    '<input type="text" id="partner" placeholder="' + esc(V.tmp.role === "her" ? t("hisName") : V.tmp.role === "him" ? t("herName") : t("partnerName")) + '" value="' + esc(S.partner) + '">' +
+    btn(t("start"), "startApp", !V.tmp.role) + '<p class="txt center" style="font-size:12px">' + t("privacy") + '</p></div>' };
+};
+SC.notice = function () { return { cls: "calm", html: orbs() + '<p class="mid" style="margin-top:60px">' + esc(V.tmp.notice) + '</p><div class="push">' + btn(t("got"), "home") + '</div>' }; };
+
+/* --- her start --- */
+SC.herFirst = function () { return { cls: "calm", html: orbs() + '<p class="lab">' + t("hFirstL") + '</p><p class="mid">' + t("hFirstQ") + '</p>' + field("first", t("hFirstPh"), V.tmp.first, true) + '<div class="push">' + btn(t("next"), "herFirstNext") + '</div>' }; };
+SC.herInvite = function () {
+  return { cls: "", html: orbs() + '<p class="lab">' + t("hInvL") + '</p><p class="mid">' + t("hInvQ") + '</p><p class="txt">' + t("hInvTxt") + '</p>' +
+    '<div class="sealed" style="background:#0d0d12;color:#f4f2fb;border-color:rgba(249,168,212,.5)"><div class="row2 lab" style="margin-bottom:8px;color:#f9a8d4"><span>' + esc(t("from", S.me)) + '</span><span>🔒</span></div><div style="font-weight:200;font-size:20px;line-height:1.25">' + t("hInvPrev") + '</div></div>' +
+    '<div class="push">' + btn(t("hInvBtn"), "sendInvite") + ghost(t("skip"), "home") + '</div>' };
+};
+/* --- his invite --- */
+SC.sealed = function () {
+  var m = M(); if (!m) return SC.home();
+  var first = S.moments.filter(function (x) { return x.from === "her"; }).length <= 1 && !S.introHim;
+  return { cls: "", html: orbs() + '<p class="lab">' + esc(first ? t("from") : t("fromNew")) + '</p><p class="big">' + t("invBig") + '</p>' +
+    '<div class="sealed"><div class="row2 lab" style="margin-bottom:8px"><span>' + t("herMoment") + '</span><span>🔒</span></div><div class="blur">' + esc(m.title) + '</div></div><p class="txt">' + t("canGuess") + '</p>' +
+    '<div class="push">' + btn(t("guessBtn"), "toGuess") + '</div>' };
+};
+SC.guess = function () { return { cls: "calm", html: orbs() + '<p class="lab">' + t("guessL") + '</p><p class="mid">' + t("guessQ") + '</p>' + field("guess", t("guessPh"), "", true) + '<div class="push">' + btn(t("reveal"), "doReveal") + '</div>' }; };
+SC.reveal = function () {
+  var m = M(); var sc = V.tmp.score;
+  return { cls: "", html: orbs() + '<p class="lab">' + t("herMoment") + '</p><div class="quote">' + esc(m.title) + '</div>' +
+    (m.guess ? '<div class="box"><span class="txt">' + t("guessL") + ':</span> ' + esc(m.guess) + '</div>' : "") +
+    (sc ? '<p class="score">' + t(sc === "yes" ? "gotItSay" : "notQuiteSay") + '</p>' : '<div class="seg2"><button data-act="scoreYes">' + t("gotIt") + '</button><button data-act="scoreNo">' + t("notQuite") + '</button></div>') +
+    '<div class="box">' + t("mission") + '</div><div class="push">' + btn(t("go"), "afterReveal") + '</div>' };
+};
+/* --- his intro --- */
+SC.intro1 = function () { return { cls: "", html: orbs() + '<div class="top"><span></span>' + '<button class="iconbtn" data-act="introDone">' + t("skip") + '</button></div><p class="icon">✦</p><div class="push"><p class="big">' + t("i1") + '</p>' + dots(0) + btn(t("continueBtn"), "intro2") + '</div>' }; };
+SC.intro2 = function () { return { cls: "", html: orbs() + '<div class="top"><span></span><button class="iconbtn" data-act="introDone">' + t("skip") + '</button></div><div class="steps"><span><b>1</b>' + t("s1") + '</span><span><b>2</b>' + t("s2") + '</span><span><b>3</b>' + t("s3") + '</span></div><div class="push"><p class="big">' + t("i2") + '</p>' + dots(1) + btn(t("continueBtn"), "intro3") + '</div>' }; };
+SC.intro3 = function () { return { cls: "", html: orbs() + '<div class="bars"><i style="height:25%"></i><i style="height:45%"></i><i style="height:65%"></i><i style="height:100%"></i></div><div class="push"><p class="big">' + t("i3") + '</p><p class="txt">' + t("i3s") + '</p>' + dots(2) + btn(V.mid ? t("go") : t("firstMoment"), "introDone") + '</div>' }; };
+
+/* --- home --- */
+SC.home = function () {
+  if (S.role === "her") return SC.herHome();
+  if (V.tab === "draws") return SC.draws();
+  if (V.tab === "settings") return SC.settings();
+  var open = S.moments.filter(function (m) { return m.status !== "done"; });
+  open.sort(function (a, b) { return (b.status === "saved") - (a.status === "saved"); });
+  var done = S.moments.filter(function (m) { return m.status === "done"; });
+  var row = function (m) { return chip(esc(m.title), "open:" + m.id, m.status === "sealed" || m.status === "answered" || m.status === "saved" ? "rec" : "", pillFor(m)); };
+  var html = orbs() + tabs() + '<p class="mid">' + t("m1") + '</p>' +
+    (open.length ? '<div class="list">' + open.map(row).join("") + '</div>' : "") +
+    (S.moments.length < 3 ? '<p class="lab mutedlab">' + t("tryOne") + '</p><div class="list">' + ["sugA", "sugB", "sugC"].map(function (k) { return chip(t(k), "addSug:" + k, "", "<span>+</span>"); }).join("") + '</div>' : "") +
+    field("own", t("ownPh"), "", false) + btn(t("add"), "addOwn") +
+    (done.length ? '<p class="lab mutedlab" style="margin-top:8px">' + t("toldList") + '</p><div class="list">' + done.map(row).join("") + '</div>' : "");
+  return { cls: "calm", html: html };
+};
+SC.draws = function () {
+  var items = S.draws.map(function (d) { return '<div class="chip" style="cursor:default"><span>' + esc(d) + '</span><span class="pill">✦</span></div>'; }).join("");
+  return { cls: "", html: orbs() + tabs() + '<p class="big">' + t("drawsL") + '</p>' + (items ? '<div class="list">' + items + '<div class="chip lock" style="cursor:default"><span>' + t("more") + '</span></div></div>' : '<div class="empty">' + t("drawsEmpty") + '</div>') };
+};
+SC.settings = function () {
+  var h = orbs() + tabs() + '<p class="mid">' + t("setL") + '</p><p class="lab">' + t("language") + '</p><div class="seg2"><button data-lang="en" class="' + (S.lang === "en" ? "sel" : "") + '">English</button><button data-lang="he" class="he ' + (S.lang === "he" ? "sel" : "") + '">עברית</button></div>' +
+    '<p class="lab">' + t("names") + '</p><input type="text" id="me" placeholder="' + esc(t("yourName")) + '" value="' + esc(S.me) + '"><input type="text" id="partner" placeholder="' + esc(S.role === "her" ? t("hisName") : t("herName")) + '" value="' + esc(S.partner) + '">' + btn(t("save"), "saveNames") +
+    '<p class="lab" style="margin-top:8px">' + t("backup") + '</p>' + ghost(t("backup"), "backup") +
+    (V.tmp.restoring ? '<textarea id="restore" placeholder="' + esc(t("restorePh")) + '"></textarea>' + btn(t("restoreBtn"), "doRestore") : ghost(t("restore"), "restoreOpen")) +
+    (V.tmp.sure ? '<div class="box">' + t("resetSure") + '</div><div class="seg2"><button data-act="doReset">' + t("yesErase") + '</button><button data-act="cancelReset">' + t("cancel") + '</button></div>' : ghost(t("reset"), "askReset"));
+  return { cls: "calm", html: h };
+};
+/* --- his steps --- */
+SC.why = function () { var m = M(); return { cls: "calm", html: orbs() + '<p class="lab">2 / 6</p><p class="txt">' + esc(m.title) + '</p><p class="mid">' + t("m2") + '</p>' + field("why", t("whyPh"), m.why, true) + '<div class="push"><div class="seg2"><button data-act="iKnow">' + t("iKnow") + '</button><button class="sel" data-act="iDont">' + t("iDont") + '</button></div>' + ghost("‹ " + t("backHome"), "home") + '</div>' }; };
+SC.ask = function () {
+  var m = M(); var q = m.question || (m.from === "her" ? t("askQher") : t("askQ0").replace("{m}", S.lang === "he" ? m.title : lc(m.title)));
+  return { cls: "calm", html: orbs() + '<p class="lab">3 / 6</p><p class="txt">' + esc(m.title) + '</p><p class="mid">' + t("m3") + '</p>' + field("q", "", q, true) + '<div class="push">' + chip(t("inPerson"), "askInPerson", "rec", '<span class="pill">' + t("best") + '</span>') + chip(t("sendHer"), "askSend") + ghost("‹ " + t("backHome"), "home") + '</div>' };
+};
+SC.record = function () { var m = M(); return { cls: "calm", html: orbs() + '<p class="lab">3 / 6</p><p class="mid">' + t("recQ") + '</p><p class="txt">' + esc(m.question) + '</p>' + field("ans", t("recPh"), m.answer, true) + '<div class="push">' + btn(t("save"), "saveRecord") + '</div>' }; };
+SC.sent = function () { return { cls: "", html: orbs() + '<p class="lab">3 / 6</p><p class="big">' + t("sentQ") + '</p><div class="quote">' + esc(M().question) + '</div><p class="txt">' + t("sentTxt") + '</p>' + copyLinkBlock() + '<div class="push">' + btn(t("backHome"), "home") + '</div>' }; };
+SC.learned = function () {
+  var m = M();
+  return { cls: "calm", html: orbs() + '<p class="lab">4 / 6</p><p class="mid">' + t("m4") + '</p><div class="sum"><div><span>' + t("tMoment") + '</span>' + esc(m.title) + '</div>' + (m.guess || m.why ? '<div><span>' + t("tGuess") + '</span>' + esc(m.why || m.guess) + '</div>' : "") + (m.answer ? '<div><span>' + t("tSaid") + '</span>' + esc(m.answer) + '</div>' : "") + '</div>' +
+    '<p class="lab">' + t("drawQ") + '</p>' + field("draw", t("drawPh"), m.draw, false) + '<div class="push">' + btn(t("next"), "saveLearned") + '</div>' };
+};
+SC.feel = function () {
+  var m = M(); var sel = m.feelings || [];
+  var c = t("feelings").map(function (w, i) { return '<button data-feel="' + i + '" class="' + (sel.indexOf(i) > -1 ? "sel" : "") + '">' + w + '</button>'; }).join("");
+  return { cls: "calm", html: orbs() + '<p class="lab">5 / 6</p><p class="mid">' + t("m5a") + '</p><p class="txt">' + t("pickUp") + '</p><div class="chips">' + c + '</div><div class="push">' + btn(t("next"), "toWords", !sel.length) + '</div>' };
+};
+SC.words = function () { var m = M(); return { cls: "calm", html: orbs() + '<p class="lab">5 / 6</p><p class="mid">' + t("m5b") + '</p><p class="txt">' + t("seeQ") + '</p>' + field("see", t("seePh"), m.see, true) + '<p class="txt">' + t("knowQ") + '</p>' + field("know", t("knowPh"), m.know, true) + '<div class="push">' + btn(t("next"), "saveWords") + '</div>' }; };
+SC.say = function () {
+  var m = M(); var f = (m.feelings || []).map(function (i) { return "<b>" + t("feelings")[i] + "</b>"; }).join(S.lang === "he" ? " ו" : " and ");
+  var r = (f ? t("youFelt") + " " + f + ". " : "") + (m.see ? t("youSee") + ": " + esc(m.see) + ". " : "") + (m.know ? t("youWant") + ": " + esc(m.know) + "." : "");
+  return { cls: "calm", html: orbs() + '<p class="lab">5 / 6</p><p class="mid">' + t("m5c") + '</p>' + (r ? '<div class="box">' + r + '</div>' : "") + '<div class="tip">' + t("tip") + '</div><p class="lab mutedlab">' + t("tellLab") + '</p>' +
+    chip(t("tell1"), "tellPerson", "rec", '<span class="pill">' + t("best") + '</span>') + chip(t("tell2"), "tellNote", "", "<small>" + t("tell2s") + "</small>") + chip(t("tell3"), "tellLater", "", "<small>" + t("tell3s") + "</small>") };
+};
+SC.note = function () { var m = M(); return { cls: "calm", html: orbs() + '<p class="lab">5 / 6</p><p class="mid">' + t("noteQ") + '</p>' + field("noteTxt", t("notePh"), m.noteDraft, true) + '<div class="push">' + btn(t("sendNote"), "sendNote") + '</div>' }; };
+SC.rate = function () {
+  var m = M(), r = m.rating || 0, hs = "";
+  for (var i = 1; i <= 5; i++) hs += '<button data-heart="' + i + '" class="' + (i <= r ? "on" : "") + '" aria-label="' + i + '">♥</button>';
+  return { cls: "calm", html: orbs() + '<p class="lab">6 / 6</p><p class="mid">' + t("m6") + '</p><div class="hearts">' + hs + '</div>' + field("react", t("whatPh"), m.howItWent, true) + '<div class="push">' + (m.toldHow === "person" ? chip(t("letHer"), "sendListened") : "") + btn(t("finish"), "finishRate", !r) + '</div>' };
+};
+/* --- her side --- */
+SC.herIntro1 = function () { return { cls: "", html: orbs() + '<div class="top"><span></span><button class="iconbtn" data-act="herIntroDone">' + t("skip") + '</button></div><p class="icon">♡</p><div class="push"><p class="big">' + t("hi1") + '</p>' + dots(0) + btn(t("continueBtn"), "herIntro2") + '</div>' }; };
+SC.herIntro2 = function () { return { cls: "", html: orbs() + '<div class="top"><span></span><button class="iconbtn" data-act="herIntroDone">' + t("skip") + '</button></div><p class="icon">💬</p><div class="push"><p class="big">' + t("hi2") + '</p>' + dots(1) + btn(t("continueBtn"), "herIntro3") + '</div>' }; };
+SC.herIntro3 = function () { return { cls: "", html: orbs() + '<p class="icon">🔒</p><div class="push"><p class="big">' + t("hi3") + '</p><p class="txt">' + t("hi3s") + '</p>' + dots(2) + btn(t("seeQBtn"), "herIntroDone") + '</div>' }; };
+SC.herHome = function () {
+  if (V.tab === "settings") return SC.settings();
+  var asked = S.moments.filter(function (m) { return m.status === "asked"; });
+  var listened = S.moments.filter(function (m) { return m.status === "listened"; });
+  var mine = S.moments.filter(function (m) { return m.from === "her" && m.status !== "asked" && m.status !== "listened"; });
+  var h = orbs() + tabs() + '<p class="mid">' + t("hHome") + '</p>' +
+    (asked.length || listened.length ? '<div class="list">' + asked.map(function (m) { return chip(esc(m.question), "answer:" + m.id, "rec", '<span class="pill">♡</span>'); }).join("") + listened.map(function (m) { return chip(t("hListened") + (m.note ? " · ✉" : ""), "listened:" + m.id, "", ""); }).join("") + '</div>' : '<div class="empty">' + t("hNone") + '</div>') +
+    '<p class="lab" style="margin-top:6px">' + t("hAddL") + '</p>' + field("herMoment", t("hAddPh"), "", false) + btn(t("send"), "herAddMoment") +
+    (mine.length ? '<p class="lab mutedlab">' + t("hMyMoments") + '</p><div class="list">' + mine.map(function (m) { return '<div class="chip" style="cursor:default"><span>' + esc(m.title) + '</span><span class="pill">🔒</span></div>'; }).join("") + '</div>' : "") +
+    '<p class="lab" style="margin-top:6px">🔒 ' + t("hNotes") + '</p><textarea id="notes" placeholder="' + esc(t("hNotesPh")) + '">' + esc(S.notes) + '</textarea>' + ghost(t("saveNotes"), "saveNotes");
+  return { cls: "calm", html: h };
+};
+SC.answer = function () { var m = M(); if (!m) return SC.home(); return { cls: "calm", html: orbs() + '<p class="lab">' + esc(t("hFrom")) + '</p><p class="mid">' + esc(m.question) + '</p>' + field("herAns", t("hAnsPh"), m.answer, true) + '<div class="push">' + btn(t("send"), "sendAnswer") + ghost("‹ " + t("backHome"), "home") + '</div>' }; };
+SC.listened = function () {
+  var m = M(); if (!m) return SC.home();
+  return { cls: "", html: orbs() + '<p class="big">' + t("hListened") + '</p>' + (m.title ? '<p class="txt">' + esc(m.title) + '</p>' : "") + (m.note ? '<p class="lab mutedlab">' + esc(t("noteFrom")) + '</p><div class="quote">' + esc(m.note) + '</div>' : "") +
+    '<p class="lab mutedlab">' + t("react") + '</p>' + field("reactTxt", t("reactPh"), m.reaction, true) + ghost(t("react") + " ›", "sendReaction") +
+    '<div class="push">' + btn(t("addMore"), "home") + '<p class="txt center" style="font-size:12px">' + t("addMoreS") + '</p></div>' };
+};
+function copyLinkBlock() { return V.lastLink ? '<p class="lab mutedlab">' + t("copyLink") + '</p><div class="copybox" data-act="copyLink">' + esc(V.lastLink) + '</div>' : ""; }
+
+/* ===================== Actions ===================== */
+var A = {
+  startApp: function () {
+    S.role = V.tmp.role; S.me = val("me"); S.partner = val("partner"); if (!S.couple) S.couple = uid(); persist();
+    if (S.role === "her") go("herFirst"); else go(S.introHim ? "home" : "intro1");
+  },
+  home: function () { V.mid = null; go("home"); },
+  herFirstNext: function () { var v = val("first"); if (!v) return; var m = { id: uid(), title: v, from: "her", status: "sent", createdAt: Date.now() }; S.moments.unshift(m); V.mid = m.id; persist(); go("herInvite"); },
+  sendInvite: function () { var m = M(); S.invited = true; send("invite", { mid: m.id, title: m.title }, "wInvite"); setTimeout(function () { go("home"); }, 400); },
+  toGuess: function () { go("guess"); },
+  doReveal: function () { var m = M(); m.guess = val("guess"); m.status = "new"; V.tmp.score = null; persist(); go("reveal"); },
+  scoreYes: function () { V.tmp.score = "yes"; M().guessed = true; persist(); go("reveal"); },
+  scoreNo: function () { V.tmp.score = "no"; persist(); go("reveal"); },
+  afterReveal: function () { if (!S.introHim) go("intro1"); else go("ask"); },
+  intro2: function () { go("intro2"); }, intro3: function () { go("intro3"); },
+  introDone: function () { S.introHim = true; persist(); if (V.mid && byId(V.mid) && byId(V.mid).from === "her") go("ask"); else { V.mid = null; go("home"); } },
+  addOwn: function () { var v = val("own"); if (!v) return; addMoment(v); },
+  iKnow: function () { var m = M(); m.why = val("why"); persist(); go("learned"); },
+  iDont: function () { var m = M(); var w = val("why"); if (w) m.why = w; persist(); go("ask"); },
+  askInPerson: function () { var m = M(); m.question = val("q"); m.askedHow = "person"; persist(); go("record"); },
+  askSend: function () { var m = M(); m.question = val("q"); m.askedHow = "link"; m.status = "asked"; persist(); send("question", { mid: m.id, title: m.title, q: m.question, from: m.from }, "wQuestion"); setTimeout(function () { go("sent"); }, 300); },
+  saveRecord: function () { var m = M(); var a = val("ans"); if (!a) return; m.answer = a; m.status = "answered"; persist(); go("learned"); },
+  saveLearned: function () { var m = M(); var d = val("draw"); if (d) { if (m.draw) S.draws = S.draws.filter(function (x) { return x !== m.draw; }); m.draw = d; S.draws.unshift(d); } persist(); go("feel"); },
+  toWords: function () { go("words"); },
+  saveWords: function () { var m = M(); m.see = val("see"); m.know = val("know"); persist(); go("say"); },
+  tellPerson: function () { var m = M(); m.toldHow = "person"; persist(); go("rate"); },
+  tellNote: function () { go("note"); },
+  tellLater: function () { var m = M(); m.status = "saved"; persist(); toast(t("savedToast")); V.mid = null; go("home"); },
+  sendNote: function () { var m = M(); var n = val("noteTxt"); if (!n) return; m.noteDraft = n; m.toldHow = "note"; persist(); send("note", { mid: m.id, title: m.title, note: n }, "wNote"); setTimeout(function () { go("rate"); }, 300); },
+  sendListened: function () { var m = M(); send("listened", { mid: m.id, title: m.title }, "wListened"); },
+  finishRate: function () { var m = M(); m.howItWent = val("react"); m.status = "done"; persist(); toast(t("savedToast")); V.mid = null; go("home"); },
+  sendAnswer: function () { var m = M(); var a = val("herAns"); if (!a) return; m.answer = a; m.status = "answeredByMe"; persist(); send("answer", { mid: m.id, a: a }, "wAnswer"); setTimeout(function () { V.mid = null; go("home"); }, 300); },
+  sendReaction: function () { var m = M(); var r = val("reactTxt"); if (!r) return; m.reaction = r; persist(); send("reaction", { mid: m.id, text: r }, "wReaction"); },
+  herAddMoment: function () { var v = val("herMoment"); if (!v) return; var m = { id: uid(), title: v, from: "her", status: "sent", createdAt: Date.now() }; S.moments.unshift(m); persist(); var first = !S.invited; S.invited = true; send(first ? "invite" : "moment", { mid: m.id, title: v }, first ? "wInvite" : "wMoment"); setTimeout(render, 300); },
+  saveNotes: function () { S.notes = document.getElementById("notes").value; persist(); toast(t("savedToast")); },
+  herIntro2: function () { go("herIntro2"); }, herIntro3: function () { go("herIntro3"); },
+  herIntroDone: function () { S.introHer = true; persist(); if (V.mid && byId(V.mid) && byId(V.mid).status === "asked") go("answer"); else go("home"); },
+  saveNames: function () { S.me = val("me"); S.partner = val("partner"); persist(); toast(t("savedToast")); },
+  backup: function () { var b = enc(S); copy(b); },
+  restoreOpen: function () { V.tmp.restoring = true; render(); },
+  doRestore: function () { try { var d = dec(val("restore")); if (d && d.moments) { S = Object.assign(blank(), d); persist(); V.tmp.restoring = false; toast(t("savedToast")); go("home"); } } catch (e) {} },
+  askReset: function () { V.tmp.sure = true; render(); }, cancelReset: function () { V.tmp.sure = false; render(); },
+  doReset: function () { try { localStorage.removeItem(KEY); } catch (e) {} S = blank(); V = { screen: "welcome", mid: null, tab: "moments", tmp: {} }; render(); },
+  copyLink: function () { copy(V.lastLink); }
+};
+function addMoment(title) { var m = { id: uid(), title: title, from: "him", status: "new", createdAt: Date.now() }; S.moments.unshift(m); V.mid = m.id; persist(); go("why"); }
+function openMoment(id) {
+  var m = byId(id); V.mid = id; if (!m) return;
+  var s = { sealed: "sealed", asked: "sent", answered: "learned", saved: "say", done: "rate" }[m.status] || "why";
+  if (m.status === "asked") V.lastLink = null;
+  go(s);
+}
+function copy(s) {
+  if (!s) return;
+  var done = function () { toast(t("copied")); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(s).then(done, function () { fallbackCopy(s); done(); });
+  else { fallbackCopy(s); done(); }
+}
+function fallbackCopy(s) { var a = document.createElement("textarea"); a.value = s; document.body.appendChild(a); a.select(); try { document.execCommand("copy"); } catch (e) {} a.remove(); }
+var toastTimer;
+function toast(s) { var e = document.querySelector(".toast"); if (!e) { e = document.createElement("div"); e.className = "toast"; document.body.appendChild(e); } e.textContent = s; clearTimeout(toastTimer); toastTimer = setTimeout(function () { e.remove(); }, 1800); }
+
+/* ===================== Render ===================== */
+var app = document.getElementById("app");
+function go(s) { V.screen = s; render(true); window.scrollTo(0, 0); }
+function render(anim) {
+  if (!S.role && V.screen !== "welcome" && V.screen !== "notice") V.screen = "welcome";
+  var f = SC[V.screen] || SC.home;
+  var s = f();
+  document.body.className = S.role === "her" || (!S.role && V.tmp.role === "her") ? "her" : "";
+  document.body.dir = S.lang === "he" ? "rtl" : "ltr";
+  document.documentElement.lang = S.lang;
+  var meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = document.body.className === "her" ? "#fdfbfe" : "#0d0d12";
+  app.className = (s.cls || "") + (anim ? " anim" : "");
+  app.innerHTML = s.html;
+  bind();
+}
+function bind() {
+  app.querySelectorAll("[data-act]").forEach(function (b) {
+    b.onclick = function () {
+      var a = b.getAttribute("data-act"), k = a.split(":");
+      if (k[0] === "open") return openMoment(k[1]);
+      if (k[0] === "answer") { V.mid = k[1]; return go(S.introHer ? "answer" : "herIntro1"); }
+      if (k[0] === "listened") { V.mid = k[1]; return go("listened"); }
+      if (k[0] === "addSug") return addMoment(t(k[1]));
+      if (A[a]) A[a]();
+    };
+  });
+  app.querySelectorAll("[data-tab]").forEach(function (b) { b.onclick = function () { V.tab = b.dataset.tab; V.tmp.sure = false; V.tmp.restoring = false; go("home"); }; });
+  app.querySelectorAll("[data-lang]").forEach(function (b) { b.onclick = function () { saveTyped(); S.lang = b.dataset.lang; persist(); render(); }; });
+  app.querySelectorAll("[data-role]").forEach(function (b) { b.onclick = function () { saveTyped(); V.tmp.role = b.dataset.role; render(); }; });
+  app.querySelectorAll("[data-mic]").forEach(function (b) { b.onclick = function () { startMic(b, b.dataset.mic); }; });
+  app.querySelectorAll("[data-heart]").forEach(function (b) { b.onclick = function () { var m = M(); m.howItWent = val("react"); m.rating = +b.dataset.heart; persist(); render(); }; });
+  app.querySelectorAll("[data-feel]").forEach(function (b) { b.onclick = function () { var m = M(), k = +b.dataset.feel; m.feelings = m.feelings || []; var p = m.feelings.indexOf(k); if (p > -1) m.feelings.splice(p, 1); else if (m.feelings.length < 3) m.feelings.push(k); persist(); render(); }; });
+  app.querySelectorAll("input[type=text]").forEach(function (i) { i.onkeydown = function (e) { if (e.key === "Enter") { e.preventDefault(); var b = i.closest(".fieldwrap") ? i.closest(".fieldwrap").nextElementSibling : null; if (b && b.classList.contains("btn")) b.click(); } }; });
+}
+function saveTyped() { if (document.getElementById("me")) S.me = val("me"); if (document.getElementById("partner")) S.partner = val("partner"); }
+
+/* ===================== Start ===================== */
+window.addEventListener("hashchange", function () { if (receive()) render(true); });
+if (!receive()) V.screen = S.role ? "home" : "welcome";
+render(true);
+if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(function () {});
+</script>
+</body>
+</html>
