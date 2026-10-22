@@ -121,8 +121,8 @@ var T = {
     hFirstL: "Your first moment", hFirstQ: "Was there a moment you fell for him again?", hFirstPh: "e.g. When he danced with my grandmother at my sister's wedding",
     hInvL: "Invite him", hInvQ: "He'll get a sealed moment.", hInvTxt: "He sees that you picked a moment, not which one. He has to guess.", hInvPrev: "She picked a moment she couldn't keep her hands off you.", hInvBtn: "Send on WhatsApp",
     // his invite
-    from: "An invite from {n}", fromNew: "A new moment from {n}", invBig: "She picked a moment she couldn't keep her hands off you.", herMoment: "Her moment", canGuess: "Can you guess which one?", guessBtn: "Take a guess",
-    guessL: "Your guess", guessQ: "When couldn't she keep her hands off you?", guessPh: "Your guess…", reveal: "Reveal her moment",
+    from: "A moment from {n}", fromNew: "A new moment from {n}", invBig: "{n} wrote down a moment she couldn't keep her hands off you.", herMoment: "Her moment", canGuess: "It's locked. Want to guess what it was?", guessBtn: "Yes, let me guess", justShow: "Just show me",
+    guessL: "Your guess", guessQ: "When do you think it was?", guessHint: "A night, a place, something you did. Any guess counts.", guessPh: "I think it was…", reveal: "Reveal her moment", didYou: "Did you guess it?",
     gotIt: "Got it ✦", notQuite: "Not quite", gotItSay: "✦ You know her.", notQuiteSay: "✦ Now you know something new.",
     mission: "<b>Your mission:</b> find out what about this moment got her so into you, so you can bring it back.", go: "Let's go",
     // his intro
@@ -156,7 +156,7 @@ var T = {
     wInvite: "I picked a moment you'll want to guess… 🔒", wMoment: "Another moment for you to guess 🔒", wQuestion: "I have a question for you ♡", wAnswer: "Here's my answer ♡", wNote: "I wrote you something ♡", wListened: "I listened ♥", wReaction: "Here's how it felt ♡",
     copied: "Link copied", sentNote: "Opening WhatsApp…", savedToast: "Saved", copyLink: "Or copy the link", got: "Got it",
     oldLink: "This link was already opened.", otherCouple: "This link belongs to someone else's app.",
-    whoLinkL: "Before we open it", whoLinkQ: "Is this you, {p}?", whoLinkTxt: "{n} sent this link to {p}.", yesMe: "Yes, I'm {p}", noSender: "No, I'm {n}. I sent it",
+    whoLinkL: "Before we open it", gameL: "Curious About Her", gameQ: "{n} invited you to a game for two.", gameTxt: "She wrote down moments when she was really into you. You guess them, find out why, and learn what draws her to you.", gameYes: "I'm {p}, let's play", gameNo: "I'm {n}, I sent this", whoLinkQ: "Is this you, {p}?", whoLinkTxt: "{n} sent this link to {p}.", yesMe: "Yes, I'm {p}", noSender: "No, I'm {n}. I sent it",
     ownLink: "This is your own link. Send it to {p} on WhatsApp.", restored: "Your setup is back. The invite is still on its way to him.", waitingGuess: "Waiting for his guess", hiPair: "{me} ♡ {p}"
   },
   he: {
@@ -164,8 +164,8 @@ var T = {
     language: "שפה", whoAreYou: "מי את/ה?", imHim: "אני הוא", imHer: "אני היא", yourName: "השם שלך", partnerName: "השם של בן/בת הזוג", hisName: "השם שלו", herName: "השם שלה", start: "מתחילים", privacy: "🔒 הכל נשאר בטלפון הזה",
     hFirstL: "הרגע הראשון שלך", hFirstQ: "היה רגע שהתאהבת בו מחדש?", hFirstPh: "למשל: כשהוא רקד עם סבתא שלי בחתונה של אחותי",
     hInvL: "הזמיני אותו", hInvQ: "הוא יקבל רגע נעול.", hInvTxt: "הוא רואה שבחרת רגע, אבל לא איזה. הוא צריך לנחש.", hInvPrev: "היא בחרה רגע שבו לא הצליחה להוריד ממך את הידיים.", hInvBtn: "שליחה בוואטסאפ",
-    from: "הזמנה מ{n}", fromNew: "רגע חדש מ{n}", invBig: "היא בחרה רגע שבו לא הצליחה להוריד ממך את הידיים.", herMoment: "הרגע שלה", canGuess: "תצליח לנחש איזה?", guessBtn: "לנחש",
-    guessL: "הניחוש שלך", guessQ: "מתי היא לא הצליחה להוריד ממך את הידיים?", guessPh: "הניחוש שלך…", reveal: "לגלות את הרגע שלה",
+    from: "רגע מ{n}", fromNew: "רגע חדש מ{n}", invBig: "{n} כתבה רגע שבו היא לא הצליחה להוריד ממך את הידיים.", herMoment: "הרגע שלה", canGuess: "הוא נעול. רוצה לנחש מה זה היה?", guessBtn: "כן, אני מנחש", justShow: "פשוט תראו לי",
+    guessL: "הניחוש שלך", guessQ: "מתי לדעתך זה היה?", guessHint: "ערב, מקום, משהו שעשית. כל ניחוש נחשב.", guessPh: "אני חושב שזה היה…", reveal: "לגלות את הרגע שלה", didYou: "ניחשת נכון?",
     gotIt: "קלעתי ✦", notQuite: "לא בדיוק", gotItSay: "✦ אתה מכיר אותה.", notQuiteSay: "✦ עכשיו אתה יודע משהו חדש.",
     mission: "<b>המשימה שלך:</b> לגלות מה ברגע הזה הדליק אותה כל כך, כדי שתוכל להחזיר את זה.", go: "יאללה, מתחילים",
     skip: "דלג", i1: "גלה מה באמת מושך אותה אליך.", i2: "שלושה צעדים. רגעים אמיתיים.", s1: "בחר רגע", s2: "גלה למה", s3: "תגיד לה", i3: "ככל שתשאל יותר, תכיר אותה יותר.", i3s: "הרשימה ״מה מושך אותה״ שלך גדלה עם כל רגע.", firstMoment: "הוסף את הרגע הראשון", continueBtn: "המשך",
@@ -193,7 +193,7 @@ var T = {
     wInvite: "בחרתי רגע שתרצה לנחש… 🔒", wMoment: "עוד רגע בשבילך לנחש 🔒", wQuestion: "יש לי שאלה בשבילך ♡", wAnswer: "הנה התשובה שלי ♡", wNote: "כתבתי לך משהו ♡", wListened: "הקשבתי ♥", wReaction: "ככה זה הרגיש ♡",
     copied: "הקישור הועתק", sentNote: "פותח את וואטסאפ…", savedToast: "נשמר", copyLink: "או העתקת הקישור", got: "הבנתי",
     oldLink: "הקישור הזה כבר נפתח.", otherCouple: "הקישור הזה שייך לאפליקציה של מישהו אחר.",
-    whoLinkL: "לפני שפותחים", whoLinkQ: "זה את/ה, {p}?", whoLinkTxt: "{n} שלח/ה את הקישור הזה ל{p}.", yesMe: "כן, אני {p}", noSender: "לא, אני {n}. אני שלחתי",
+    whoLinkL: "לפני שפותחים", gameL: "Curious About Her", gameQ: "{n} הזמינה אותך למשחק לשניים.", gameTxt: "היא כתבה רגעים שבהם היא ממש נמשכה אליך. אתה מנחש, מגלה למה, ולומד מה מושך אותה אליך.", gameYes: "אני {p}, יאללה נשחק", gameNo: "אני {n}, אני שלחתי", whoLinkQ: "זה את/ה, {p}?", whoLinkTxt: "{n} שלח/ה את הקישור הזה ל{p}.", yesMe: "כן, אני {p}", noSender: "לא, אני {n}. אני שלחתי",
     ownLink: "זה הקישור שלך. שלחי/שלח אותו ל{p} בוואטסאפ.", restored: "ההגדרות שלך חזרו. ההזמנה עדיין בדרך אליו.", waitingGuess: "מחכה לניחוש שלו", hiPair: "{me} ♡ {p}"
   }
 };
@@ -336,6 +336,10 @@ SC.welcome = function () {
 };
 SC.whoLink = function () {
   var m = V.pending;
+  if (m.f === "her" && (m.t === "invite" || m.t === "moment")) {
+    return { cls: "", html: orbs() + '<div class="mark">✦</div><p class="lab" style="margin-top:6px">' + t("gameL") + '</p><p class="big">' + esc(fill(raw("gameQ"), m)) + '</p><p class="txt" style="font-size:15px">' + esc(fill(raw("gameTxt"), m)) + '</p>' +
+      '<div class="push"><button class="btn" data-act="linkIsMe">' + esc(fill(raw("gameYes"), m)) + '</button><button class="ghost" data-act="linkIsSender">' + esc(fill(raw("gameNo"), m)) + '</button></div>' };
+  }
   return { cls: "", html: orbs() + '<p class="lab">' + t("whoLinkL") + '</p><p class="big">' + esc(fill(raw("whoLinkQ"), m)) + '</p><p class="txt">' + esc(fill(raw("whoLinkTxt"), m)) + '</p>' +
     '<div class="push"><button class="btn" data-act="linkIsMe">' + esc(fill(raw("yesMe"), m)) + '</button><button class="chip" data-act="linkIsSender" style="justify-content:center">' + esc(fill(raw("noSender"), m)) + '</button></div>' };
 };
@@ -354,14 +358,14 @@ SC.sealed = function () {
   var first = S.moments.filter(function (x) { return x.from === "her"; }).length <= 1 && !S.introHim;
   return { cls: "", html: orbs() + '<p class="lab">' + esc(first ? t("from") : t("fromNew")) + '</p><p class="big">' + t("invBig") + '</p>' +
     '<div class="sealed"><div class="row2 lab" style="margin-bottom:8px"><span>' + t("herMoment") + '</span><span>🔒</span></div><div class="blur">' + esc(m.title) + '</div></div><p class="txt">' + t("canGuess") + '</p>' +
-    '<div class="push">' + btn(t("guessBtn"), "toGuess") + '</div>' };
+    '<div class="push">' + btn(t("guessBtn"), "toGuess") + ghost(t("justShow"), "doReveal") + '</div>' };
 };
-SC.guess = function () { return { cls: "calm", html: orbs() + '<p class="lab">' + t("guessL") + '</p><p class="mid">' + t("guessQ") + '</p>' + field("guess", t("guessPh"), "", true) + '<div class="push">' + btn(t("reveal"), "doReveal") + '</div>' }; };
+SC.guess = function () { return { cls: "calm", html: orbs() + '<p class="lab">' + t("guessL") + '</p><p class="mid">' + t("guessQ") + '</p><p class="txt">' + t("guessHint") + '</p>' + field("guess", t("guessPh"), "", true) + '<div class="push">' + btn(t("reveal"), "doReveal") + '</div>' }; };
 SC.reveal = function () {
   var m = M(); var sc = V.tmp.score;
   return { cls: "", html: orbs() + '<p class="lab">' + t("herMoment") + '</p><div class="quote">' + esc(m.title) + '</div>' +
     (m.guess ? '<div class="box"><span class="txt">' + t("guessL") + ':</span> ' + esc(m.guess) + '</div>' : "") +
-    (sc ? '<p class="score">' + t(sc === "yes" ? "gotItSay" : "notQuiteSay") + '</p>' : '<div class="seg2"><button data-act="scoreYes">' + t("gotIt") + '</button><button data-act="scoreNo">' + t("notQuite") + '</button></div>') +
+    (!m.guess ? "" : sc ? '<p class="score">' + t(sc === "yes" ? "gotItSay" : "notQuiteSay") + '</p>' : '<p class="txt">' + t("didYou") + '</p><div class="seg2"><button data-act="scoreYes">' + t("gotIt") + '</button><button data-act="scoreNo">' + t("notQuite") + '</button></div>') +
     '<div class="box">' + t("mission") + '</div><div class="push">' + btn(t("go"), "afterReveal") + '</div>' };
 };
 /* --- his intro --- */
@@ -471,7 +475,7 @@ var A = {
   herFirstNext: function () { var v = val("first"); if (!v) return; var m = { id: uid(), title: v, from: "her", status: "sent", createdAt: Date.now() }; S.moments.unshift(m); V.mid = m.id; persist(); go("herInvite"); },
   sendInvite: function () { var m = M(); S.invited = true; send("invite", { mid: m.id, title: m.title }, "wInvite"); setTimeout(function () { go("home"); }, 400); },
   toGuess: function () { go("guess"); },
-  doReveal: function () { var m = M(); m.guess = val("guess"); m.status = "new"; V.tmp.score = null; persist(); go("reveal"); },
+  doReveal: function () { var m = M(); m.guess = val("guess") || m.guess || ""; m.status = "new"; V.tmp.score = null; persist(); go("reveal"); },
   scoreYes: function () { V.tmp.score = "yes"; M().guessed = true; persist(); go("reveal"); },
   scoreNo: function () { V.tmp.score = "no"; persist(); go("reveal"); },
   afterReveal: function () { if (!S.introHim) go("intro1"); else go("ask"); },
