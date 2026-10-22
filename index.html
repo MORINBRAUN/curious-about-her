@@ -155,7 +155,9 @@ var T = {
     // whatsapp texts
     wInvite: "I picked a moment you'll want to guess… 🔒", wMoment: "Another moment for you to guess 🔒", wQuestion: "I have a question for you ♡", wAnswer: "Here's my answer ♡", wNote: "I wrote you something ♡", wListened: "I listened ♥", wReaction: "Here's how it felt ♡",
     copied: "Link copied", sentNote: "Opening WhatsApp…", savedToast: "Saved", copyLink: "Or copy the link", got: "Got it",
-    oldLink: "This link was already opened.", otherCouple: "This link belongs to someone else's app."
+    oldLink: "This link was already opened.", otherCouple: "This link belongs to someone else's app.",
+    whoLinkL: "Before we open it", whoLinkQ: "Is this you, {p}?", whoLinkTxt: "{n} sent this link to {p}.", yesMe: "Yes, I'm {p}", noSender: "No, I'm {n}. I sent it",
+    ownLink: "This is your own link. Send it to {p} on WhatsApp.", restored: "Your setup is back. The invite is still on its way to him.", waitingGuess: "Waiting for his guess", hiPair: "{me} ♡ {p}"
   },
   he: {
     tag: "אפליקציה לשניים. הוא נהיה סקרן. היא מרגישה את זה.", sub: "רגעים אמיתיים. מילים שלו. יותר תשוקה.",
@@ -190,7 +192,9 @@ var T = {
     setL: "הגדרות", names: "שמות", reset: "להתחיל מחדש", resetSure: "למחוק הכל מהטלפון הזה?", yesErase: "כן, למחוק", cancel: "ביטול", backup: "העתקת גיבוי", restore: "שחזור מגיבוי", restorePh: "הדביקו כאן גיבוי", restoreBtn: "שחזור",
     wInvite: "בחרתי רגע שתרצה לנחש… 🔒", wMoment: "עוד רגע בשבילך לנחש 🔒", wQuestion: "יש לי שאלה בשבילך ♡", wAnswer: "הנה התשובה שלי ♡", wNote: "כתבתי לך משהו ♡", wListened: "הקשבתי ♥", wReaction: "ככה זה הרגיש ♡",
     copied: "הקישור הועתק", sentNote: "פותח את וואטסאפ…", savedToast: "נשמר", copyLink: "או העתקת הקישור", got: "הבנתי",
-    oldLink: "הקישור הזה כבר נפתח.", otherCouple: "הקישור הזה שייך לאפליקציה של מישהו אחר."
+    oldLink: "הקישור הזה כבר נפתח.", otherCouple: "הקישור הזה שייך לאפליקציה של מישהו אחר.",
+    whoLinkL: "לפני שפותחים", whoLinkQ: "זה את/ה, {p}?", whoLinkTxt: "{n} שלח/ה את הקישור הזה ל{p}.", yesMe: "כן, אני {p}", noSender: "לא, אני {n}. אני שלחתי",
+    ownLink: "זה הקישור שלך. שלחי/שלח אותו ל{p} בוואטסאפ.", restored: "ההגדרות שלך חזרו. ההזמנה עדיין בדרך אליו.", waitingGuess: "מחכה לניחוש שלו", hiPair: "{me} ♡ {p}"
   }
 };
 
@@ -203,6 +207,8 @@ function persist() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch
 var V = { screen: "welcome", mid: null, tab: "moments", tmp: {} };
 function t(k, n) { var s = T[S.lang][k]; if (s == null) s = T.en[k]; return typeof s === "string" ? s.replace("{n}", n == null ? (S.partner || "") : n) : s; }
 function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+function raw(k) { return T[S.lang][k] || T.en[k]; }
+function fill(str, msg) { return str.replace(/\{n\}/g, msg.n || "?").replace(/\{p\}/g, msg.p || "?").replace(/\{me\}/g, S.me || "").replace(/\{n\}/g, ""); }
 function uid() { return Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4); }
 function byId(id) { for (var i = 0; i < S.moments.length; i++) if (S.moments[i].id === id) return S.moments[i]; return null; }
 function M() { return byId(V.mid); }
@@ -231,6 +237,8 @@ function receive() {
   var msg; try { msg = dec(h.slice(i + 2)); } catch (e) { return false; }
   history.replaceState(null, "", baseUrl());
   if (!msg || !msg.t) return false;
+  if (!S.role) { V.pending = msg; if (msg.l && S.lang !== "he") S.lang = msg.l; V.screen = "whoLink"; return true; }
+  if (msg.f === S.role) { V.screen = "notice"; V.tmp.notice = fill(raw("ownLink"), msg); return true; }
   if (S.couple && msg.c !== S.couple) { V.screen = "notice"; V.tmp.notice = t("otherCouple"); return true; }
   var already = S.seen.indexOf(msg.id) > -1;
   if (!S.couple) S.couple = msg.c;
@@ -326,6 +334,11 @@ SC.welcome = function () {
     '<input type="text" id="partner" placeholder="' + esc(V.tmp.role === "her" ? t("hisName") : V.tmp.role === "him" ? t("herName") : t("partnerName")) + '" value="' + esc(S.partner) + '">' +
     btn(t("start"), "startApp", !V.tmp.role) + '<p class="txt center" style="font-size:12px">' + t("privacy") + '</p></div>' };
 };
+SC.whoLink = function () {
+  var m = V.pending;
+  return { cls: "", html: orbs() + '<p class="lab">' + t("whoLinkL") + '</p><p class="big">' + esc(fill(raw("whoLinkQ"), m)) + '</p><p class="txt">' + esc(fill(raw("whoLinkTxt"), m)) + '</p>' +
+    '<div class="push"><button class="btn" data-act="linkIsMe">' + esc(fill(raw("yesMe"), m)) + '</button><button class="chip" data-act="linkIsSender" style="justify-content:center">' + esc(fill(raw("noSender"), m)) + '</button></div>' };
+};
 SC.notice = function () { return { cls: "calm", html: orbs() + '<p class="mid" style="margin-top:60px">' + esc(V.tmp.notice) + '</p><div class="push">' + btn(t("got"), "home") + '</div>' }; };
 
 /* --- her start --- */
@@ -365,7 +378,7 @@ SC.home = function () {
   open.sort(function (a, b) { return (b.status === "saved") - (a.status === "saved"); });
   var done = S.moments.filter(function (m) { return m.status === "done"; });
   var row = function (m) { return chip(esc(m.title), "open:" + m.id, m.status === "sealed" || m.status === "answered" || m.status === "saved" ? "rec" : "", pillFor(m)); };
-  var html = orbs() + tabs() + '<p class="mid">' + t("m1") + '</p>' +
+  var html = orbs() + tabs() + pairLine() + '<p class="mid">' + t("m1") + '</p>' +
     (open.length ? '<div class="list">' + open.map(row).join("") + '</div>' : "") +
     (S.moments.length < 3 ? '<p class="lab mutedlab">' + t("tryOne") + '</p><div class="list">' + ["sugA", "sugB", "sugC"].map(function (k) { return chip(t(k), "addSug:" + k, "", "<span>+</span>"); }).join("") + '</div>' : "") +
     field("own", t("ownPh"), "", false) + btn(t("add"), "addOwn") +
@@ -424,10 +437,10 @@ SC.herHome = function () {
   var asked = S.moments.filter(function (m) { return m.status === "asked"; });
   var listened = S.moments.filter(function (m) { return m.status === "listened"; });
   var mine = S.moments.filter(function (m) { return m.from === "her" && m.status !== "asked" && m.status !== "listened"; });
-  var h = orbs() + tabs() + '<p class="mid">' + t("hHome") + '</p>' +
+  var h = orbs() + tabs() + pairLine() + '<p class="mid">' + t("hHome") + '</p>' +
     (asked.length || listened.length ? '<div class="list">' + asked.map(function (m) { return chip(esc(m.question), "answer:" + m.id, "rec", '<span class="pill">♡</span>'); }).join("") + listened.map(function (m) { return chip(t("hListened") + (m.note ? " · ✉" : ""), "listened:" + m.id, "", ""); }).join("") + '</div>' : '<div class="empty">' + t("hNone") + '</div>') +
     '<p class="lab" style="margin-top:6px">' + t("hAddL") + '</p>' + field("herMoment", t("hAddPh"), "", false) + btn(t("send"), "herAddMoment") +
-    (mine.length ? '<p class="lab mutedlab">' + t("hMyMoments") + '</p><div class="list">' + mine.map(function (m) { return '<div class="chip" style="cursor:default"><span>' + esc(m.title) + '</span><span class="pill">🔒</span></div>'; }).join("") + '</div>' : "") +
+    (mine.length ? '<p class="lab mutedlab">' + t("hMyMoments") + '</p><div class="list">' + mine.map(function (m) { return '<div class="chip" style="cursor:default"><span>' + esc(m.title) + '</span><span class="pill">' + (m.status === "sent" ? "🔒 " + t("waitingGuess") : "🔒") + '</span></div>'; }).join("") + '</div>' : "") +
     '<p class="lab" style="margin-top:6px">🔒 ' + t("hNotes") + '</p><textarea id="notes" placeholder="' + esc(t("hNotesPh")) + '">' + esc(S.notes) + '</textarea>' + ghost(t("saveNotes"), "saveNotes");
   return { cls: "calm", html: h };
 };
@@ -438,10 +451,18 @@ SC.listened = function () {
     '<p class="lab mutedlab">' + t("react") + '</p>' + field("reactTxt", t("reactPh"), m.reaction, true) + ghost(t("react") + " ›", "sendReaction") +
     '<div class="push">' + btn(t("addMore"), "home") + '<p class="txt center" style="font-size:12px">' + t("addMoreS") + '</p></div>' };
 };
+function pairLine() { return S.me || S.partner ? '<p class="lab mutedlab">' + esc(t("hiPair").replace("{me}", S.me || "").replace("{p}", S.partner || "")) + '</p>' : ""; }
 function copyLinkBlock() { return V.lastLink ? '<p class="lab mutedlab">' + t("copyLink") + '</p><div class="copybox" data-act="copyLink">' + esc(V.lastLink) + '</div>' : ""; }
 
 /* ===================== Actions ===================== */
 var A = {
+  linkIsMe: function () { var msg = V.pending; V.pending = null; S.role = msg.f === "her" ? "him" : "her"; S.couple = msg.c; S.partner = msg.n || S.partner; S.me = msg.p || S.me; S.seen.push(msg.id); apply(msg); persist(); render(true); },
+  linkIsSender: function () {
+    var msg = V.pending, d = msg.d || {}; V.pending = null;
+    S.role = msg.f; S.me = msg.n || ""; S.partner = msg.p || ""; S.couple = msg.c; if (msg.l) S.lang = msg.l; S.seen.push(msg.id);
+    if ((msg.t === "invite" || msg.t === "moment") && !byId(d.mid)) { S.moments.unshift({ id: d.mid, title: d.title, from: "her", status: "sent", createdAt: Date.now() }); S.invited = true; }
+    persist(); toast(t("restored")); V.mid = null; go("home");
+  },
   startApp: function () {
     S.role = V.tmp.role; S.me = val("me"); S.partner = val("partner"); if (!S.couple) S.couple = uid(); persist();
     if (S.role === "her") go("herFirst"); else go(S.introHim ? "home" : "intro1");
@@ -506,7 +527,7 @@ function toast(s) { var e = document.querySelector(".toast"); if (!e) { e = docu
 var app = document.getElementById("app");
 function go(s) { V.screen = s; render(true); window.scrollTo(0, 0); }
 function render(anim) {
-  if (!S.role && V.screen !== "welcome" && V.screen !== "notice") V.screen = "welcome";
+  if (!S.role && V.screen !== "welcome" && V.screen !== "notice" && V.screen !== "whoLink") V.screen = "welcome";
   var f = SC[V.screen] || SC.home;
   var s = f();
   document.body.className = S.role === "her" || (!S.role && V.tmp.role === "her") ? "her" : "";
