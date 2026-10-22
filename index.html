@@ -297,9 +297,9 @@ function apply(msg) {
     m.status = "listened"; if (d.note) m.note = d.note; m.listenedAt = Date.now();
     if (d.q && !m.question) m.question = d.q; if (d.a && !m.answer) m.answer = d.a; if (d.guess) m.hisGuess = d.guess; if (d.draw) m.draw = d.draw;
   } else if (msg.t === "tip") {
-    S.tips = S.tips || []; if (!S.tips.some(function (x) { return x.id === d.id; })) S.tips.unshift({ id: d.id, from: msg.f, text: d.text, createdAt: Date.now() });
+    S.tips = S.tips || []; var ex0 = S.tips.filter(function (x) { return x.id === d.id; })[0]; if (ex0) ex0.text = d.text; else S.tips.unshift({ id: d.id, from: msg.f, text: d.text, createdAt: Date.now() });
   } else if (msg.t === "edit") {
-    m = byId(d.mid); if (m) { if (d.field === "title") m.title = d.value; if (d.field === "answer") { m.answer = d.value; if (m.status === "asked") m.status = "answered"; } }
+    m = byId(d.mid); if (m) { if (d.field === "title") m.title = d.value; if (d.field === "reaction") m.reaction = d.value; if (d.field === "note") m.note = d.value; if (d.field === "answer") { m.answer = d.value; if (m.status === "asked") m.status = "answered"; } }
   } else if (msg.t === "reaction") {
     m = byId(d.mid); if (m) m.reaction = d.text;
   }
@@ -388,60 +388,60 @@ SC.notice = function () { return { cls: "calm", html: orbs() + '<p class="mid" s
 /* --- screen copy: where you are · why you're here · what to do --- */
 var CX = {
   en: {
-    homeB: "Find out why, and you'll know how to bring it back.", whyB: "Find the why, and you can make it happen again.", askB: "Her answer tells you exactly what draws her to you. And being asked is a small gift for her.", recB: "Her exact words are the clue.", learnedB: "Now you know something about her that most men never find out.", feelB: "When you know what you feel, your words are real. Real words reach her.", wordsB: "These become what you say to her.", sayB: "Said in your own words, it brings her closer to you.", rateB: "Every round teaches you what works with her.", sealedB: "Guess right, and you'll know her a little better.", gainL: "What you gain", drawsC2: "Everything you've learned about her, collected from your moments together. It updates with every round.", drawsB: "The more you learn, the easier it gets to make her feel it again.", lMoments: "moments explored", lAnswers: "answers from her", lAvg: "how it landed (avg ♥)", lDraws: "What draws her", lWords: "In her words", lHers: "Her moments", lReacts: "How she reacted", lGuessed: "You guessed:", lShe: "She said:", tipsT: "Tips & ideas", tipsCHim: "Ideas that work with her: what you've learned, tips from her, and your own.", tipsBHim: "Small things, done at the right moment, bring the passion back.", tipsCHer: "Tips for him and ideas for you two. Send him a tip and he gets it on WhatsApp.", tipsBHer: "He doesn't have to guess everything. A small hint from you goes a long way.", tFrom: "From {n}", tFromEmptyHim: "When she sends you a tip, it shows up here.", tFromEmptyHer: "When he sends you an idea, it shows up here.", tLearned: "Learned from your moments", tLearnedEmpty: "Tips appear here as you finish moments.", tMine: "My ideas", tMineEmpty: "Add your first idea below.", tAdd: "Add a tip or an idea", tAddPhHim: "e.g. Plan a dance night, just the two of us", tAddPhHer: "e.g. I love it when you hold my hand in public", tSend: "Send it on WhatsApp", tKeep: "Keep it just for me", tSentPill: "sent", tPrivPill: "private", tDoMore: "Do more of this: {d}", tWorked: "This worked ({r}♥): {m}, {h}", tHowNote: "with a note", tHowPerson: "face to face", tHeKnows: "He learned: {d}", tHeSaid: "He told you: {d}", stL: "The coach suggests a start", stH: "Tap one and finish it in your own words.", stA: "When you told me “{a}”, I felt…", stB: "I didn't know that moment meant so much to you…", stC: "I felt {f} when…", stD: "What I see in you now is…", stE: "I want you to know…", stF: "Since you told me, I keep thinking about…", nsL: "Start from…", nsPick: "Choose a start (optional)", nsOwn: "Your own words", nsOther: "Something else", nsNew: "Write something new", amL: "Another moment?", amC: "Each moment you add starts a new round for him.", skipReact: "Skip for now", notNow: "Not now", st1: "Step 1 of 6 · Pick a moment", st2: "Step 2 of 6 · Find out why", st3: "Step 3 of 6 · Ask her", st4: "Step 4 of 6 · What you learned", st5: "Step 5 of 6 · Say it", st6: "Step 6 of 6 · How it landed",
-    sealedL: "Her moment · locked", sealedC: "{n} sent you this. She wrote a moment, you try to guess it.",
-    guessC: "Write what you think her moment was. Then we unlock it.",
+    homeB: "Crack enough of them, and you'll know exactly how to bring that look back.", whyB: "Find the trigger, and you can pull it again.", askB: "Being asked about herself is a gift to her, and her answer is your cheat sheet.", recB: "Her exact words are the clue.", learnedB: "Most men never find this out. You just did.", feelB: "Name it, and your words will sound like you, not like a greeting card.", wordsB: "This is the raw material of what you'll tell her.", sayB: "Said your way, it lands. That's the whole secret.", rateB: "Every round sharpens your aim.", sealedB: "Guess right, and you'll know her a little better.", gainL: "What you gain", drawsC2: "Your private file on her: everything you've cracked so far. It grows every round.", drawsB: "The more you know, the easier it gets.", lMoments: "moments explored", lAnswers: "answers from her", lAvg: "how it landed (avg ♥)", lDraws: "What draws her", lWords: "In her words", lHers: "Her moments", lReacts: "How she reacted", lGuessed: "You guessed:", lShe: "She said:", tipsT: "Tips & ideas", tipsCHim: "Your playbook: what worked, hints from her, and your own ideas.", tipsBHim: "Small move, right moment, big effect.", tipsCHer: "Give him a hint. He gets it on WhatsApp, and he'll love the head start.", tipsBHer: "He doesn't have to guess everything.", tFrom: "From {n}", tFromEmptyHim: "When she sends you a tip, it shows up here.", tFromEmptyHer: "When he sends you an idea, it shows up here.", tLearned: "Learned from your moments", tLearnedEmpty: "Tips appear here as you finish moments.", tMine: "My ideas", tMineEmpty: "Add your first idea below.", tAdd: "Add a tip or an idea", tAddPhHim: "e.g. Plan a dance night, just the two of us", tAddPhHer: "e.g. I love it when you hold my hand in public", tSend: "Send it on WhatsApp", tKeep: "Keep it just for me", tSentPill: "sent", tPrivPill: "private", tDoMore: "Do more of this: {d}", tWorked: "This worked ({r}♥): {m}, {h}", tHowNote: "with a note", tHowPerson: "face to face", tHeKnows: "He learned: {d}", tHeSaid: "He told you: {d}", stL: "The coach suggests a start", stH: "Tap one and finish it in your own words.", stA: "When you told me “{a}”, I felt…", stB: "I didn't know that moment meant so much to you…", stC: "I felt {f} when…", stD: "What I see in you now is…", stE: "I want you to know…", stF: "Since you told me, I keep thinking about…", nsL: "Start from…", nsPick: "Choose a start (optional)", nsOwn: "Your own words", nsOther: "Something else", nsNew: "Write something new", amL: "Another moment?", amC: "Each moment you add starts a new round for him.", skipReact: "Skip for now", notNow: "Not now", lTold: "What you told her", editReactL: "Edit what you told him", editNoteL: "Edit your note", editDrawL: "Edit what draws her", editHowL: "Edit how it went", editTipL: "Edit your tip", editLocalC: "Only you see this. Fix it however you like.", st1: "Step 1 of 6 · Pick a moment", st2: "Step 2 of 6 · Find out why", st3: "Step 3 of 6 · Ask her", st4: "Step 4 of 6 · What you learned", st5: "Step 5 of 6 · Say it", st6: "Step 6 of 6 · How it landed",
+    sealedL: "Her moment · locked", sealedC: "{n} hid a moment in here. She wrote it, you guess it.",
+    guessC: "No pressure, there's no wrong guess. Go with your gut.",
     revealL: "Unlocked", revealC: "This is the moment {n} wrote down.", revealBtn: "Start your mission",
     howL: "How it works",
-    homeL: "Your moments", homeC: "Pick a moment she was really into you, or add a new one.", ideas: "Ideas to start with", addBtn: "Add this moment",
-    whyC: "Write your guess. Don't know? Ask her.", whyKnow: "I know, I'll write it", whyDont: "I don't know, I'll ask her",
-    askC: "Ask her in person, or send it on WhatsApp. You can change the question.", askPerson: "Ask her in person", askPersonS: "Then write what she said", askSend: "Send it to her on WhatsApp", askSendS: "She answers from her phone",
-    recC: "You asked her in person. Write what she said, in her words.", recBtn: "Save her answer",
-    sentT: "Now wait for her answer", sentC: "Your question is on its way to {n}.",
-    learnedC: "{n} answered. Here's what you know now.", learnedC0: "Read what you found out, and sum it up in a few words.", learnedBtn: "Next: how you feel",
-    feelC: "Tap the words that fit what you feel.", feelBtn: "Next: your own words",
-    wordsC: "Answer in a few words. Only you see them.", wordsBtn: "Next: what to say",
-    sayC: "Read what you want to say, then choose how to tell her.",
-    noteC: "Write it your way. It goes to {n} on WhatsApp.",
-    rateC: "You told {n}. Tap the hearts to show how she reacted.", rateBtn: "Save and back to my moments",
+    homeL: "Your moments", homeC: "Every moment she was into you hides a secret. Pick one and crack it.", ideas: "Ideas to start with", addBtn: "Add this moment",
+    whyC: "Detective mode: what happened right before she lit up?", whyKnow: "I know, I'll write it", whyDont: "I don't know, I'll ask her",
+    askC: "The fastest way to the answer? Ask her. In person is best, WhatsApp works too.", askPerson: "Ask her in person", askPersonS: "Then write what she said", askSend: "Send it to her on WhatsApp", askSendS: "She answers from her phone",
+    recC: "Write it down while it's fresh, in her words.", recBtn: "Save her answer",
+    sentT: "Now wait for her answer", sentC: "Your question is flying to {n}. Now, a little patience.",
+    learnedC: "{n} answered. Here's what you know now.", learnedC0: "Look what you found out. Sum it up in a few words so it stays with you.", learnedBtn: "Next: how you feel",
+    feelC: "Quick gut check: what did that stir in you?", feelBtn: "Next: your own words",
+    wordsC: "No grammar police here. A few honest words is all it takes.", wordsBtn: "Next: what to say",
+    sayC: "This is your message, in your words. Now pick how she gets it.",
+    noteC: "Write it your way. It flies to {n} on WhatsApp.",
+    rateC: "Moment of truth: how did {n} react?", rateBtn: "Save and back to my moments",
     drawsC: "Everything you've learned about what draws her to you.",
-    hFirstStep: "Step 1 of 2 · Your moment", hFirstC: "Write one moment you fell for {n} again. He won't see it until he guesses.", hFirstBtn: "Next: invite him",
-    hInvStep: "Step 2 of 2 · Invite him", hInvC: "Send {n} a WhatsApp link. He opens the app and tries to guess your moment.", hInvBtn: "Send the invite on WhatsApp", later: "Later",
-    hHomeC: "His questions and notes show up here. They also reach you on WhatsApp.", hAddC: "He gets it locked, and tries to guess it.", hAddBtn: "Send it to him on WhatsApp", hNotesC: "Only you can see these.",
-    ansL: "A question from {n}", ansC: "{n} is trying to understand you better. Answer however you like.", ansBtn: "Send my answer on WhatsApp",
-    lisL: "{n} listened", lisC: "{n} heard your answer and told you what he felt.", lisReactBtn: "Send it back to him on WhatsApp", lisMore: "Add another moment",
+    hFirstStep: "Step 1 of 2 · Your moment", hFirstC: "Think of a moment he made you fall for him all over again. He won't see it until he guesses.", hFirstBtn: "Next: invite him",
+    hInvStep: "Step 2 of 2 · Invite him", hInvC: "Send {n} your locked moment, and let's see if he cracks it.", hInvBtn: "Send the invite on WhatsApp", later: "Later",
+    hHomeC: "This is where he shows up: his questions, his notes, his curiosity about you.", hAddC: "Drop him another locked moment. Each one starts a new round.", hAddBtn: "Send it to him on WhatsApp", hNotesC: "Just for you. Not him, not anyone.",
+    ansL: "A question from {n}", ansC: "{n} is curious about you. Answer however you like, there's no wrong answer.", ansBtn: "Send my answer on WhatsApp",
+    lisL: "{n} listened", lisC: "{n} heard you, and here's what he made of it.", lisReactBtn: "Send it back to him on WhatsApp", lisMore: "Add another moment",
     gotItDo: "Got it, let's do it", navBack: "Back", navFwd: "Next",
-    storyT: "Our moments", storyC: "Everything between you: what he guessed, asked, learned and said.", storyEmpty: "Your moments and his words will collect here.",
+    storyT: "Our moments", storyC: "Your keepsake: every guess, question and word between you. Tap ✎ to fix anything.", storyEmpty: "Your moments and his words will collect here.",
     stMoments: "moments you shared", stQuestions: "questions he asked", stNotes: "times he listened",
     yourMoment: "Your moment", hisMoment: "His moment", stCurious: "He's curious", stAnswered: "You answered",
     sGuess: "He guessed", sAsked: "He asked", sAnswer: "You answered", sDraw: "He learned this draws you", sNote: "His note", sYou: "You told him",
     editShort: "Edit", editMomentL: "Edit your moment", editAnswerL: "Edit your answer", editC: "Fix anything you like. He gets the corrected version on WhatsApp.", editBtn: "Save and send the correction", cancel: "Cancel"
   },
   he: {
-    homeB: "תגלה למה, ותדע איך להחזיר את זה.", whyB: "תגלה את הלמה, ותוכל לגרום לזה לקרות שוב.", askB: "התשובה שלה תגיד לך בדיוק מה מושך אותה אליך. ועצם השאלה היא מתנה קטנה בשבילה.", recB: "המילים המדויקות שלה הן הרמז.", learnedB: "עכשיו אתה יודע עליה משהו שרוב הגברים לא מגלים.", feelB: "כשאתה יודע מה אתה מרגיש, המילים שלך אמיתיות. ומילים אמיתיות מגיעות אליה.", wordsB: "מהן ייצא מה שתגיד לה.", sayB: "כשזה נאמר במילים שלך, זה מקרב אותה אליך.", rateB: "כל סיבוב מלמד אותך מה עובד איתה.", sealedB: "תנחש נכון, ותכיר אותה קצת יותר.", gainL: "מה תרוויח", drawsC2: "כל מה שלמדת עליה, נאסף מהרגעים שלכם. מתעדכן בכל סיבוב.", drawsB: "ככל שתלמד יותר, יהיה לך קל יותר לגרום לה להרגיש את זה שוב.", lMoments: "רגעים שחקרת", lAnswers: "תשובות ממנה", lAvg: "איך זה התקבל (ממוצע ♥)", lDraws: "מה מושך אותה", lWords: "במילים שלה", lHers: "הרגעים שלה", lReacts: "איך היא הגיבה", lGuessed: "ניחשת:", lShe: "היא אמרה:", tipsT: "טיפים ורעיונות", tipsCHim: "רעיונות שעובדים איתה: מה שלמדת, טיפים ממנה, ורעיונות שלך.", tipsBHim: "דברים קטנים, ברגע הנכון, מחזירים את התשוקה.", tipsCHer: "טיפים בשבילו ורעיונות לשניכם. שלחי לו טיפ והוא יקבל אותו בוואטסאפ.", tipsBHer: "הוא לא חייב לנחש הכל. רמז קטן ממך עושה הבדל גדול.", tFrom: "מ{n}", tFromEmptyHim: "כשהיא תשלח לך טיפ, הוא יופיע כאן.", tFromEmptyHer: "כשהוא ישלח לך רעיון, הוא יופיע כאן.", tLearned: "נלמד מהרגעים שלכם", tLearnedEmpty: "טיפים יופיעו כאן כשתסיימו רגעים.", tMine: "הרעיונות שלי", tMineEmpty: "הוסיפו את הרעיון הראשון למטה.", tAdd: "הוספת טיפ או רעיון", tAddPhHim: "למשל: לתכנן ערב ריקודים רק לשנינו", tAddPhHer: "למשל: אני אוהבת כשאתה מחזיק לי את היד מול אנשים", tSend: "שליחה בוואטסאפ", tKeep: "לשמור רק לעצמי", tSentPill: "נשלח", tPrivPill: "פרטי", tDoMore: "עוד מזה: {d}", tWorked: "זה עבד ({r}♥): {m}, {h}", tHowNote: "בפתק", tHowPerson: "פנים אל פנים", tHeKnows: "הוא למד: {d}", tHeSaid: "הוא אמר לך: {d}", stL: "המאמן מציע התחלה", stH: "לחץ על אחת, והמשך במילים שלך.", stA: "כשאמרת לי ״{a}״, הרגשתי…", stB: "לא ידעתי שהרגע הזה היה כל כך חשוב לך…", stC: "הרגשתי {f} כש…", stD: "מה שאני רואה בך עכשיו זה…", stE: "אני רוצה שתדעי…", stF: "מאז שסיפרת לי, אני לא מפסיק לחשוב על…", nsL: "להתחיל מ…", nsPick: "בחר התחלה (לא חובה)", nsOwn: "המילים שלך", nsOther: "משהו אחר", nsNew: "לכתוב משהו חדש", amL: "עוד רגע?", amC: "כל רגע שתוסיפי מתחיל לו סיבוב חדש.", skipReact: "לדלג בינתיים", notNow: "לא עכשיו", st1: "שלב 1 מתוך 6 · בחר רגע", st2: "שלב 2 מתוך 6 · גלה למה", st3: "שלב 3 מתוך 6 · תשאל אותה", st4: "שלב 4 מתוך 6 · מה גילית", st5: "שלב 5 מתוך 6 · תגיד לה", st6: "שלב 6 מתוך 6 · איך זה התקבל",
-    sealedL: "הרגע שלה · נעול", sealedC: "{n} שלחה לך את זה. היא כתבה רגע, ואתה מנסה לנחש אותו.",
-    guessC: "כתוב מה לדעתך היה הרגע שלה. אחר כך נפתח אותו.",
+    homeB: "תפצח מספיק מהם, ותדע בדיוק איך להחזיר את המבט הזה.", whyB: "תמצא את הטריגר, ותוכל ללחוץ עליו שוב.", askB: "עצם השאלה היא מתנה בשבילה, והתשובה שלה היא השליף שלך.", recB: "המילים המדויקות שלה הן הרמז.", learnedB: "רוב הגברים לא מגלים את זה אף פעם. אתה גילית.", feelB: "כשאתה נותן לזה שם, המילים שלך יישמעו כמוך ולא כמו כרטיס ברכה.", wordsB: "זה חומר הגלם של מה שתגיד לה.", sayB: "כשזה נאמר בדרך שלך, זה פוגע בול. זה כל הסוד.", rateB: "כל סיבוב מחדד לך את הכוונת.", sealedB: "תנחש נכון, ותכיר אותה קצת יותר.", gainL: "מה תרוויח", drawsC2: "התיק הסודי שלך עליה: כל מה שפיצחת עד עכשיו. הוא גדל בכל סיבוב.", drawsB: "ככל שתדע יותר, יהיה לך קל יותר.", lMoments: "רגעים שחקרת", lAnswers: "תשובות ממנה", lAvg: "איך זה התקבל (ממוצע ♥)", lDraws: "מה מושך אותה", lWords: "במילים שלה", lHers: "הרגעים שלה", lReacts: "איך היא הגיבה", lGuessed: "ניחשת:", lShe: "היא אמרה:", tipsT: "טיפים ורעיונות", tipsCHim: "ספר המהלכים שלך: מה עבד, רמזים ממנה ורעיונות שלך.", tipsBHim: "מהלך קטן, ברגע הנכון, אפקט גדול.", tipsCHer: "תני לו רמז. הוא יקבל אותו בוואטסאפ, וישמח שיש לו יתרון.", tipsBHer: "הוא לא חייב לנחש הכל.", tFrom: "מ{n}", tFromEmptyHim: "כשהיא תשלח לך טיפ, הוא יופיע כאן.", tFromEmptyHer: "כשהוא ישלח לך רעיון, הוא יופיע כאן.", tLearned: "נלמד מהרגעים שלכם", tLearnedEmpty: "טיפים יופיעו כאן כשתסיימו רגעים.", tMine: "הרעיונות שלי", tMineEmpty: "הוסיפו את הרעיון הראשון למטה.", tAdd: "הוספת טיפ או רעיון", tAddPhHim: "למשל: לתכנן ערב ריקודים רק לשנינו", tAddPhHer: "למשל: אני אוהבת כשאתה מחזיק לי את היד מול אנשים", tSend: "שליחה בוואטסאפ", tKeep: "לשמור רק לעצמי", tSentPill: "נשלח", tPrivPill: "פרטי", tDoMore: "עוד מזה: {d}", tWorked: "זה עבד ({r}♥): {m}, {h}", tHowNote: "בפתק", tHowPerson: "פנים אל פנים", tHeKnows: "הוא למד: {d}", tHeSaid: "הוא אמר לך: {d}", stL: "המאמן מציע התחלה", stH: "לחץ על אחת, והמשך במילים שלך.", stA: "כשאמרת לי ״{a}״, הרגשתי…", stB: "לא ידעתי שהרגע הזה היה כל כך חשוב לך…", stC: "הרגשתי {f} כש…", stD: "מה שאני רואה בך עכשיו זה…", stE: "אני רוצה שתדעי…", stF: "מאז שסיפרת לי, אני לא מפסיק לחשוב על…", nsL: "להתחיל מ…", nsPick: "בחר התחלה (לא חובה)", nsOwn: "המילים שלך", nsOther: "משהו אחר", nsNew: "לכתוב משהו חדש", amL: "עוד רגע?", amC: "כל רגע שתוסיפי מתחיל לו סיבוב חדש.", skipReact: "לדלג בינתיים", notNow: "לא עכשיו", lTold: "מה שסיפרת לה", editReactL: "עריכת מה שסיפרת לו", editNoteL: "עריכת הפתק שלך", editDrawL: "עריכת מה מושך אותה", editHowL: "עריכת איך זה הלך", editTipL: "עריכת הטיפ שלך", editLocalC: "רק אתה רואה את זה. אפשר לתקן איך שרוצים.", st1: "שלב 1 מתוך 6 · בחר רגע", st2: "שלב 2 מתוך 6 · גלה למה", st3: "שלב 3 מתוך 6 · תשאל אותה", st4: "שלב 4 מתוך 6 · מה גילית", st5: "שלב 5 מתוך 6 · תגיד לה", st6: "שלב 6 מתוך 6 · איך זה התקבל",
+    sealedL: "הרגע שלה · נעול", sealedC: "{n} הסתירה כאן רגע. היא כתבה, ואתה מנחש.",
+    guessC: "בלי לחץ, אין ניחוש לא נכון. לך עם הבטן.",
     revealL: "נפתח", revealC: "זה הרגע ש{n} כתבה.", revealBtn: "להתחיל במשימה",
     howL: "איך זה עובד",
-    homeL: "הרגעים שלך", homeC: "בחר רגע שבו היא ממש נמשכה אליך, או הוסף חדש.", ideas: "רעיונות להתחלה", addBtn: "הוסף את הרגע",
-    whyC: "כתוב ניחוש. לא יודע? תשאל אותה.", whyKnow: "אני יודע, אכתוב", whyDont: "לא יודע, אשאל אותה",
-    askC: "תשאל אותה פנים אל פנים, או שלח בוואטסאפ. אפשר לשנות את השאלה.", askPerson: "לשאול אותה פנים אל פנים", askPersonS: "ואז לכתוב מה היא אמרה", askSend: "לשלוח לה בוואטסאפ", askSendS: "היא עונה מהטלפון",
-    recC: "שאלת אותה פנים אל פנים. כתוב מה היא אמרה, במילים שלה.", recBtn: "שמור את התשובה שלה",
-    sentT: "עכשיו מחכים לתשובה שלה", sentC: "השאלה שלך בדרך ל{n}.",
-    learnedC: "{n} ענתה. זה מה שאתה יודע עכשיו.", learnedC0: "קרא מה גילית, וסכם בכמה מילים.", learnedBtn: "הבא: מה אתה מרגיש",
-    feelC: "בחר את המילים שמתאימות למה שאתה מרגיש.", feelBtn: "הבא: המילים שלך",
-    wordsC: "ענה בכמה מילים. רק אתה רואה אותן.", wordsBtn: "הבא: מה להגיד",
-    sayC: "קרא מה אתה רוצה להגיד, ואז בחר איך לספר לה.",
-    noteC: "תכתוב בדרך שלך. זה יגיע ל{n} בוואטסאפ.",
-    rateC: "סיפרת ל{n}. סמן בלבבות איך היא הגיבה.", rateBtn: "שמור וחזור לרגעים שלי",
+    homeL: "הרגעים שלך", homeC: "בכל רגע שהיא נמשכה אליך מסתתר סוד. בחר אחד ותפצח אותו.", ideas: "רעיונות להתחלה", addBtn: "הוסף את הרגע",
+    whyC: "מצב בלש: מה קרה רגע לפני שהיא נדלקה?", whyKnow: "אני יודע, אכתוב", whyDont: "לא יודע, אשאל אותה",
+    askC: "הדרך הכי מהירה לתשובה? לשאול אותה. פנים אל פנים זה הכי טוב, גם וואטסאפ עובד.", askPerson: "לשאול אותה פנים אל פנים", askPersonS: "ואז לכתוב מה היא אמרה", askSend: "לשלוח לה בוואטסאפ", askSendS: "היא עונה מהטלפון",
+    recC: "תכתוב את זה כל עוד זה טרי, במילים שלה.", recBtn: "שמור את התשובה שלה",
+    sentT: "עכשיו מחכים לתשובה שלה", sentC: "השאלה שלך עפה ל{n}. עכשיו, קצת סבלנות.",
+    learnedC: "{n} ענתה. זה מה שאתה יודע עכשיו.", learnedC0: "תראה מה גילית. תסכם בכמה מילים, כדי שזה יישאר איתך.", learnedBtn: "הבא: מה אתה מרגיש",
+    feelC: "בדיקת בטן קצרה: מה זה עורר בך?", feelBtn: "הבא: המילים שלך",
+    wordsC: "אין כאן משטרת ניסוח. כמה מילים כנות זה כל מה שצריך.", wordsBtn: "הבא: מה להגיד",
+    sayC: "זה המסר שלך, במילים שלך. עכשיו בחר איך הוא יגיע אליה.",
+    noteC: "תכתוב בדרך שלך. זה יעוף ל{n} בוואטסאפ.",
+    rateC: "רגע האמת: איך {n} הגיבה?", rateBtn: "שמור וחזור לרגעים שלי",
     drawsC: "כל מה שלמדת על מה מושך אותה אליך.",
-    hFirstStep: "שלב 1 מתוך 2 · הרגע שלך", hFirstC: "כתבי רגע אחד שבו התאהבת ב{n} מחדש. הוא לא יראה אותו עד שינחש.", hFirstBtn: "הבא: להזמין אותו",
-    hInvStep: "שלב 2 מתוך 2 · הזמיני אותו", hInvC: "שלחי ל{n} קישור בוואטסאפ. הוא יפתח את האפליקציה וינסה לנחש את הרגע שלך.", hInvBtn: "שלחי את ההזמנה בוואטסאפ", later: "אחר כך",
-    hHomeC: "השאלות והפתקים שלו מופיעים כאן. הם מגיעים אלייך גם בוואטסאפ.", hAddC: "הוא יקבל אותו נעול וינסה לנחש.", hAddBtn: "שלחי לו בוואטסאפ", hNotesC: "רק את רואה את זה.",
-    ansL: "שאלה מ{n}", ansC: "{n} מנסה להבין אותך יותר טוב. עני איך שבא לך.", ansBtn: "שלחי את התשובה בוואטסאפ",
-    lisL: "{n} הקשיב", lisC: "{n} שמע את התשובה שלך וסיפר לך מה הרגיש.", lisReactBtn: "שלחי לו בחזרה בוואטסאפ", lisMore: "הוסיפי עוד רגע",
+    hFirstStep: "שלב 1 מתוך 2 · הרגע שלך", hFirstC: "חשבי על רגע שבו התאהבת בו מחדש. הוא לא יראה אותו עד שינחש.", hFirstBtn: "הבא: להזמין אותו",
+    hInvStep: "שלב 2 מתוך 2 · הזמיני אותו", hInvC: "שלחי ל{n} את הרגע הנעול שלך, ובואי נראה אם הוא יפצח אותו.", hInvBtn: "שלחי את ההזמנה בוואטסאפ", later: "אחר כך",
+    hHomeC: "כאן הוא מופיע: השאלות שלו, הפתקים שלו, הסקרנות שלו לגבייך.", hAddC: "שלחי לו עוד רגע נעול. כל אחד מתחיל סיבוב חדש.", hAddBtn: "שלחי לו בוואטסאפ", hNotesC: "רק בשבילך. לא בשבילו, לא בשביל אף אחד.",
+    ansL: "שאלה מ{n}", ansC: "{n} סקרן לגבייך. עני איך שבא לך, אין תשובה לא נכונה.", ansBtn: "שלחי את התשובה בוואטסאפ",
+    lisL: "{n} הקשיב", lisC: "{n} הקשיב לך, וזה מה שיצא לו מזה.", lisReactBtn: "שלחי לו בחזרה בוואטסאפ", lisMore: "הוסיפי עוד רגע",
     gotItDo: "הבנתי, יאללה", navBack: "חזרה", navFwd: "קדימה",
-    storyT: "הרגעים שלנו", storyC: "כל מה שקרה ביניכם: מה הוא ניחש, שאל, למד ואמר.", storyEmpty: "הרגעים שלך והמילים שלו יתאספו כאן.",
+    storyT: "הרגעים שלנו", storyC: "המזכרת שלך: כל ניחוש, שאלה ומילה ביניכם. לחצי ✎ כדי לתקן כל דבר.", storyEmpty: "הרגעים שלך והמילים שלו יתאספו כאן.",
     stMoments: "רגעים ששיתפת", stQuestions: "שאלות ששאל", stNotes: "פעמים שהקשיב",
     yourMoment: "הרגע שלך", hisMoment: "הרגע שלו", stCurious: "הוא סקרן", stAnswered: "ענית",
     sGuess: "הוא ניחש", sAsked: "הוא שאל", sAnswer: "ענית", sDraw: "הוא למד שזה מושך אותך", sNote: "הפתק שלו", sYou: "סיפרת לו",
@@ -515,14 +515,16 @@ SC.draws = function () {
   var avg = rated.length ? (rated.reduce(function (a, m) { return a + m.rating; }, 0) / rated.length).toFixed(1) : "–";
   var sec = function (lab, items) { return items.length ? '<p class="lab" style="margin-top:6px">' + esc(x(lab)) + '</p><div class="list">' + items.join("") + '</div>' : ""; };
   var card = function (main, sub) { return '<div class="storycard" style="gap:4px"><div class="t" style="font-size:17px">' + main + '</div>' + (sub ? '<div class="txt" style="font-size:13px">' + sub + '</div>' : "") + '</div>'; };
-  var draws = ms.filter(function (m) { return m.draw; }).map(function (m) { return card("✦ " + esc(m.draw), esc(m.title)); });
+  var edb = function (f, m) { return '<button class="edit" data-edit="' + f + ':' + m.id + '">✎ ' + esc(x("editShort")) + '</button>'; };
+  var draws = ms.filter(function (m) { return m.draw; }).map(function (m) { return card("✦ " + esc(m.draw) + edb("draw", m), esc(m.title)); });
+  var told = ms.filter(function (m) { return m.note; }).map(function (m) { return card("“" + esc(m.note) + "”" + edb("note", m), esc(m.title)); });
   var words = answers.map(function (m) { return card("“" + esc(m.answer) + "”", esc(m.title)); });
   var hers = ms.filter(function (m) { return m.from === "her"; }).map(function (m) { return card(esc(m.title), m.guess ? esc(x("lGuessed")) + " " + esc(m.guess) : ""); });
-  var reacts = ms.filter(function (m) { return m.rating || m.reaction || m.howItWent; }).map(function (m) { return card((m.rating ? "♥".repeat(m.rating) + " " : "") + esc(m.title), [m.howItWent ? esc(m.howItWent) : "", m.reaction ? esc(x("lShe")) + " “" + esc(m.reaction) + "”" : ""].filter(Boolean).join(" · ")); });
-  var empty = !draws.length && !words.length && !hers.length && !reacts.length;
+  var reacts = ms.filter(function (m) { return m.rating || m.reaction || m.howItWent; }).map(function (m) { return card((m.rating ? "♥".repeat(m.rating) + " " : "") + esc(m.title) + (m.howItWent ? edb("howItWent", m) : ""), [m.howItWent ? esc(m.howItWent) : "", m.reaction ? esc(x("lShe")) + " “" + esc(m.reaction) + "”" : ""].filter(Boolean).join(" · ")); });
+  var empty = !draws.length && !told.length && !words.length && !hers.length && !reacts.length;
   return { cls: "calm", html: orbs() + tabs() + '<p class="big">' + t("drawsL") + '</p>' + hdr("", x("drawsC2"), x("drawsB")) +
     '<div class="stats"><div><b>' + ms.length + '</b><small>' + x("lMoments") + '</small></div><div><b>' + answers.length + '</b><small>' + x("lAnswers") + '</small></div><div><b>' + avg + '</b><small>' + x("lAvg") + '</small></div></div>' +
-    (empty ? '<div class="empty">' + t("drawsEmpty") + '</div>' : sec("lDraws", draws) + sec("lWords", words) + sec("lHers", hers) + sec("lReacts", reacts)) };
+    (empty ? '<div class="empty">' + t("drawsEmpty") + '</div>' : sec("lDraws", draws) + sec("lWords", words) + sec("lTold", told) + sec("lHers", hers) + sec("lReacts", reacts)) };
 };
 SC.tips = function () {
   var him = S.role === "him", P = S.partner || (him ? "" : "");
@@ -534,7 +536,7 @@ SC.tips = function () {
     if (him && m.rating >= 4) learned.push(x("tWorked").replace("{r}", m.rating).replace("{m}", m.title).replace("{h}", m.toldHow === "note" ? x("tHowNote") : x("tHowPerson")));
     if (!him && m.note) learned.push(x("tHeSaid").replace("{d}", m.note));
   });
-  var row = function (txt, pill, del) { return '<div class="chip" style="cursor:default;align-items:flex-start"><span>' + esc(txt) + '</span>' + (pill ? '<span class="pill">' + esc(pill) + '</span>' : "") + (del ? '<button class="edit" data-deltip="' + del + '">✕</button>' : "") + '</div>'; };
+  var row = function (txt, pill, del) { return '<div class="chip" style="cursor:default;align-items:flex-start"><span>' + esc(txt) + '</span>' + (pill ? '<span class="pill">' + esc(pill) + '</span>' : "") + (del ? '<button class="edit" data-edit="tip:' + del + '">✎</button><button class="edit" data-deltip="' + del + '">✕</button>' : "") + '</div>'; };
   var sec = function (lab, items, emptyKey) { return '<p class="lab" style="margin-top:8px">' + esc(lab) + '</p>' + (items.length ? '<div class="list">' + items.join("") + '</div>' : '<div class="empty">' + esc(x(emptyKey)) + '</div>'); };
   return { cls: "calm", html: orbs() + tabs() + '<p class="big">' + x("tipsT") + '</p>' + hdr("", x(him ? "tipsCHim" : "tipsCHer"), x(him ? "tipsBHim" : "tipsBHer")) +
     sec(x("tFrom"), theirs.map(function (tp) { return row(tp.text, "♡"); }), him ? "tFromEmptyHim" : "tFromEmptyHer") +
@@ -642,9 +644,14 @@ SC.explain = function () {
   var e = EXPLAIN[V.after];
   return { cls: "", html: orbs() + '<p class="lab">' + esc(x(e[0])) + '</p><p class="icon" style="margin-top:50px">' + e[2] + '</p><div class="push"><p class="explain">' + esc(x(e[1])) + '</p><p class="gain big2"><span>✦ ' + esc(x("gainL")) + '</span>' + esc(x(e[3])) + '</p>' + btn(x("gotItDo"), "explainDone") + '</div>' };
 };
+var EDITLAB = { title: "editMomentL", answer: "editAnswerL", reaction: "editReactL", note: "editNoteL", draw: "editDrawL", howItWent: "editHowL", tip: "editTipL" };
+var SENT_FIELDS = { title: 1, answer: 1, reaction: 1, note: 1 };
 SC.edit = function () {
-  var m = M(); if (!m) return SC.home(); var f = V.tmp.editField;
-  return { cls: "calm", html: orbs() + hdr(x(f === "title" ? "editMomentL" : "editAnswerL"), x("editC")) + (f === "answer" ? '<p class="txt">' + esc(m.question) + '</p>' : "") + field("editTxt", "", m[f], true) + '<div class="push">' + btn(x("editBtn"), "saveEdit") + ghost(x("cancel"), "cancelEdit") + '</div>' };
+  var f = V.tmp.editField, cur;
+  if (f === "tip") { var tp = (S.tips || []).filter(function (x) { return x.id === V.tmp.tipId; })[0]; if (!tp) return SC.home(); cur = tp.text; }
+  else { var m = M(); if (!m) return SC.home(); cur = m[f]; }
+  var sent = f === "tip" ? tp.sent : SENT_FIELDS[f];
+  return { cls: "calm", html: orbs() + hdr(x(EDITLAB[f]), x(sent ? "editC" : "editLocalC")) + (f === "answer" && M() ? '<p class="txt">' + esc(M().question || "") + '</p>' : "") + field("editTxt", "", cur, true) + '<div class="push">' + btn(sent ? x("editBtn") : t("save"), "saveEdit") + ghost(x("cancel"), "cancelEdit") + '</div>' };
 };
 SC.story = function () {
   var list = S.moments.filter(function (m) { return m.from === "her" || m.question || m.note || m.status === "listened"; });
@@ -654,7 +661,7 @@ SC.story = function () {
     var r = function (lab, v, ed) { return v ? '<div class="srow"><span>' + esc(x(lab)) + (ed ? '<button class="edit" data-edit="' + ed + ':' + m.id + '">✎ ' + esc(x("editShort")) + '</button>' : "") + '</span>' + esc(v) + '</div>' : ""; };
     return '<div class="storycard"><div class="row2"><span class="lab">' + esc(m.from === "her" ? x("yourMoment") : x("hisMoment")) + '</span><span class="pill">' + esc(stat[m.status] ? (stat[m.status] === "hListened" ? t("hListened") : stat[m.status] === "waitingGuess" ? t("waitingGuess") : x(stat[m.status])) : "") + '</span></div>' +
       '<div class="t">' + esc(m.title) + (m.from === "her" ? '<button class="edit" data-edit="title:' + m.id + '">✎ ' + esc(x("editShort")) + '</button>' : "") + '</div>' +
-      r("sGuess", m.hisGuess) + r("sAsked", m.question) + r("sAnswer", m.answer, m.answer && m.status !== "asked" ? "answer" : "") + r("sDraw", m.draw) + r("sNote", m.note) + r("sYou", m.reaction) + '</div>';
+      r("sGuess", m.hisGuess) + r("sAsked", m.question) + r("sAnswer", m.answer, m.answer && m.status !== "asked" ? "answer" : "") + r("sDraw", m.draw) + r("sNote", m.note) + r("sYou", m.reaction, m.reaction ? "reaction" : "") + '</div>';
   }).join("");
   return { cls: "calm", html: orbs() + tabs() + pairLine() + '<p class="big">' + x("storyT") + '</p><p class="ctx">' + esc(x("storyC")) + '</p>' +
     '<div class="stats"><div><b>' + list.filter(function (m) { return m.from === "her"; }).length + '</b><small>' + x("stMoments") + '</small></div><div><b>' + nQ + '</b><small>' + x("stQuestions") + '</small></div><div><b>' + nN + '</b><small>' + x("stNotes") + '</small></div></div>' +
@@ -701,7 +708,7 @@ var A = {
   tellPerson: function () { var m = M(); m.toldHow = "person"; persist(); go("rate"); },
   tellNote: function () { go("note"); },
   tellLater: function () { var m = M(); m.status = "saved"; persist(); toast(t("savedToast")); V.mid = null; go("home"); },
-  sendNote: function () { var m = M(); var n = val("noteTxt"); if (!n) return; m.noteDraft = n; m.toldHow = "note"; persist(); send("note", told(m, { note: n }), "wNote"); setTimeout(function () { go("rate"); }, 300); },
+  sendNote: function () { var m = M(); var n = val("noteTxt"); if (!n) return; m.noteDraft = n; m.note = n; m.toldHow = "note"; persist(); send("note", told(m, { note: n }), "wNote"); setTimeout(function () { go("rate"); }, 300); },
   sendListened: function () { var m = M(); send("listened", told(m, {}), "wListened"); },
   finishRate: function () { var m = M(); m.howItWent = val("react"); m.status = "done"; persist(); toast(t("savedToast")); V.mid = null; go("home"); },
   sendAnswer: function () { var m = M(); var a = val("herAns"); if (!a) return; m.answer = a; m.status = "answeredByMe"; persist(); send("answer", { mid: m.id, a: a }, "wAnswer"); setTimeout(function () { V.mid = null; go("home"); }, 300); },
@@ -710,10 +717,13 @@ var A = {
   herAddMoment: function () { var v = val("herMoment"); if (!v) return; var m = { id: uid(), title: v, from: "her", status: "sent", createdAt: Date.now() }; S.moments.unshift(m); persist(); var first = !S.invited; S.invited = true; send(first ? "invite" : "moment", { mid: m.id, title: v }, first ? "wInvite" : "wMoment"); setTimeout(function () { if (V.screen === "addMore") { V.tab = "story"; go("home"); } else render(); }, 400); },
   saveNotes: function () { S.notes = document.getElementById("notes").value; persist(); toast(t("savedToast")); },
   saveEdit: function () {
-    var m = M(), f = V.tmp.editField, v = val("editTxt"); if (!m || !v) return;
-    m[f] = v; persist(); send("edit", { mid: m.id, field: f, value: v }, "wEdit"); setTimeout(function () { V.tab = "story"; go("home"); }, 300);
+    var f = V.tmp.editField, v = val("editTxt"); if (!v) return;
+    var back = function () { V.tab = V.tmp.editFrom || (S.role === "her" ? "story" : "draws"); go("home"); };
+    if (f === "tip") { var tp = S.tips.filter(function (x) { return x.id === V.tmp.tipId; })[0]; tp.text = v; persist(); if (tp.sent) send("tip", { id: tp.id, text: v }, "wEdit"); return setTimeout(back, 300); }
+    var m = M(); if (!m) return; m[f] = v; if (f === "draw") { S.draws = S.draws || []; } persist();
+    if (SENT_FIELDS[f]) { send("edit", { mid: m.id, field: f, value: v }, "wEdit"); setTimeout(back, 300); } else { toast(t("savedToast")); back(); }
   },
-  cancelEdit: function () { V.tab = "story"; go("home"); },
+  cancelEdit: function () { V.tab = V.tmp.editFrom || (S.role === "her" ? "story" : "draws"); go("home"); },
   herIntro2: function () { go("herIntro2"); }, herIntro3: function () { go("herIntro3"); },
   herIntroDone: function () { S.introHer = true; persist(); if (V.mid && byId(V.mid) && byId(V.mid).status === "asked") go("answer"); else go("home"); },
   saveNames: function () { S.me = val("me"); S.partner = val("partner"); persist(); toast(t("savedToast")); },
@@ -796,7 +806,7 @@ function bind() {
   app.querySelectorAll("[data-step-go]").forEach(function (b) { b.onclick = function () { var k = +b.dataset.stepGo, m = M(); if (!m || k < 1 || k > 6) return; keepTyped(); if (k === 1) { V.mid = null; return go("home"); } go(stepScreen(k, m)); }; });
   app.querySelectorAll("[data-nav]").forEach(function (b) { b.onclick = function () { if (b.dataset.nav === "back") { try { history.back(); } catch (e) { goBack(); } } else goFwd(); }; });
   app.querySelectorAll("[data-deltip]").forEach(function (b) { b.onclick = function () { S.tips = S.tips.filter(function (x) { return x.id !== b.dataset.deltip; }); persist(); render(); }; });
-  app.querySelectorAll("[data-edit]").forEach(function (b) { b.onclick = function () { var k = b.dataset.edit.split(":"); V.mid = k[1]; V.tmp.editField = k[0]; go("edit"); }; });
+  app.querySelectorAll("[data-edit]").forEach(function (b) { b.onclick = function () { var k = b.dataset.edit.split(":"); V.tmp.editFrom = V.tab; V.tmp.editField = k[0]; if (k[0] === "tip") V.tmp.tipId = k[1]; else V.mid = k[1]; go("edit"); }; });
   app.querySelectorAll("[data-tab]").forEach(function (b) { b.onclick = function () { V.tab = b.dataset.tab; V.tmp.sure = false; V.tmp.restoring = false; go("home"); }; });
   app.querySelectorAll("[data-lang]").forEach(function (b) { b.onclick = function () { saveTyped(); S.lang = b.dataset.lang; persist(); render(); }; });
   app.querySelectorAll("[data-role]").forEach(function (b) { b.onclick = function () { saveTyped(); V.tmp.role = b.dataset.role; render(); }; });
