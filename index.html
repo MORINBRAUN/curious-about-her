@@ -47,6 +47,7 @@ body[dir="rtl"] .lab { letter-spacing: .03em; font-size: 12px; }
 .mid { font-weight: 200; font-size: 27px; line-height: 1.15; letter-spacing: -.01em; margin: 0; text-wrap: balance; }
 body[dir="rtl"] .big, body[dir="rtl"] .mid { letter-spacing: 0; line-height: 1.18; }
 .brand { font-weight: 200; font-size: 44px; line-height: 1; letter-spacing: -.03em; margin: 0; }
+.ctx { font-size: 14px; line-height: 1.5; color: var(--muted); margin: -6px 0 2px; }
 .txt { font-size: 14px; line-height: 1.5; color: var(--muted); margin: 0; }
 .center { text-align: center; }
 .chip { width: 100%; text-align: start; font: inherit; font-size: 15px; color: var(--ink); background: var(--field); border: 1px solid var(--line); border-radius: 15px; padding: 13px 15px; display: flex; justify-content: space-between; gap: 10px; align-items: center; cursor: pointer; }
@@ -345,33 +346,86 @@ SC.whoLink = function () {
 };
 SC.notice = function () { return { cls: "calm", html: orbs() + '<p class="mid" style="margin-top:60px">' + esc(V.tmp.notice) + '</p><div class="push">' + btn(t("got"), "home") + '</div>' }; };
 
+/* --- screen copy: where you are · why you're here · what to do --- */
+var CX = {
+  en: {
+    st1: "Step 1 of 6 · Pick a moment", st2: "Step 2 of 6 · Find out why", st3: "Step 3 of 6 · Ask her", st4: "Step 4 of 6 · What you learned", st5: "Step 5 of 6 · Say it", st6: "Step 6 of 6 · How it landed",
+    sealedL: "Her moment · locked", sealedC: "{n} sent you this. She wrote a moment, you try to guess it.",
+    guessC: "Write what you think her moment was. Then we unlock it.",
+    revealL: "Unlocked", revealC: "This is the moment {n} wrote down.", revealBtn: "Start your mission",
+    howL: "How it works",
+    homeL: "Your moments", homeC: "Moments she was really into you. Tap one to find out why, or add a new one.", ideas: "Ideas to start with", addBtn: "Add this moment",
+    whyC: "Most men remember what happened, not why. Your guess, or a question for her.", whyKnow: "I know, I'll write it", whyDont: "I don't know, I'll ask her",
+    askC: "Asking her is already a small gift. Change the question if you like.", askPerson: "Ask her in person", askPersonS: "Then write what she said", askSend: "Send it to her on WhatsApp", askSendS: "She answers from her phone",
+    recC: "You asked her in person. Write what she said, in her words.", recBtn: "Save her answer",
+    sentT: "Now wait for her answer", sentC: "Your question is on its way to {n}.",
+    learnedC: "{n} answered. Here's what you know now.", learnedC0: "Here's what you know now.", learnedBtn: "Next: how you feel",
+    feelC: "Before you talk to her, notice what you feel. Tap the words that fit.", feelBtn: "Next: your own words",
+    wordsC: "Short answers are fine. Only you see them.", wordsBtn: "Next: what to say",
+    sayC: "This is what you want to say, in your words. Now tell her.",
+    noteC: "Write it your way. It goes to {n} on WhatsApp.",
+    rateC: "You told {n}. How did she react?", rateBtn: "Save and back to my moments",
+    drawsC: "Everything you've learned about what draws her to you.",
+    hFirstStep: "Step 1 of 2 · Your moment", hFirstC: "Write one moment you fell for {n} again. He won't see it until he guesses.", hFirstBtn: "Next: invite him",
+    hInvStep: "Step 2 of 2 · Invite him", hInvC: "Send {n} a WhatsApp link. He opens the app and tries to guess your moment.", hInvBtn: "Send the invite on WhatsApp", later: "Later",
+    hHomeC: "His questions and notes show up here. They also reach you on WhatsApp.", hAddC: "He gets it locked, and tries to guess it.", hAddBtn: "Send it to him on WhatsApp", hNotesC: "Only you can see these.",
+    ansL: "A question from {n}", ansC: "{n} is trying to understand you better. Answer however you like.", ansBtn: "Send my answer on WhatsApp",
+    lisL: "{n} listened", lisC: "{n} heard your answer and told you what he felt.", lisReactBtn: "Send him how it felt", lisMore: "Add another moment"
+  },
+  he: {
+    st1: "שלב 1 מתוך 6 · בחר רגע", st2: "שלב 2 מתוך 6 · גלה למה", st3: "שלב 3 מתוך 6 · תשאל אותה", st4: "שלב 4 מתוך 6 · מה גילית", st5: "שלב 5 מתוך 6 · תגיד לה", st6: "שלב 6 מתוך 6 · איך זה התקבל",
+    sealedL: "הרגע שלה · נעול", sealedC: "{n} שלחה לך את זה. היא כתבה רגע, ואתה מנסה לנחש אותו.",
+    guessC: "כתוב מה לדעתך היה הרגע שלה. אחר כך נפתח אותו.",
+    revealL: "נפתח", revealC: "זה הרגע ש{n} כתבה.", revealBtn: "להתחיל במשימה",
+    howL: "איך זה עובד",
+    homeL: "הרגעים שלך", homeC: "רגעים שבהם היא ממש נמשכה אליך. לחץ על אחד כדי לגלות למה, או הוסף חדש.", ideas: "רעיונות להתחלה", addBtn: "הוסף את הרגע",
+    whyC: "רוב הגברים זוכרים מה קרה, לא למה. כתוב ניחוש, או שאל אותה.", whyKnow: "אני יודע, אכתוב", whyDont: "לא יודע, אשאל אותה",
+    askC: "עצם השאלה היא כבר מתנה קטנה. אפשר לשנות את השאלה.", askPerson: "לשאול אותה פנים אל פנים", askPersonS: "ואז לכתוב מה היא אמרה", askSend: "לשלוח לה בוואטסאפ", askSendS: "היא עונה מהטלפון",
+    recC: "שאלת אותה פנים אל פנים. כתוב מה היא אמרה, במילים שלה.", recBtn: "שמור את התשובה שלה",
+    sentT: "עכשיו מחכים לתשובה שלה", sentC: "השאלה שלך בדרך ל{n}.",
+    learnedC: "{n} ענתה. זה מה שאתה יודע עכשיו.", learnedC0: "זה מה שאתה יודע עכשיו.", learnedBtn: "הבא: מה אתה מרגיש",
+    feelC: "לפני שאתה מדבר איתה, שים לב מה אתה מרגיש. בחר את המילים שמתאימות.", feelBtn: "הבא: המילים שלך",
+    wordsC: "תשובות קצרות זה בסדר. רק אתה רואה אותן.", wordsBtn: "הבא: מה להגיד",
+    sayC: "זה מה שאתה רוצה להגיד, במילים שלך. עכשיו תגיד לה.",
+    noteC: "תכתוב בדרך שלך. זה יגיע ל{n} בוואטסאפ.",
+    rateC: "סיפרת ל{n}. איך היא הגיבה?", rateBtn: "שמור וחזור לרגעים שלי",
+    drawsC: "כל מה שלמדת על מה מושך אותה אליך.",
+    hFirstStep: "שלב 1 מתוך 2 · הרגע שלך", hFirstC: "כתבי רגע אחד שבו התאהבת ב{n} מחדש. הוא לא יראה אותו עד שינחש.", hFirstBtn: "הבא: להזמין אותו",
+    hInvStep: "שלב 2 מתוך 2 · הזמיני אותו", hInvC: "שלחי ל{n} קישור בוואטסאפ. הוא יפתח את האפליקציה וינסה לנחש את הרגע שלך.", hInvBtn: "שלחי את ההזמנה בוואטסאפ", later: "אחר כך",
+    hHomeC: "השאלות והפתקים שלו מופיעים כאן. הם מגיעים אלייך גם בוואטסאפ.", hAddC: "הוא יקבל אותו נעול וינסה לנחש.", hAddBtn: "שלחי לו בוואטסאפ", hNotesC: "רק את רואה את זה.",
+    ansL: "שאלה מ{n}", ansC: "{n} מנסה להבין אותך יותר טוב. עני איך שבא לך.", ansBtn: "שלחי את התשובה בוואטסאפ",
+    lisL: "{n} הקשיב", lisC: "{n} שמע את התשובה שלך וסיפר לך מה הרגיש.", lisReactBtn: "ספרי לו איך הרגשת", lisMore: "הוסיפי עוד רגע"
+  }
+};
+function x(k) { var s = CX[S.lang][k] || CX.en[k] || ""; return s.replace(/\{n\}/g, S.partner || (S.lang === "he" ? (S.role === "him" ? "היא" : "הוא") : (S.role === "him" ? "She" : "He"))); }
+function hdr(step, ctx) { return (step ? '<p class="lab">' + esc(step) + '</p>' : "") + (ctx ? '<p class="ctx">' + esc(ctx) + '</p>' : ""); }
+
 /* --- her start --- */
-SC.herFirst = function () { return { cls: "calm", html: orbs() + '<p class="lab">' + t("hFirstL") + '</p><p class="mid">' + t("hFirstQ") + '</p>' + field("first", t("hFirstPh"), V.tmp.first, true) + '<div class="push">' + btn(t("next"), "herFirstNext") + '</div>' }; };
+SC.herFirst = function () { return { cls: "calm", html: orbs() + hdr(x("hFirstStep"), x("hFirstC")) + '<p class="mid">' + t("hFirstQ") + '</p>' + field("first", t("hFirstPh"), V.tmp.first, true) + '<div class="push">' + btn(x("hFirstBtn"), "herFirstNext") + '</div>' }; };
 SC.herInvite = function () {
-  return { cls: "", html: orbs() + '<p class="lab">' + t("hInvL") + '</p><p class="mid">' + t("hInvQ") + '</p><p class="txt">' + t("hInvTxt") + '</p>' +
-    '<div class="sealed" style="background:#0d0d12;color:#f4f2fb;border-color:rgba(249,168,212,.5)"><div class="row2 lab" style="margin-bottom:8px;color:#f9a8d4"><span>' + esc(t("from", S.me)) + '</span><span>🔒</span></div><div style="font-weight:200;font-size:20px;line-height:1.25">' + t("hInvPrev") + '</div></div>' +
-    '<div class="push">' + btn(t("hInvBtn"), "sendInvite") + ghost(t("skip"), "home") + '</div>' };
+  return { cls: "", html: orbs() + hdr(x("hInvStep"), x("hInvC")) + '<p class="mid">' + t("hInvQ") + '</p>' +
+    '<div class="sealed" style="background:#0d0d12;color:#f4f2fb;border-color:rgba(249,168,212,.5)"><div class="row2 lab" style="margin-bottom:8px;color:#f9a8d4"><span>' + esc(t("from", S.me)) + '</span><span>🔒</span></div><div style="font-weight:200;font-size:20px;line-height:1.25">' + esc(t("invBig", S.me)) + '</div></div>' +
+    '<div class="push">' + btn(x("hInvBtn"), "sendInvite") + ghost(x("later"), "home") + '</div>' };
 };
 /* --- his invite --- */
 SC.sealed = function () {
   var m = M(); if (!m) return SC.home();
-  var first = S.moments.filter(function (x) { return x.from === "her"; }).length <= 1 && !S.introHim;
-  return { cls: "", html: orbs() + '<p class="lab">' + esc(first ? t("from") : t("fromNew")) + '</p><p class="big">' + t("invBig") + '</p>' +
+  return { cls: "", html: orbs() + hdr(x("sealedL"), x("sealedC")) + '<p class="big">' + esc(t("invBig")) + '</p>' +
     '<div class="sealed"><div class="row2 lab" style="margin-bottom:8px"><span>' + t("herMoment") + '</span><span>🔒</span></div><div class="blur">' + esc(m.title) + '</div></div><p class="txt">' + t("canGuess") + '</p>' +
     '<div class="push">' + btn(t("guessBtn"), "toGuess") + ghost(t("justShow"), "doReveal") + '</div>' };
 };
-SC.guess = function () { return { cls: "calm", html: orbs() + '<p class="lab">' + t("guessL") + '</p><p class="mid">' + t("guessQ") + '</p><p class="txt">' + t("guessHint") + '</p>' + field("guess", t("guessPh"), "", true) + '<div class="push">' + btn(t("reveal"), "doReveal") + '</div>' }; };
+SC.guess = function () { return { cls: "calm", html: orbs() + hdr(t("guessL"), x("guessC")) + '<p class="mid">' + t("guessQ") + '</p><p class="txt">' + t("guessHint") + '</p>' + field("guess", t("guessPh"), "", true) + '<div class="push">' + btn(t("reveal"), "doReveal") + '</div>' }; };
 SC.reveal = function () {
   var m = M(); var sc = V.tmp.score;
-  return { cls: "", html: orbs() + '<p class="lab">' + t("herMoment") + '</p><div class="quote">' + esc(m.title) + '</div>' +
+  return { cls: "", html: orbs() + hdr(x("revealL"), x("revealC")) + '<div class="quote">' + esc(m.title) + '</div>' +
     (m.guess ? '<div class="box"><span class="txt">' + t("guessL") + ':</span> ' + esc(m.guess) + '</div>' : "") +
     (!m.guess ? "" : sc ? '<p class="score">' + t(sc === "yes" ? "gotItSay" : "notQuiteSay") + '</p>' : '<p class="txt">' + t("didYou") + '</p><div class="seg2"><button data-act="scoreYes">' + t("gotIt") + '</button><button data-act="scoreNo">' + t("notQuite") + '</button></div>') +
-    '<div class="box">' + t("mission") + '</div><div class="push">' + btn(t("go"), "afterReveal") + '</div>' };
+    '<div class="box">' + t("mission") + '</div><div class="push">' + btn(x("revealBtn"), "afterReveal") + '</div>' };
 };
 /* --- his intro --- */
-SC.intro1 = function () { return { cls: "", html: orbs() + '<div class="top"><span></span>' + '<button class="iconbtn" data-act="introDone">' + t("skip") + '</button></div><p class="icon">✦</p><div class="push"><p class="big">' + t("i1") + '</p>' + dots(0) + btn(t("continueBtn"), "intro2") + '</div>' }; };
-SC.intro2 = function () { return { cls: "", html: orbs() + '<div class="top"><span></span><button class="iconbtn" data-act="introDone">' + t("skip") + '</button></div><div class="steps"><span><b>1</b>' + t("s1") + '</span><span><b>2</b>' + t("s2") + '</span><span><b>3</b>' + t("s3") + '</span></div><div class="push"><p class="big">' + t("i2") + '</p>' + dots(1) + btn(t("continueBtn"), "intro3") + '</div>' }; };
-SC.intro3 = function () { return { cls: "", html: orbs() + '<div class="bars"><i style="height:25%"></i><i style="height:45%"></i><i style="height:65%"></i><i style="height:100%"></i></div><div class="push"><p class="big">' + t("i3") + '</p><p class="txt">' + t("i3s") + '</p>' + dots(2) + btn(V.mid ? t("go") : t("firstMoment"), "introDone") + '</div>' }; };
+SC.intro1 = function () { return { cls: "", html: orbs() + '<div class="top"><p class="lab">' + x("howL") + '</p><button class="iconbtn" data-act="introDone">' + t("skip") + '</button></div><p class="icon">✦</p><div class="push"><p class="big">' + t("i1") + '</p>' + dots(0) + btn(t("continueBtn"), "intro2") + '</div>' }; };
+SC.intro2 = function () { return { cls: "", html: orbs() + '<div class="top"><p class="lab">' + x("howL") + '</p><button class="iconbtn" data-act="introDone">' + t("skip") + '</button></div><div class="steps"><span><b>1</b>' + t("s1") + '</span><span><b>2</b>' + t("s2") + '</span><span><b>3</b>' + t("s3") + '</span></div><div class="push"><p class="big">' + t("i2") + '</p>' + dots(1) + btn(t("continueBtn"), "intro3") + '</div>' }; };
+SC.intro3 = function () { return { cls: "", html: orbs() + '<div class="top"><p class="lab">' + x("howL") + '</p></div><div class="bars"><i style="height:25%"></i><i style="height:45%"></i><i style="height:65%"></i><i style="height:100%"></i></div><div class="push"><p class="big">' + t("i3") + '</p><p class="txt">' + t("i3s") + '</p>' + dots(2) + btn(V.mid ? x("revealBtn") : t("firstMoment"), "introDone") + '</div>' }; };
 
 /* --- home --- */
 SC.home = function () {
@@ -382,16 +436,16 @@ SC.home = function () {
   open.sort(function (a, b) { return (b.status === "saved") - (a.status === "saved"); });
   var done = S.moments.filter(function (m) { return m.status === "done"; });
   var row = function (m) { return chip(esc(m.title), "open:" + m.id, m.status === "sealed" || m.status === "answered" || m.status === "saved" ? "rec" : "", pillFor(m)); };
-  var html = orbs() + tabs() + pairLine() + '<p class="mid">' + t("m1") + '</p>' +
+  var html = orbs() + tabs() + pairLine() + hdr(x("homeL"), x("homeC")) + '<p class="mid">' + t("m1") + '</p>' +
     (open.length ? '<div class="list">' + open.map(row).join("") + '</div>' : "") +
-    (S.moments.length < 3 ? '<p class="lab mutedlab">' + t("tryOne") + '</p><div class="list">' + ["sugA", "sugB", "sugC"].map(function (k) { return chip(t(k), "addSug:" + k, "", "<span>+</span>"); }).join("") + '</div>' : "") +
-    field("own", t("ownPh"), "", false) + btn(t("add"), "addOwn") +
+    (S.moments.length < 3 ? '<p class="lab mutedlab">' + x("ideas") + '</p><div class="list">' + ["sugA", "sugB", "sugC"].map(function (k) { return chip(t(k), "addSug:" + k, "", "<span>+</span>"); }).join("") + '</div>' : "") +
+    field("own", t("ownPh"), "", false) + btn(x("addBtn"), "addOwn") +
     (done.length ? '<p class="lab mutedlab" style="margin-top:8px">' + t("toldList") + '</p><div class="list">' + done.map(row).join("") + '</div>' : "");
   return { cls: "calm", html: html };
 };
 SC.draws = function () {
   var items = S.draws.map(function (d) { return '<div class="chip" style="cursor:default"><span>' + esc(d) + '</span><span class="pill">✦</span></div>'; }).join("");
-  return { cls: "", html: orbs() + tabs() + '<p class="big">' + t("drawsL") + '</p>' + (items ? '<div class="list">' + items + '<div class="chip lock" style="cursor:default"><span>' + t("more") + '</span></div></div>' : '<div class="empty">' + t("drawsEmpty") + '</div>') };
+  return { cls: "", html: orbs() + tabs() + '<p class="big">' + t("drawsL") + '</p><p class="ctx">' + esc(x("drawsC")) + '</p>' + (items ? '<div class="list">' + items + '<div class="chip lock" style="cursor:default"><span>' + t("more") + '</span></div></div>' : '<div class="empty">' + t("drawsEmpty") + '</div>') };
 };
 SC.settings = function () {
   var h = orbs() + tabs() + '<p class="mid">' + t("setL") + '</p><p class="lab">' + t("language") + '</p><div class="seg2"><button data-lang="en" class="' + (S.lang === "en" ? "sel" : "") + '">English</button><button data-lang="he" class="he ' + (S.lang === "he" ? "sel" : "") + '">עברית</button></div>' +
@@ -402,58 +456,59 @@ SC.settings = function () {
   return { cls: "calm", html: h };
 };
 /* --- his steps --- */
-SC.why = function () { var m = M(); return { cls: "calm", html: orbs() + '<p class="lab">2 / 6</p><p class="txt">' + esc(m.title) + '</p><p class="mid">' + t("m2") + '</p>' + field("why", t("whyPh"), m.why, true) + '<div class="push"><div class="seg2"><button data-act="iKnow">' + t("iKnow") + '</button><button class="sel" data-act="iDont">' + t("iDont") + '</button></div>' + ghost("‹ " + t("backHome"), "home") + '</div>' }; };
+function momentLine(m) { return '<div class="box" style="padding:10px 14px"><span class="txt">' + t("tMoment") + ':</span> ' + esc(m.title) + '</div>'; }
+SC.why = function () { var m = M(); return { cls: "calm", html: orbs() + hdr(x("st2"), x("whyC")) + momentLine(m) + '<p class="mid">' + t("m2") + '</p>' + field("why", t("whyPh"), m.why, true) + '<div class="push">' + chip(x("whyKnow"), "iKnow") + chip(x("whyDont"), "iDont", "rec") + ghost("‹ " + t("backHome"), "home") + '</div>' }; };
 SC.ask = function () {
   var m = M(); var q = m.question || (m.from === "her" ? t("askQher") : t("askQ0").replace("{m}", S.lang === "he" ? m.title : lc(m.title)));
-  return { cls: "calm", html: orbs() + '<p class="lab">3 / 6</p><p class="txt">' + esc(m.title) + '</p><p class="mid">' + t("m3") + '</p>' + field("q", "", q, true) + '<div class="push">' + chip(t("inPerson"), "askInPerson", "rec", '<span class="pill">' + t("best") + '</span>') + chip(t("sendHer"), "askSend") + ghost("‹ " + t("backHome"), "home") + '</div>' };
+  return { cls: "calm", html: orbs() + hdr(x("st3"), x("askC")) + momentLine(m) + '<p class="mid">' + t("m3") + '</p>' + field("q", "", q, true) + '<div class="push">' + chip(x("askPerson"), "askInPerson", "rec", "<small>" + x("askPersonS") + "</small>") + chip(x("askSend"), "askSend", "", "<small>" + x("askSendS") + "</small>") + ghost("‹ " + t("backHome"), "home") + '</div>' };
 };
-SC.record = function () { var m = M(); return { cls: "calm", html: orbs() + '<p class="lab">3 / 6</p><p class="mid">' + t("recQ") + '</p><p class="txt">' + esc(m.question) + '</p>' + field("ans", t("recPh"), m.answer, true) + '<div class="push">' + btn(t("save"), "saveRecord") + '</div>' }; };
-SC.sent = function () { return { cls: "", html: orbs() + '<p class="lab">3 / 6</p><p class="big">' + t("sentQ") + '</p><div class="quote">' + esc(M().question) + '</div><p class="txt">' + t("sentTxt") + '</p>' + copyLinkBlock() + '<div class="push">' + btn(t("backHome"), "home") + '</div>' }; };
+SC.record = function () { var m = M(); return { cls: "calm", html: orbs() + hdr(x("st3"), x("recC")) + '<p class="mid">' + t("recQ") + '</p><p class="txt">' + esc(m.question) + '</p>' + field("ans", t("recPh"), m.answer, true) + '<div class="push">' + btn(x("recBtn"), "saveRecord") + '</div>' }; };
+SC.sent = function () { return { cls: "", html: orbs() + hdr(x("st3"), x("sentC")) + '<p class="big">' + x("sentT") + '</p><div class="quote">' + esc(M().question) + '</div><p class="txt">' + t("sentTxt") + '</p>' + copyLinkBlock() + '<div class="push">' + btn(t("backHome"), "home") + '</div>' }; };
 SC.learned = function () {
   var m = M();
-  return { cls: "calm", html: orbs() + '<p class="lab">4 / 6</p><p class="mid">' + t("m4") + '</p><div class="sum"><div><span>' + t("tMoment") + '</span>' + esc(m.title) + '</div>' + (m.guess || m.why ? '<div><span>' + t("tGuess") + '</span>' + esc(m.why || m.guess) + '</div>' : "") + (m.answer ? '<div><span>' + t("tSaid") + '</span>' + esc(m.answer) + '</div>' : "") + '</div>' +
-    '<p class="lab">' + t("drawQ") + '</p>' + field("draw", t("drawPh"), m.draw, false) + '<div class="push">' + btn(t("next"), "saveLearned") + '</div>' };
+  return { cls: "calm", html: orbs() + hdr(x("st4"), m.answer && m.askedHow === "link" ? x("learnedC") : x("learnedC0")) + '<p class="mid">' + t("m4") + '</p><div class="sum"><div><span>' + t("tMoment") + '</span>' + esc(m.title) + '</div>' + (m.guess || m.why ? '<div><span>' + t("tGuess") + '</span>' + esc(m.why || m.guess) + '</div>' : "") + (m.answer ? '<div><span>' + t("tSaid") + '</span>' + esc(m.answer) + '</div>' : "") + '</div>' +
+    '<p class="lab">' + t("drawQ") + '</p>' + field("draw", t("drawPh"), m.draw, false) + '<div class="push">' + btn(x("learnedBtn"), "saveLearned") + '</div>' };
 };
 SC.feel = function () {
   var m = M(); var sel = m.feelings || [];
   var c = t("feelings").map(function (w, i) { return '<button data-feel="' + i + '" class="' + (sel.indexOf(i) > -1 ? "sel" : "") + '">' + w + '</button>'; }).join("");
-  return { cls: "calm", html: orbs() + '<p class="lab">5 / 6</p><p class="mid">' + t("m5a") + '</p><p class="txt">' + t("pickUp") + '</p><div class="chips">' + c + '</div><div class="push">' + btn(t("next"), "toWords", !sel.length) + '</div>' };
+  return { cls: "calm", html: orbs() + hdr(x("st5"), x("feelC")) + '<p class="mid">' + t("m5a") + '</p><p class="txt">' + t("pickUp") + '</p><div class="chips">' + c + '</div><div class="push">' + btn(x("feelBtn"), "toWords", !sel.length) + '</div>' };
 };
-SC.words = function () { var m = M(); return { cls: "calm", html: orbs() + '<p class="lab">5 / 6</p><p class="mid">' + t("m5b") + '</p><p class="txt">' + t("seeQ") + '</p>' + field("see", t("seePh"), m.see, true) + '<p class="txt">' + t("knowQ") + '</p>' + field("know", t("knowPh"), m.know, true) + '<div class="push">' + btn(t("next"), "saveWords") + '</div>' }; };
+SC.words = function () { var m = M(); return { cls: "calm", html: orbs() + hdr(x("st5"), x("wordsC")) + '<p class="mid">' + t("m5b") + '</p><p class="txt">' + t("seeQ") + '</p>' + field("see", t("seePh"), m.see, true) + '<p class="txt">' + t("knowQ") + '</p>' + field("know", t("knowPh"), m.know, true) + '<div class="push">' + btn(x("wordsBtn"), "saveWords") + '</div>' }; };
 SC.say = function () {
   var m = M(); var f = (m.feelings || []).map(function (i) { return "<b>" + t("feelings")[i] + "</b>"; }).join(S.lang === "he" ? " ו" : " and ");
   var r = (f ? t("youFelt") + " " + f + ". " : "") + (m.see ? t("youSee") + ": " + esc(m.see) + ". " : "") + (m.know ? t("youWant") + ": " + esc(m.know) + "." : "");
-  return { cls: "calm", html: orbs() + '<p class="lab">5 / 6</p><p class="mid">' + t("m5c") + '</p>' + (r ? '<div class="box">' + r + '</div>' : "") + '<div class="tip">' + t("tip") + '</div><p class="lab mutedlab">' + t("tellLab") + '</p>' +
+  return { cls: "calm", html: orbs() + hdr(x("st5"), x("sayC")) + '<p class="mid">' + t("m5c") + '</p>' + (r ? '<div class="box">' + r + '</div>' : "") + '<div class="tip">' + t("tip") + '</div><p class="lab mutedlab">' + t("tellLab") + '</p>' +
     chip(t("tell1"), "tellPerson", "rec", '<span class="pill">' + t("best") + '</span>') + chip(t("tell2"), "tellNote", "", "<small>" + t("tell2s") + "</small>") + chip(t("tell3"), "tellLater", "", "<small>" + t("tell3s") + "</small>") };
 };
-SC.note = function () { var m = M(); return { cls: "calm", html: orbs() + '<p class="lab">5 / 6</p><p class="mid">' + t("noteQ") + '</p>' + field("noteTxt", t("notePh"), m.noteDraft, true) + '<div class="push">' + btn(t("sendNote"), "sendNote") + '</div>' }; };
+SC.note = function () { var m = M(); return { cls: "calm", html: orbs() + hdr(x("st5"), x("noteC")) + '<p class="mid">' + t("noteQ") + '</p>' + field("noteTxt", t("notePh"), m.noteDraft, true) + '<div class="push">' + btn(t("sendNote"), "sendNote") + '</div>' }; };
 SC.rate = function () {
   var m = M(), r = m.rating || 0, hs = "";
   for (var i = 1; i <= 5; i++) hs += '<button data-heart="' + i + '" class="' + (i <= r ? "on" : "") + '" aria-label="' + i + '">♥</button>';
-  return { cls: "calm", html: orbs() + '<p class="lab">6 / 6</p><p class="mid">' + t("m6") + '</p><div class="hearts">' + hs + '</div>' + field("react", t("whatPh"), m.howItWent, true) + '<div class="push">' + (m.toldHow === "person" ? chip(t("letHer"), "sendListened") : "") + btn(t("finish"), "finishRate", !r) + '</div>' };
+  return { cls: "calm", html: orbs() + hdr(x("st6"), x("rateC")) + '<p class="mid">' + t("m6") + '</p><div class="hearts">' + hs + '</div>' + field("react", t("whatPh"), m.howItWent, true) + '<div class="push">' + (m.toldHow === "person" ? chip(t("letHer"), "sendListened") : "") + btn(x("rateBtn"), "finishRate", !r) + '</div>' };
 };
 /* --- her side --- */
-SC.herIntro1 = function () { return { cls: "", html: orbs() + '<div class="top"><span></span><button class="iconbtn" data-act="herIntroDone">' + t("skip") + '</button></div><p class="icon">♡</p><div class="push"><p class="big">' + t("hi1") + '</p>' + dots(0) + btn(t("continueBtn"), "herIntro2") + '</div>' }; };
-SC.herIntro2 = function () { return { cls: "", html: orbs() + '<div class="top"><span></span><button class="iconbtn" data-act="herIntroDone">' + t("skip") + '</button></div><p class="icon">💬</p><div class="push"><p class="big">' + t("hi2") + '</p>' + dots(1) + btn(t("continueBtn"), "herIntro3") + '</div>' }; };
-SC.herIntro3 = function () { return { cls: "", html: orbs() + '<p class="icon">🔒</p><div class="push"><p class="big">' + t("hi3") + '</p><p class="txt">' + t("hi3s") + '</p>' + dots(2) + btn(t("seeQBtn"), "herIntroDone") + '</div>' }; };
+SC.herIntro1 = function () { return { cls: "", html: orbs() + '<div class="top"><p class="lab">' + x("howL") + '</p><button class="iconbtn" data-act="herIntroDone">' + t("skip") + '</button></div><p class="icon">♡</p><div class="push"><p class="big">' + t("hi1") + '</p>' + dots(0) + btn(t("continueBtn"), "herIntro2") + '</div>' }; };
+SC.herIntro2 = function () { return { cls: "", html: orbs() + '<div class="top"><p class="lab">' + x("howL") + '</p><button class="iconbtn" data-act="herIntroDone">' + t("skip") + '</button></div><p class="icon">💬</p><div class="push"><p class="big">' + t("hi2") + '</p>' + dots(1) + btn(t("continueBtn"), "herIntro3") + '</div>' }; };
+SC.herIntro3 = function () { return { cls: "", html: orbs() + '<div class="top"><p class="lab">' + x("howL") + '</p></div><p class="icon">🔒</p><div class="push"><p class="big">' + t("hi3") + '</p><p class="txt">' + t("hi3s") + '</p>' + dots(2) + btn(t("seeQBtn"), "herIntroDone") + '</div>' }; };
 SC.herHome = function () {
   if (V.tab === "settings") return SC.settings();
   var asked = S.moments.filter(function (m) { return m.status === "asked"; });
   var listened = S.moments.filter(function (m) { return m.status === "listened"; });
   var mine = S.moments.filter(function (m) { return m.from === "her" && m.status !== "asked" && m.status !== "listened"; });
-  var h = orbs() + tabs() + pairLine() + '<p class="mid">' + t("hHome") + '</p>' +
-    (asked.length || listened.length ? '<div class="list">' + asked.map(function (m) { return chip(esc(m.question), "answer:" + m.id, "rec", '<span class="pill">♡</span>'); }).join("") + listened.map(function (m) { return chip(t("hListened") + (m.note ? " · ✉" : ""), "listened:" + m.id, "", ""); }).join("") + '</div>' : '<div class="empty">' + t("hNone") + '</div>') +
-    '<p class="lab" style="margin-top:6px">' + t("hAddL") + '</p>' + field("herMoment", t("hAddPh"), "", false) + btn(t("send"), "herAddMoment") +
+  var h = orbs() + tabs() + pairLine() + '<p class="mid">' + t("hHome") + '</p><p class="ctx">' + esc(x("hHomeC")) + '</p>' +
+    (asked.length || listened.length ? '<div class="list">' + asked.map(function (m) { return chip(esc(m.question), "answer:" + m.id, "rec", '<span class="pill">♡</span>'); }).join("") + listened.map(function (m) { return chip(esc(x("lisL")) + (m.note ? " · ✉" : ""), "listened:" + m.id, "", ""); }).join("") + '</div>' : '<div class="empty">' + t("hNone") + '</div>') +
     (mine.length ? '<p class="lab mutedlab">' + t("hMyMoments") + '</p><div class="list">' + mine.map(function (m) { return '<div class="chip" style="cursor:default"><span>' + esc(m.title) + '</span><span class="pill">' + (m.status === "sent" ? "🔒 " + t("waitingGuess") : "🔒") + '</span></div>'; }).join("") + '</div>' : "") +
-    '<p class="lab" style="margin-top:6px">🔒 ' + t("hNotes") + '</p><textarea id="notes" placeholder="' + esc(t("hNotesPh")) + '">' + esc(S.notes) + '</textarea>' + ghost(t("saveNotes"), "saveNotes");
+    '<p class="lab" style="margin-top:6px">' + t("hAddL") + '</p><p class="ctx">' + esc(x("hAddC")) + '</p>' + field("herMoment", t("hAddPh"), "", false) + btn(x("hAddBtn"), "herAddMoment") +
+    '<p class="lab" style="margin-top:6px">🔒 ' + t("hNotes") + '</p><p class="ctx">' + esc(x("hNotesC")) + '</p><textarea id="notes" placeholder="' + esc(t("hNotesPh")) + '">' + esc(S.notes) + '</textarea>' + ghost(t("saveNotes"), "saveNotes");
   return { cls: "calm", html: h };
 };
-SC.answer = function () { var m = M(); if (!m) return SC.home(); return { cls: "calm", html: orbs() + '<p class="lab">' + esc(t("hFrom")) + '</p><p class="mid">' + esc(m.question) + '</p>' + field("herAns", t("hAnsPh"), m.answer, true) + '<div class="push">' + btn(t("send"), "sendAnswer") + ghost("‹ " + t("backHome"), "home") + '</div>' }; };
+SC.answer = function () { var m = M(); if (!m) return SC.home(); return { cls: "calm", html: orbs() + hdr(x("ansL"), x("ansC")) + '<p class="mid">' + esc(m.question) + '</p>' + field("herAns", t("hAnsPh"), m.answer, true) + '<div class="push">' + btn(x("ansBtn"), "sendAnswer") + ghost("‹ " + t("backHome"), "home") + '</div>' }; };
 SC.listened = function () {
   var m = M(); if (!m) return SC.home();
-  return { cls: "", html: orbs() + '<p class="big">' + t("hListened") + '</p>' + (m.title ? '<p class="txt">' + esc(m.title) + '</p>' : "") + (m.note ? '<p class="lab mutedlab">' + esc(t("noteFrom")) + '</p><div class="quote">' + esc(m.note) + '</div>' : "") +
-    '<p class="lab mutedlab">' + t("react") + '</p>' + field("reactTxt", t("reactPh"), m.reaction, true) + ghost(t("react") + " ›", "sendReaction") +
-    '<div class="push">' + btn(t("addMore"), "home") + '<p class="txt center" style="font-size:12px">' + t("addMoreS") + '</p></div>' };
+  return { cls: "", html: orbs() + hdr(x("lisL"), x("lisC")) + '<p class="big">' + t("hListened") + '</p>' + (m.title ? '<p class="txt">' + esc(m.title) + '</p>' : "") + (m.note ? '<p class="lab mutedlab">' + esc(t("noteFrom")) + '</p><div class="quote">' + esc(m.note) + '</div>' : "") +
+    '<p class="lab mutedlab">' + t("react") + '</p>' + field("reactTxt", t("reactPh"), m.reaction, true) + ghost(x("lisReactBtn") + " ›", "sendReaction") +
+    '<div class="push">' + btn(x("lisMore"), "home") + '<p class="txt center" style="font-size:12px">' + t("addMoreS") + '</p></div>' };
 };
 function pairLine() { return S.me || S.partner ? '<p class="lab mutedlab">' + esc(t("hiPair").replace("{me}", S.me || "").replace("{p}", S.partner || "")) + '</p>' : ""; }
 function copyLinkBlock() { return V.lastLink ? '<p class="lab mutedlab">' + t("copyLink") + '</p><div class="copybox" data-act="copyLink">' + esc(V.lastLink) + '</div>' : ""; }
