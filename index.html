@@ -47,7 +47,13 @@ body[dir="rtl"] .lab { letter-spacing: .03em; font-size: 14px; }
 .mid { font-weight: 200; font-size: 27px; line-height: 1.15; letter-spacing: -.01em; margin: 0; text-wrap: balance; }
 body[dir="rtl"] .big, body[dir="rtl"] .mid { letter-spacing: 0; line-height: 1.18; }
 .brand { font-weight: 200; font-size: 44px; line-height: 1; letter-spacing: -.03em; margin: 0; }
-.ctx { font-size: 21px; font-weight: 300; line-height: 1.4; color: var(--ink); opacity: .88; margin: -2px 0 6px; }
+.howto { border-radius: 18px; padding: 14px 16px; background: var(--soft); border-inline-start: 4px solid var(--pink); display: flex; flex-direction: column; gap: 8px; margin: 2px 0 6px; }
+body.her .howto { border-inline-start-color: var(--acc); }
+.ctx { font-size: 20px; font-weight: 400; line-height: 1.4; color: var(--ink); margin: 0; }
+.gain { font-size: 17px; line-height: 1.4; color: var(--pink); margin: 0; }
+body.her .gain { color: var(--acc); }
+.gain span { display: block; font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; opacity: .8; margin-bottom: 2px; }
+.gain.big2 { font-size: 22px; }
 .explain { font-weight: 300; font-size: 34px; line-height: 1.2; margin: 0; }
 .storycard { border: 1px solid var(--line); border-radius: 20px; padding: 16px; background: var(--card); display: flex; flex-direction: column; gap: 10px; }
 .storycard .t { font-weight: 300; font-size: 19px; line-height: 1.35; }
@@ -364,22 +370,22 @@ SC.notice = function () { return { cls: "calm", html: orbs() + '<p class="mid" s
 /* --- screen copy: where you are · why you're here · what to do --- */
 var CX = {
   en: {
-    st1: "Step 1 of 6 · Pick a moment", st2: "Step 2 of 6 · Find out why", st3: "Step 3 of 6 · Ask her", st4: "Step 4 of 6 · What you learned", st5: "Step 5 of 6 · Say it", st6: "Step 6 of 6 · How it landed",
+    homeB: "Find out why, and you'll know how to bring it back.", whyB: "Find the why, and you can make it happen again.", askB: "Her answer tells you exactly what draws her to you. And being asked is a small gift for her.", recB: "Her exact words are the clue.", learnedB: "Now you know something about her that most men never find out.", feelB: "When you know what you feel, your words are real. Real words reach her.", wordsB: "These become what you say to her.", sayB: "Said in your own words, it brings her closer to you.", rateB: "Every round teaches you what works with her.", sealedB: "Guess right, and you'll know her a little better.", gainL: "What you gain", st1: "Step 1 of 6 · Pick a moment", st2: "Step 2 of 6 · Find out why", st3: "Step 3 of 6 · Ask her", st4: "Step 4 of 6 · What you learned", st5: "Step 5 of 6 · Say it", st6: "Step 6 of 6 · How it landed",
     sealedL: "Her moment · locked", sealedC: "{n} sent you this. She wrote a moment, you try to guess it.",
     guessC: "Write what you think her moment was. Then we unlock it.",
     revealL: "Unlocked", revealC: "This is the moment {n} wrote down.", revealBtn: "Start your mission",
     howL: "How it works",
-    homeL: "Your moments", homeC: "Moments she was really into you. Tap one to find out why, or add a new one.", ideas: "Ideas to start with", addBtn: "Add this moment",
-    whyC: "Most men remember what happened, not why. Your guess, or a question for her.", whyKnow: "I know, I'll write it", whyDont: "I don't know, I'll ask her",
-    askC: "Asking her is already a small gift. Change the question if you like.", askPerson: "Ask her in person", askPersonS: "Then write what she said", askSend: "Send it to her on WhatsApp", askSendS: "She answers from her phone",
+    homeL: "Your moments", homeC: "Pick a moment she was really into you, or add a new one.", ideas: "Ideas to start with", addBtn: "Add this moment",
+    whyC: "Write your guess. Don't know? Ask her.", whyKnow: "I know, I'll write it", whyDont: "I don't know, I'll ask her",
+    askC: "Ask her in person, or send it on WhatsApp. You can change the question.", askPerson: "Ask her in person", askPersonS: "Then write what she said", askSend: "Send it to her on WhatsApp", askSendS: "She answers from her phone",
     recC: "You asked her in person. Write what she said, in her words.", recBtn: "Save her answer",
     sentT: "Now wait for her answer", sentC: "Your question is on its way to {n}.",
-    learnedC: "{n} answered. Here's what you know now.", learnedC0: "Here's what you know now.", learnedBtn: "Next: how you feel",
-    feelC: "Before you talk to her, notice what you feel. Tap the words that fit.", feelBtn: "Next: your own words",
-    wordsC: "Short answers are fine. Only you see them.", wordsBtn: "Next: what to say",
-    sayC: "This is what you want to say, in your words. Now tell her.",
+    learnedC: "{n} answered. Here's what you know now.", learnedC0: "Read what you found out, and sum it up in a few words.", learnedBtn: "Next: how you feel",
+    feelC: "Tap the words that fit what you feel.", feelBtn: "Next: your own words",
+    wordsC: "Answer in a few words. Only you see them.", wordsBtn: "Next: what to say",
+    sayC: "Read what you want to say, then choose how to tell her.",
     noteC: "Write it your way. It goes to {n} on WhatsApp.",
-    rateC: "You told {n}. How did she react?", rateBtn: "Save and back to my moments",
+    rateC: "You told {n}. Tap the hearts to show how she reacted.", rateBtn: "Save and back to my moments",
     drawsC: "Everything you've learned about what draws her to you.",
     hFirstStep: "Step 1 of 2 · Your moment", hFirstC: "Write one moment you fell for {n} again. He won't see it until he guesses.", hFirstBtn: "Next: invite him",
     hInvStep: "Step 2 of 2 · Invite him", hInvC: "Send {n} a WhatsApp link. He opens the app and tries to guess your moment.", hInvBtn: "Send the invite on WhatsApp", later: "Later",
@@ -394,22 +400,22 @@ var CX = {
     editShort: "Edit", editMomentL: "Edit your moment", editAnswerL: "Edit your answer", editC: "Fix anything you like. He gets the corrected version on WhatsApp.", editBtn: "Save and send the correction", cancel: "Cancel"
   },
   he: {
-    st1: "שלב 1 מתוך 6 · בחר רגע", st2: "שלב 2 מתוך 6 · גלה למה", st3: "שלב 3 מתוך 6 · תשאל אותה", st4: "שלב 4 מתוך 6 · מה גילית", st5: "שלב 5 מתוך 6 · תגיד לה", st6: "שלב 6 מתוך 6 · איך זה התקבל",
+    homeB: "תגלה למה, ותדע איך להחזיר את זה.", whyB: "תגלה את הלמה, ותוכל לגרום לזה לקרות שוב.", askB: "התשובה שלה תגיד לך בדיוק מה מושך אותה אליך. ועצם השאלה היא מתנה קטנה בשבילה.", recB: "המילים המדויקות שלה הן הרמז.", learnedB: "עכשיו אתה יודע עליה משהו שרוב הגברים לא מגלים.", feelB: "כשאתה יודע מה אתה מרגיש, המילים שלך אמיתיות. ומילים אמיתיות מגיעות אליה.", wordsB: "מהן ייצא מה שתגיד לה.", sayB: "כשזה נאמר במילים שלך, זה מקרב אותה אליך.", rateB: "כל סיבוב מלמד אותך מה עובד איתה.", sealedB: "תנחש נכון, ותכיר אותה קצת יותר.", gainL: "מה תרוויח", st1: "שלב 1 מתוך 6 · בחר רגע", st2: "שלב 2 מתוך 6 · גלה למה", st3: "שלב 3 מתוך 6 · תשאל אותה", st4: "שלב 4 מתוך 6 · מה גילית", st5: "שלב 5 מתוך 6 · תגיד לה", st6: "שלב 6 מתוך 6 · איך זה התקבל",
     sealedL: "הרגע שלה · נעול", sealedC: "{n} שלחה לך את זה. היא כתבה רגע, ואתה מנסה לנחש אותו.",
     guessC: "כתוב מה לדעתך היה הרגע שלה. אחר כך נפתח אותו.",
     revealL: "נפתח", revealC: "זה הרגע ש{n} כתבה.", revealBtn: "להתחיל במשימה",
     howL: "איך זה עובד",
-    homeL: "הרגעים שלך", homeC: "רגעים שבהם היא ממש נמשכה אליך. לחץ על אחד כדי לגלות למה, או הוסף חדש.", ideas: "רעיונות להתחלה", addBtn: "הוסף את הרגע",
-    whyC: "רוב הגברים זוכרים מה קרה, לא למה. כתוב ניחוש, או שאל אותה.", whyKnow: "אני יודע, אכתוב", whyDont: "לא יודע, אשאל אותה",
-    askC: "עצם השאלה היא כבר מתנה קטנה. אפשר לשנות את השאלה.", askPerson: "לשאול אותה פנים אל פנים", askPersonS: "ואז לכתוב מה היא אמרה", askSend: "לשלוח לה בוואטסאפ", askSendS: "היא עונה מהטלפון",
+    homeL: "הרגעים שלך", homeC: "בחר רגע שבו היא ממש נמשכה אליך, או הוסף חדש.", ideas: "רעיונות להתחלה", addBtn: "הוסף את הרגע",
+    whyC: "כתוב ניחוש. לא יודע? תשאל אותה.", whyKnow: "אני יודע, אכתוב", whyDont: "לא יודע, אשאל אותה",
+    askC: "תשאל אותה פנים אל פנים, או שלח בוואטסאפ. אפשר לשנות את השאלה.", askPerson: "לשאול אותה פנים אל פנים", askPersonS: "ואז לכתוב מה היא אמרה", askSend: "לשלוח לה בוואטסאפ", askSendS: "היא עונה מהטלפון",
     recC: "שאלת אותה פנים אל פנים. כתוב מה היא אמרה, במילים שלה.", recBtn: "שמור את התשובה שלה",
     sentT: "עכשיו מחכים לתשובה שלה", sentC: "השאלה שלך בדרך ל{n}.",
-    learnedC: "{n} ענתה. זה מה שאתה יודע עכשיו.", learnedC0: "זה מה שאתה יודע עכשיו.", learnedBtn: "הבא: מה אתה מרגיש",
-    feelC: "לפני שאתה מדבר איתה, שים לב מה אתה מרגיש. בחר את המילים שמתאימות.", feelBtn: "הבא: המילים שלך",
-    wordsC: "תשובות קצרות זה בסדר. רק אתה רואה אותן.", wordsBtn: "הבא: מה להגיד",
-    sayC: "זה מה שאתה רוצה להגיד, במילים שלך. עכשיו תגיד לה.",
+    learnedC: "{n} ענתה. זה מה שאתה יודע עכשיו.", learnedC0: "קרא מה גילית, וסכם בכמה מילים.", learnedBtn: "הבא: מה אתה מרגיש",
+    feelC: "בחר את המילים שמתאימות למה שאתה מרגיש.", feelBtn: "הבא: המילים שלך",
+    wordsC: "ענה בכמה מילים. רק אתה רואה אותן.", wordsBtn: "הבא: מה להגיד",
+    sayC: "קרא מה אתה רוצה להגיד, ואז בחר איך לספר לה.",
     noteC: "תכתוב בדרך שלך. זה יגיע ל{n} בוואטסאפ.",
-    rateC: "סיפרת ל{n}. איך היא הגיבה?", rateBtn: "שמור וחזור לרגעים שלי",
+    rateC: "סיפרת ל{n}. סמן בלבבות איך היא הגיבה.", rateBtn: "שמור וחזור לרגעים שלי",
     drawsC: "כל מה שלמדת על מה מושך אותה אליך.",
     hFirstStep: "שלב 1 מתוך 2 · הרגע שלך", hFirstC: "כתבי רגע אחד שבו התאהבת ב{n} מחדש. הוא לא יראה אותו עד שינחש.", hFirstBtn: "הבא: להזמין אותו",
     hInvStep: "שלב 2 מתוך 2 · הזמיני אותו", hInvC: "שלחי ל{n} קישור בוואטסאפ. הוא יפתח את האפליקציה וינסה לנחש את הרגע שלך.", hInvBtn: "שלחי את ההזמנה בוואטסאפ", later: "אחר כך",
@@ -425,7 +431,7 @@ var CX = {
   }
 };
 function x(k) { var s = CX[S.lang][k] || CX.en[k] || ""; return s.replace(/\{n\}/g, S.partner || (S.lang === "he" ? (S.role === "him" ? "היא" : "הוא") : (S.role === "him" ? "She" : "He"))); }
-function hdr(step, ctx) { return (step ? '<p class="lab">' + esc(step) + '</p>' : "") + (ctx ? '<p class="ctx">' + esc(ctx) + '</p>' : ""); }
+function hdr(step, ctx, gain) { return (step ? '<p class="lab">' + esc(step) + '</p>' : "") + (ctx ? '<div class="howto"><p class="ctx">' + esc(ctx) + '</p>' + (gain ? '<p class="gain"><span>✦ ' + esc(x("gainL")) + '</span>' + esc(gain) + '</p>' : "") + '</div>' : ""); }
 
 /* --- her start --- */
 SC.herFirst = function () { return { cls: "calm", html: orbs() + hdr(x("hFirstStep"), x("hFirstC")) + '<p class="mid">' + t("hFirstQ") + '</p>' + field("first", t("hFirstPh"), V.tmp.first, true) + '<div class="push">' + btn(x("hFirstBtn"), "herFirstNext") + '</div>' }; };
@@ -437,7 +443,7 @@ SC.herInvite = function () {
 /* --- his invite --- */
 SC.sealed = function () {
   var m = M(); if (!m) return SC.home();
-  return { cls: "", html: orbs() + hdr(x("sealedL"), x("sealedC")) + '<p class="big">' + esc(t("invBig")) + '</p>' +
+  return { cls: "", html: orbs() + hdr(x("sealedL"), x("sealedC"), x("sealedB")) + '<p class="big">' + esc(t("invBig")) + '</p>' +
     '<div class="sealed"><div class="row2 lab" style="margin-bottom:8px"><span>' + t("herMoment") + '</span><span>🔒</span></div><div class="blur">' + esc(m.title) + '</div></div><p class="txt">' + t("canGuess") + '</p>' +
     '<div class="push">' + btn(t("guessBtn"), "toGuess") + ghost(t("justShow"), "doReveal") + '</div>' };
 };
@@ -463,7 +469,7 @@ SC.home = function () {
   open.sort(function (a, b) { return (b.status === "saved") - (a.status === "saved"); });
   var done = S.moments.filter(function (m) { return m.status === "done"; });
   var row = function (m) { return chip(esc(m.title), "open:" + m.id, m.status === "sealed" || m.status === "answered" || m.status === "saved" ? "rec" : "", pillFor(m)); };
-  var html = orbs() + tabs() + pairLine() + hdr(x("homeL"), x("homeC")) + '<p class="mid">' + t("m1") + '</p>' +
+  var html = orbs() + tabs() + pairLine() + hdr(x("homeL"), x("homeC"), x("homeB")) + '<p class="mid">' + t("m1") + '</p>' +
     (open.length ? '<div class="list">' + open.map(row).join("") + '</div>' : "") +
     (S.moments.length < 3 ? '<p class="lab mutedlab">' + x("ideas") + '</p><div class="list">' + ["sugA", "sugB", "sugC"].map(function (k) { return chip(t(k), "addSug:" + k, "", "<span>+</span>"); }).join("") + '</div>' : "") +
     field("own", t("ownPh"), "", false) + btn(x("addBtn"), "addOwn") +
@@ -484,35 +490,35 @@ SC.settings = function () {
 };
 /* --- his steps --- */
 function momentLine(m) { return '<div class="box" style="padding:10px 14px"><span class="txt">' + t("tMoment") + ':</span> ' + esc(m.title) + '</div>'; }
-SC.why = function () { var m = M(); return { cls: "calm", html: orbs() + hdr(x("st2"), x("whyC")) + momentLine(m) + '<p class="mid">' + t("m2") + '</p>' + field("why", t("whyPh"), m.why, true) + '<div class="push">' + chip(x("whyKnow"), "iKnow") + chip(x("whyDont"), "iDont", "rec") + ghost("‹ " + t("backHome"), "home") + '</div>' }; };
+SC.why = function () { var m = M(); return { cls: "calm", html: orbs() + hdr(x("st2"), x("whyC"), x("whyB")) + momentLine(m) + '<p class="mid">' + t("m2") + '</p>' + field("why", t("whyPh"), m.why, true) + '<div class="push">' + chip(x("whyKnow"), "iKnow") + chip(x("whyDont"), "iDont", "rec") + ghost("‹ " + t("backHome"), "home") + '</div>' }; };
 SC.ask = function () {
   var m = M(); var q = m.question || (m.from === "her" ? t("askQher") : t("askQ0").replace("{m}", S.lang === "he" ? m.title : lc(m.title)));
-  return { cls: "calm", html: orbs() + hdr(x("st3"), x("askC")) + momentLine(m) + '<p class="mid">' + t("m3") + '</p>' + field("q", "", q, true) + '<div class="push">' + chip(x("askPerson"), "askInPerson", "rec", "<small>" + x("askPersonS") + "</small>") + chip(x("askSend"), "askSend", "", "<small>" + x("askSendS") + "</small>") + ghost("‹ " + t("backHome"), "home") + '</div>' };
+  return { cls: "calm", html: orbs() + hdr(x("st3"), x("askC"), x("askB")) + momentLine(m) + '<p class="mid">' + t("m3") + '</p>' + field("q", "", q, true) + '<div class="push">' + chip(x("askPerson"), "askInPerson", "rec", "<small>" + x("askPersonS") + "</small>") + chip(x("askSend"), "askSend", "", "<small>" + x("askSendS") + "</small>") + ghost("‹ " + t("backHome"), "home") + '</div>' };
 };
-SC.record = function () { var m = M(); return { cls: "calm", html: orbs() + hdr(x("st3"), x("recC")) + '<p class="mid">' + t("recQ") + '</p><p class="txt">' + esc(m.question) + '</p>' + field("ans", t("recPh"), m.answer, true) + '<div class="push">' + btn(x("recBtn"), "saveRecord") + '</div>' }; };
+SC.record = function () { var m = M(); return { cls: "calm", html: orbs() + hdr(x("st3"), x("recC"), x("recB")) + '<p class="mid">' + t("recQ") + '</p><p class="txt">' + esc(m.question) + '</p>' + field("ans", t("recPh"), m.answer, true) + '<div class="push">' + btn(x("recBtn"), "saveRecord") + '</div>' }; };
 SC.sent = function () { return { cls: "", html: orbs() + hdr(x("st3"), x("sentC")) + '<p class="big">' + x("sentT") + '</p><div class="quote">' + esc(M().question) + '</div><p class="txt">' + t("sentTxt") + '</p>' + copyLinkBlock() + '<div class="push">' + btn(t("backHome"), "home") + '</div>' }; };
 SC.learned = function () {
   var m = M();
-  return { cls: "calm", html: orbs() + hdr(x("st4"), m.answer && m.askedHow === "link" ? x("learnedC") : x("learnedC0")) + '<p class="mid">' + t("m4") + '</p><div class="sum"><div><span>' + t("tMoment") + '</span>' + esc(m.title) + '</div>' + (m.guess || m.why ? '<div><span>' + t("tGuess") + '</span>' + esc(m.why || m.guess) + '</div>' : "") + (m.answer ? '<div><span>' + t("tSaid") + '</span>' + esc(m.answer) + '</div>' : "") + '</div>' +
+  return { cls: "calm", html: orbs() + hdr(x("st4"), m.answer && m.askedHow === "link" ? x("learnedC") + " " + x("learnedC0") : x("learnedC0"), x("learnedB")) + '<p class="mid">' + t("m4") + '</p><div class="sum"><div><span>' + t("tMoment") + '</span>' + esc(m.title) + '</div>' + (m.guess || m.why ? '<div><span>' + t("tGuess") + '</span>' + esc(m.why || m.guess) + '</div>' : "") + (m.answer ? '<div><span>' + t("tSaid") + '</span>' + esc(m.answer) + '</div>' : "") + '</div>' +
     '<p class="lab">' + t("drawQ") + '</p>' + field("draw", t("drawPh"), m.draw, false) + '<div class="push">' + btn(x("learnedBtn"), "saveLearned") + '</div>' };
 };
 SC.feel = function () {
   var m = M(); var sel = m.feelings || [];
   var c = t("feelings").map(function (w, i) { return '<button data-feel="' + i + '" class="' + (sel.indexOf(i) > -1 ? "sel" : "") + '">' + w + '</button>'; }).join("");
-  return { cls: "calm", html: orbs() + hdr(x("st5"), x("feelC")) + '<p class="mid">' + t("m5a") + '</p><p class="txt">' + t("pickUp") + '</p><div class="chips">' + c + '</div><div class="push">' + btn(x("feelBtn"), "toWords", !sel.length) + '</div>' };
+  return { cls: "calm", html: orbs() + hdr(x("st5"), x("feelC"), x("feelB")) + '<p class="mid">' + t("m5a") + '</p><p class="txt">' + t("pickUp") + '</p><div class="chips">' + c + '</div><div class="push">' + btn(x("feelBtn"), "toWords", !sel.length) + '</div>' };
 };
-SC.words = function () { var m = M(); return { cls: "calm", html: orbs() + hdr(x("st5"), x("wordsC")) + '<p class="mid">' + t("m5b") + '</p><p class="txt">' + t("seeQ") + '</p>' + field("see", t("seePh"), m.see, true) + '<p class="txt">' + t("knowQ") + '</p>' + field("know", t("knowPh"), m.know, true) + '<div class="push">' + btn(x("wordsBtn"), "saveWords") + '</div>' }; };
+SC.words = function () { var m = M(); return { cls: "calm", html: orbs() + hdr(x("st5"), x("wordsC"), x("wordsB")) + '<p class="mid">' + t("m5b") + '</p><p class="txt">' + t("seeQ") + '</p>' + field("see", t("seePh"), m.see, true) + '<p class="txt">' + t("knowQ") + '</p>' + field("know", t("knowPh"), m.know, true) + '<div class="push">' + btn(x("wordsBtn"), "saveWords") + '</div>' }; };
 SC.say = function () {
   var m = M(); var f = (m.feelings || []).map(function (i) { return "<b>" + t("feelings")[i] + "</b>"; }).join(S.lang === "he" ? " ו" : " and ");
   var r = (f ? t("youFelt") + " " + f + ". " : "") + (m.see ? t("youSee") + ": " + esc(m.see) + ". " : "") + (m.know ? t("youWant") + ": " + esc(m.know) + "." : "");
-  return { cls: "calm", html: orbs() + hdr(x("st5"), x("sayC")) + '<p class="mid">' + t("m5c") + '</p>' + (r ? '<div class="box">' + r + '</div>' : "") + '<div class="tip">' + t("tip") + '</div><p class="lab mutedlab">' + t("tellLab") + '</p>' +
+  return { cls: "calm", html: orbs() + hdr(x("st5"), x("sayC"), x("sayB")) + '<p class="mid">' + t("m5c") + '</p>' + (r ? '<div class="box">' + r + '</div>' : "") + '<div class="tip">' + t("tip") + '</div><p class="lab mutedlab">' + t("tellLab") + '</p>' +
     chip(t("tell1"), "tellPerson", "rec", '<span class="pill">' + t("best") + '</span>') + chip(t("tell2"), "tellNote", "", "<small>" + t("tell2s") + "</small>") + chip(t("tell3"), "tellLater", "", "<small>" + t("tell3s") + "</small>") };
 };
 SC.note = function () { var m = M(); return { cls: "calm", html: orbs() + hdr(x("st5"), x("noteC")) + '<p class="mid">' + t("noteQ") + '</p>' + field("noteTxt", t("notePh"), m.noteDraft, true) + '<div class="push">' + btn(t("sendNote"), "sendNote") + '</div>' }; };
 SC.rate = function () {
   var m = M(), r = m.rating || 0, hs = "";
   for (var i = 1; i <= 5; i++) hs += '<button data-heart="' + i + '" class="' + (i <= r ? "on" : "") + '" aria-label="' + i + '">♥</button>';
-  return { cls: "calm", html: orbs() + hdr(x("st6"), x("rateC")) + '<p class="mid">' + t("m6") + '</p><div class="hearts">' + hs + '</div>' + field("react", t("whatPh"), m.howItWent, true) + '<div class="push">' + (m.toldHow === "person" ? chip(t("letHer"), "sendListened") : "") + btn(x("rateBtn"), "finishRate", !r) + '</div>' };
+  return { cls: "calm", html: orbs() + hdr(x("st6"), x("rateC"), x("rateB")) + '<p class="mid">' + t("m6") + '</p><div class="hearts">' + hs + '</div>' + field("react", t("whatPh"), m.howItWent, true) + '<div class="push">' + (m.toldHow === "person" ? chip(t("letHer"), "sendListened") : "") + btn(x("rateBtn"), "finishRate", !r) + '</div>' };
 };
 /* --- her side --- */
 SC.herIntro1 = function () { return { cls: "", html: orbs() + '<div class="top"><p class="lab">' + x("howL") + '</p><button class="iconbtn" data-act="herIntroDone">' + t("skip") + '</button></div><p class="icon">♡</p><div class="push"><p class="big">' + t("hi1") + '</p>' + dots(0) + btn(t("continueBtn"), "herIntro2") + '</div>' }; };
@@ -540,7 +546,7 @@ SC.listened = function () {
 };
 SC.explain = function () {
   var e = EXPLAIN[V.after];
-  return { cls: "", html: orbs() + '<p class="lab">' + esc(x(e[0])) + '</p><p class="icon" style="margin-top:50px">' + e[2] + '</p><div class="push"><p class="explain">' + esc(x(e[1])) + '</p>' + btn(x("gotItDo"), "explainDone") + '</div>' };
+  return { cls: "", html: orbs() + '<p class="lab">' + esc(x(e[0])) + '</p><p class="icon" style="margin-top:50px">' + e[2] + '</p><div class="push"><p class="explain">' + esc(x(e[1])) + '</p><p class="gain big2"><span>✦ ' + esc(x("gainL")) + '</span>' + esc(x(e[3])) + '</p>' + btn(x("gotItDo"), "explainDone") + '</div>' };
 };
 SC.edit = function () {
   var m = M(); if (!m) return SC.home(); var f = V.tmp.editField;
@@ -641,7 +647,7 @@ function toast(s) { var e = document.querySelector(".toast"); if (!e) { e = docu
 
 /* ===================== Render ===================== */
 var app = document.getElementById("app");
-var EXPLAIN = { why: ["st2", "whyC", "🔍"], ask: ["st3", "askC", "💬"], learned: ["st4", "learnedC0", "✦"], feel: ["st5", "feelC", "♡"], words: ["st5", "wordsC", "✎"], say: ["st5", "sayC", "🗣"], rate: ["st6", "rateC", "♥"] };
+var EXPLAIN = { why: ["st2", "whyC", "🔍", "whyB"], ask: ["st3", "askC", "💬", "askB"], learned: ["st4", "learnedC0", "✦", "learnedB"], feel: ["st5", "feelC", "♡", "feelB"], words: ["st5", "wordsC", "✎", "wordsB"], say: ["st5", "sayC", "🗣", "sayB"], rate: ["st6", "rateC", "♥", "rateB"] };
 function go(s) {
   S.seenSteps = S.seenSteps || {};
   if (S.role === "him" && EXPLAIN[s] && !S.seenSteps[s]) { V.after = s; s = "explain"; }
