@@ -174,7 +174,7 @@ var T = {
     // settings
     setL: "Settings", names: "Names", reset: "Start over", resetSure: "Erase everything on this phone?", yesErase: "Yes, erase", cancel: "Cancel", backup: "Copy a backup", restore: "Restore from backup", restorePh: "Paste a backup here", restoreBtn: "Restore",
     // whatsapp texts
-    wInvite: "I picked a moment you'll want to guess… 🔒", wMoment: "Another moment for you to guess 🔒", wQuestion: "I have a question for you ♡", wAnswer: "Here's my answer ♡", wNote: "I wrote you something ♡", wListened: "I listened ♥", wReaction: "Here's how it felt ♡", wEdit: "I fixed something small ✎", tStory: "Our moments",
+    wInvite: "I picked a moment you'll want to guess… 🔒", wMoment: "Another moment for you to guess 🔒", wQuestion: "I have a question for you ♡", wAnswer: "Here's my answer ♡", wNote: "I wrote you something ♡", wListened: "I listened ♥", wReaction: "Here's how it felt ♡", wEdit: "I fixed something small ✎", tStory: "Our moments", wTip: "A little tip for you ♡", tTips: "Tips", tSettingsS: "⚙",
     copied: "Link copied", sentNote: "Opening WhatsApp…", savedToast: "Saved", copyLink: "Or copy the link", got: "Got it",
     oldLink: "This link was already opened.", otherCouple: "This link belongs to someone else's app.",
     whoLinkL: "Before we open it", gameL: "Curious About Her", gameQ: "{n} invited you to a game for two.", gameTxt: "She wrote down moments when she was really into you. You guess them, find out why, and learn what draws her to you.", gameYes: "I'm {p}, let's play", gameNo: "I'm {n}, I sent this", whoLinkQ: "Is this you, {p}?", whoLinkTxt: "{n} sent this link to {p}.", yesMe: "Yes, I'm {p}", noSender: "No, I'm {n}. I sent it",
@@ -211,7 +211,7 @@ var T = {
     hAddL: "רגע שריגש אותך", hAddPh: "רגע שהתאהבת בו מחדש", hNotes: "הערות פרטיות", hNotesPh: "רק בשבילך", saveNotes: "שמירה",
     hMyMoments: "רגעים ששיתפת",
     setL: "הגדרות", names: "שמות", reset: "להתחיל מחדש", resetSure: "למחוק הכל מהטלפון הזה?", yesErase: "כן, למחוק", cancel: "ביטול", backup: "העתקת גיבוי", restore: "שחזור מגיבוי", restorePh: "הדביקו כאן גיבוי", restoreBtn: "שחזור",
-    wInvite: "בחרתי רגע שתרצה לנחש… 🔒", wMoment: "עוד רגע בשבילך לנחש 🔒", wQuestion: "יש לי שאלה בשבילך ♡", wAnswer: "הנה התשובה שלי ♡", wNote: "כתבתי לך משהו ♡", wListened: "הקשבתי ♥", wReaction: "ככה זה הרגיש ♡", wEdit: "תיקנתי משהו קטן ✎", tStory: "הרגעים שלנו",
+    wInvite: "בחרתי רגע שתרצה לנחש… 🔒", wMoment: "עוד רגע בשבילך לנחש 🔒", wQuestion: "יש לי שאלה בשבילך ♡", wAnswer: "הנה התשובה שלי ♡", wNote: "כתבתי לך משהו ♡", wListened: "הקשבתי ♥", wReaction: "ככה זה הרגיש ♡", wEdit: "תיקנתי משהו קטן ✎", tStory: "הרגעים שלנו", wTip: "טיפ קטן בשבילך ♡", tTips: "טיפים", tSettingsS: "⚙",
     copied: "הקישור הועתק", sentNote: "פותח את וואטסאפ…", savedToast: "נשמר", copyLink: "או העתקת הקישור", got: "הבנתי",
     oldLink: "הקישור הזה כבר נפתח.", otherCouple: "הקישור הזה שייך לאפליקציה של מישהו אחר.",
     whoLinkL: "לפני שפותחים", gameL: "Curious About Her", gameQ: "{n} הזמינה אותך למשחק לשניים.", gameTxt: "היא כתבה רגעים שבהם היא ממש נמשכה אליך. אתה מנחש, מגלה למה, ולומד מה מושך אותה אליך.", gameYes: "אני {p}, יאללה נשחק", gameNo: "אני {n}, אני שלחתי", whoLinkQ: "זה את/ה, {p}?", whoLinkTxt: "{n} שלח/ה את הקישור הזה ל{p}.", yesMe: "כן, אני {p}", noSender: "לא, אני {n}. אני שלחתי",
@@ -222,7 +222,7 @@ var T = {
 /* ===================== State ===================== */
 var KEY = "cah1";
 var S = load();
-function blank() { return { lang: (navigator.language || "").indexOf("he") === 0 ? "he" : "en", role: null, me: "", partner: "", couple: "", moments: [], draws: [], notes: "", seen: [], introHim: false, introHer: false }; }
+function blank() { return { lang: (navigator.language || "").indexOf("he") === 0 ? "he" : "en", role: null, me: "", partner: "", couple: "", moments: [], draws: [], notes: "", seen: [], introHim: false, introHer: false, tips: [] }; }
 function load() { try { var d = JSON.parse(localStorage.getItem(KEY)); if (d && d.moments) return Object.assign(blank(), d); } catch (e) {} return blank(); }
 function persist() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
 var V = { screen: "welcome", mid: null, tab: "moments", tmp: {}, back: [], fwd: [] };
@@ -287,6 +287,8 @@ function apply(msg) {
     if (!m) { m = { id: d.mid, title: d.title, from: "him", createdAt: Date.now() }; S.moments.unshift(m); }
     m.status = "listened"; if (d.note) m.note = d.note; m.listenedAt = Date.now();
     if (d.q && !m.question) m.question = d.q; if (d.a && !m.answer) m.answer = d.a; if (d.guess) m.hisGuess = d.guess; if (d.draw) m.draw = d.draw;
+  } else if (msg.t === "tip") {
+    S.tips = S.tips || []; if (!S.tips.some(function (x) { return x.id === d.id; })) S.tips.unshift({ id: d.id, from: msg.f, text: d.text, createdAt: Date.now() });
   } else if (msg.t === "edit") {
     m = byId(d.mid); if (m) { if (d.field === "title") m.title = d.value; if (d.field === "answer") { m.answer = d.value; if (m.status === "asked") m.status = "answered"; } }
   } else if (msg.t === "reaction") {
@@ -300,10 +302,12 @@ function route(msg) {
   var d = msg.d || {};
   V.mid = d.mid;
   if (S.role === "him") {
+    if (msg.t === "tip") { V.tab = "tips"; V.screen = "home"; return; }
     if (msg.t === "invite" || msg.t === "moment") V.screen = "sealed";
     else if (msg.t === "answer" || (msg.t === "edit" && (msg.d || {}).field === "answer" && byId(d.mid) && byId(d.mid).status !== "done")) V.screen = "learned";
     else V.screen = "home";
   } else {
+    if (msg.t === "tip") { V.tab = "tips"; V.screen = "home"; return; }
     if (msg.t === "question") V.screen = S.introHer ? "answer" : "herIntro1";
     else if (msg.t === "note" || msg.t === "listened") V.screen = "listened";
     else V.screen = "home";
@@ -346,8 +350,8 @@ function pillFor(m) {
   return "";
 }
 function tabs() {
-  var a = [["moments", "tMoments"], ["draws", "tDraws"], ["settings", "tSettings"]];
-  if (S.role === "her") a = [["moments", "hHome"], ["story", "tStory"], ["settings", "tSettings"]];
+  var a = [["moments", "tMoments"], ["draws", "tDraws"], ["tips", "tTips"], ["settings", "tSettingsS"]];
+  if (S.role === "her") a = [["moments", "hHome"], ["story", "tStory"], ["tips", "tTips"], ["settings", "tSettingsS"]];
   return '<div class="tabs">' + a.map(function (x) { return '<button class="' + (V.tab === x[0] ? "on" : "") + '" data-tab="' + x[0] + '">' + t(x[1]) + '</button>'; }).join("") + '</div>';
 }
 
@@ -375,7 +379,7 @@ SC.notice = function () { return { cls: "calm", html: orbs() + '<p class="mid" s
 /* --- screen copy: where you are · why you're here · what to do --- */
 var CX = {
   en: {
-    homeB: "Find out why, and you'll know how to bring it back.", whyB: "Find the why, and you can make it happen again.", askB: "Her answer tells you exactly what draws her to you. And being asked is a small gift for her.", recB: "Her exact words are the clue.", learnedB: "Now you know something about her that most men never find out.", feelB: "When you know what you feel, your words are real. Real words reach her.", wordsB: "These become what you say to her.", sayB: "Said in your own words, it brings her closer to you.", rateB: "Every round teaches you what works with her.", sealedB: "Guess right, and you'll know her a little better.", gainL: "What you gain", st1: "Step 1 of 6 · Pick a moment", st2: "Step 2 of 6 · Find out why", st3: "Step 3 of 6 · Ask her", st4: "Step 4 of 6 · What you learned", st5: "Step 5 of 6 · Say it", st6: "Step 6 of 6 · How it landed",
+    homeB: "Find out why, and you'll know how to bring it back.", whyB: "Find the why, and you can make it happen again.", askB: "Her answer tells you exactly what draws her to you. And being asked is a small gift for her.", recB: "Her exact words are the clue.", learnedB: "Now you know something about her that most men never find out.", feelB: "When you know what you feel, your words are real. Real words reach her.", wordsB: "These become what you say to her.", sayB: "Said in your own words, it brings her closer to you.", rateB: "Every round teaches you what works with her.", sealedB: "Guess right, and you'll know her a little better.", gainL: "What you gain", drawsC2: "Everything you've learned about her, collected from your moments together. It updates with every round.", drawsB: "The more you learn, the easier it gets to make her feel it again.", lMoments: "moments explored", lAnswers: "answers from her", lAvg: "how it landed (avg ♥)", lDraws: "What draws her", lWords: "In her words", lHers: "Her moments", lReacts: "How she reacted", lGuessed: "You guessed:", lShe: "She said:", tipsT: "Tips & ideas", tipsCHim: "Ideas that work with her: what you've learned, tips from her, and your own.", tipsBHim: "Small things, done at the right moment, bring the passion back.", tipsCHer: "Tips for him and ideas for you two. Send him a tip and he gets it on WhatsApp.", tipsBHer: "He doesn't have to guess everything. A small hint from you goes a long way.", tFrom: "From {n}", tFromEmptyHim: "When she sends you a tip, it shows up here.", tFromEmptyHer: "When he sends you an idea, it shows up here.", tLearned: "Learned from your moments", tLearnedEmpty: "Tips appear here as you finish moments.", tMine: "My ideas", tMineEmpty: "Add your first idea below.", tAdd: "Add a tip or an idea", tAddPhHim: "e.g. Plan a dance night, just the two of us", tAddPhHer: "e.g. I love it when you hold my hand in public", tSend: "Send it on WhatsApp", tKeep: "Keep it just for me", tSentPill: "sent", tPrivPill: "private", tDoMore: "Do more of this: {d}", tWorked: "This worked ({r}♥): {m}, {h}", tHowNote: "with a note", tHowPerson: "face to face", tHeKnows: "He learned: {d}", tHeSaid: "He told you: {d}", st1: "Step 1 of 6 · Pick a moment", st2: "Step 2 of 6 · Find out why", st3: "Step 3 of 6 · Ask her", st4: "Step 4 of 6 · What you learned", st5: "Step 5 of 6 · Say it", st6: "Step 6 of 6 · How it landed",
     sealedL: "Her moment · locked", sealedC: "{n} sent you this. She wrote a moment, you try to guess it.",
     guessC: "Write what you think her moment was. Then we unlock it.",
     revealL: "Unlocked", revealC: "This is the moment {n} wrote down.", revealBtn: "Start your mission",
@@ -405,7 +409,7 @@ var CX = {
     editShort: "Edit", editMomentL: "Edit your moment", editAnswerL: "Edit your answer", editC: "Fix anything you like. He gets the corrected version on WhatsApp.", editBtn: "Save and send the correction", cancel: "Cancel"
   },
   he: {
-    homeB: "תגלה למה, ותדע איך להחזיר את זה.", whyB: "תגלה את הלמה, ותוכל לגרום לזה לקרות שוב.", askB: "התשובה שלה תגיד לך בדיוק מה מושך אותה אליך. ועצם השאלה היא מתנה קטנה בשבילה.", recB: "המילים המדויקות שלה הן הרמז.", learnedB: "עכשיו אתה יודע עליה משהו שרוב הגברים לא מגלים.", feelB: "כשאתה יודע מה אתה מרגיש, המילים שלך אמיתיות. ומילים אמיתיות מגיעות אליה.", wordsB: "מהן ייצא מה שתגיד לה.", sayB: "כשזה נאמר במילים שלך, זה מקרב אותה אליך.", rateB: "כל סיבוב מלמד אותך מה עובד איתה.", sealedB: "תנחש נכון, ותכיר אותה קצת יותר.", gainL: "מה תרוויח", st1: "שלב 1 מתוך 6 · בחר רגע", st2: "שלב 2 מתוך 6 · גלה למה", st3: "שלב 3 מתוך 6 · תשאל אותה", st4: "שלב 4 מתוך 6 · מה גילית", st5: "שלב 5 מתוך 6 · תגיד לה", st6: "שלב 6 מתוך 6 · איך זה התקבל",
+    homeB: "תגלה למה, ותדע איך להחזיר את זה.", whyB: "תגלה את הלמה, ותוכל לגרום לזה לקרות שוב.", askB: "התשובה שלה תגיד לך בדיוק מה מושך אותה אליך. ועצם השאלה היא מתנה קטנה בשבילה.", recB: "המילים המדויקות שלה הן הרמז.", learnedB: "עכשיו אתה יודע עליה משהו שרוב הגברים לא מגלים.", feelB: "כשאתה יודע מה אתה מרגיש, המילים שלך אמיתיות. ומילים אמיתיות מגיעות אליה.", wordsB: "מהן ייצא מה שתגיד לה.", sayB: "כשזה נאמר במילים שלך, זה מקרב אותה אליך.", rateB: "כל סיבוב מלמד אותך מה עובד איתה.", sealedB: "תנחש נכון, ותכיר אותה קצת יותר.", gainL: "מה תרוויח", drawsC2: "כל מה שלמדת עליה, נאסף מהרגעים שלכם. מתעדכן בכל סיבוב.", drawsB: "ככל שתלמד יותר, יהיה לך קל יותר לגרום לה להרגיש את זה שוב.", lMoments: "רגעים שחקרת", lAnswers: "תשובות ממנה", lAvg: "איך זה התקבל (ממוצע ♥)", lDraws: "מה מושך אותה", lWords: "במילים שלה", lHers: "הרגעים שלה", lReacts: "איך היא הגיבה", lGuessed: "ניחשת:", lShe: "היא אמרה:", tipsT: "טיפים ורעיונות", tipsCHim: "רעיונות שעובדים איתה: מה שלמדת, טיפים ממנה, ורעיונות שלך.", tipsBHim: "דברים קטנים, ברגע הנכון, מחזירים את התשוקה.", tipsCHer: "טיפים בשבילו ורעיונות לשניכם. שלחי לו טיפ והוא יקבל אותו בוואטסאפ.", tipsBHer: "הוא לא חייב לנחש הכל. רמז קטן ממך עושה הבדל גדול.", tFrom: "מ{n}", tFromEmptyHim: "כשהיא תשלח לך טיפ, הוא יופיע כאן.", tFromEmptyHer: "כשהוא ישלח לך רעיון, הוא יופיע כאן.", tLearned: "נלמד מהרגעים שלכם", tLearnedEmpty: "טיפים יופיעו כאן כשתסיימו רגעים.", tMine: "הרעיונות שלי", tMineEmpty: "הוסיפו את הרעיון הראשון למטה.", tAdd: "הוספת טיפ או רעיון", tAddPhHim: "למשל: לתכנן ערב ריקודים רק לשנינו", tAddPhHer: "למשל: אני אוהבת כשאתה מחזיק לי את היד מול אנשים", tSend: "שליחה בוואטסאפ", tKeep: "לשמור רק לעצמי", tSentPill: "נשלח", tPrivPill: "פרטי", tDoMore: "עוד מזה: {d}", tWorked: "זה עבד ({r}♥): {m}, {h}", tHowNote: "בפתק", tHowPerson: "פנים אל פנים", tHeKnows: "הוא למד: {d}", tHeSaid: "הוא אמר לך: {d}", st1: "שלב 1 מתוך 6 · בחר רגע", st2: "שלב 2 מתוך 6 · גלה למה", st3: "שלב 3 מתוך 6 · תשאל אותה", st4: "שלב 4 מתוך 6 · מה גילית", st5: "שלב 5 מתוך 6 · תגיד לה", st6: "שלב 6 מתוך 6 · איך זה התקבל",
     sealedL: "הרגע שלה · נעול", sealedC: "{n} שלחה לך את זה. היא כתבה רגע, ואתה מנסה לנחש אותו.",
     guessC: "כתוב מה לדעתך היה הרגע שלה. אחר כך נפתח אותו.",
     revealL: "נפתח", revealC: "זה הרגע ש{n} כתבה.", revealBtn: "להתחיל במשימה",
@@ -469,6 +473,7 @@ SC.intro3 = function () { return { cls: "", html: orbs() + '<div class="top"><p 
 SC.home = function () {
   if (S.role === "her") return SC.herHome();
   if (V.tab === "draws") return SC.draws();
+  if (V.tab === "tips") return SC.tips();
   if (V.tab === "settings") return SC.settings();
   var open = S.moments.filter(function (m) { return m.status !== "done"; });
   open.sort(function (a, b) { return (b.status === "saved") - (a.status === "saved"); });
@@ -482,8 +487,38 @@ SC.home = function () {
   return { cls: "calm", html: html };
 };
 SC.draws = function () {
-  var items = S.draws.map(function (d) { return '<div class="chip" style="cursor:default"><span>' + esc(d) + '</span><span class="pill">✦</span></div>'; }).join("");
-  return { cls: "", html: orbs() + tabs() + '<p class="big">' + t("drawsL") + '</p><p class="ctx">' + esc(x("drawsC")) + '</p>' + (items ? '<div class="list">' + items + '<div class="chip lock" style="cursor:default"><span>' + t("more") + '</span></div></div>' : '<div class="empty">' + t("drawsEmpty") + '</div>') };
+  var ms = S.moments.filter(function (m) { return m.status !== "sealed"; });
+  var answers = ms.filter(function (m) { return m.answer; }), rated = ms.filter(function (m) { return m.rating; });
+  var avg = rated.length ? (rated.reduce(function (a, m) { return a + m.rating; }, 0) / rated.length).toFixed(1) : "–";
+  var sec = function (lab, items) { return items.length ? '<p class="lab" style="margin-top:6px">' + esc(x(lab)) + '</p><div class="list">' + items.join("") + '</div>' : ""; };
+  var card = function (main, sub) { return '<div class="storycard" style="gap:4px"><div class="t" style="font-size:17px">' + main + '</div>' + (sub ? '<div class="txt" style="font-size:13px">' + sub + '</div>' : "") + '</div>'; };
+  var draws = ms.filter(function (m) { return m.draw; }).map(function (m) { return card("✦ " + esc(m.draw), esc(m.title)); });
+  var words = answers.map(function (m) { return card("“" + esc(m.answer) + "”", esc(m.title)); });
+  var hers = ms.filter(function (m) { return m.from === "her"; }).map(function (m) { return card(esc(m.title), m.guess ? esc(x("lGuessed")) + " " + esc(m.guess) : ""); });
+  var reacts = ms.filter(function (m) { return m.rating || m.reaction || m.howItWent; }).map(function (m) { return card((m.rating ? "♥".repeat(m.rating) + " " : "") + esc(m.title), [m.howItWent ? esc(m.howItWent) : "", m.reaction ? esc(x("lShe")) + " “" + esc(m.reaction) + "”" : ""].filter(Boolean).join(" · ")); });
+  var empty = !draws.length && !words.length && !hers.length && !reacts.length;
+  return { cls: "calm", html: orbs() + tabs() + '<p class="big">' + t("drawsL") + '</p>' + hdr("", x("drawsC2"), x("drawsB")) +
+    '<div class="stats"><div><b>' + ms.length + '</b><small>' + x("lMoments") + '</small></div><div><b>' + answers.length + '</b><small>' + x("lAnswers") + '</small></div><div><b>' + avg + '</b><small>' + x("lAvg") + '</small></div></div>' +
+    (empty ? '<div class="empty">' + t("drawsEmpty") + '</div>' : sec("lDraws", draws) + sec("lWords", words) + sec("lHers", hers) + sec("lReacts", reacts)) };
+};
+SC.tips = function () {
+  var him = S.role === "him", P = S.partner || (him ? "" : "");
+  var mine = (S.tips || []).filter(function (x) { return x.from === S.role; });
+  var theirs = (S.tips || []).filter(function (x) { return x.from !== S.role; });
+  var learned = [];
+  S.moments.forEach(function (m) {
+    if (m.draw) learned.push(him ? x("tDoMore").replace("{d}", m.draw) : x("tHeKnows").replace("{d}", m.draw));
+    if (him && m.rating >= 4) learned.push(x("tWorked").replace("{r}", m.rating).replace("{m}", m.title).replace("{h}", m.toldHow === "note" ? x("tHowNote") : x("tHowPerson")));
+    if (!him && m.note) learned.push(x("tHeSaid").replace("{d}", m.note));
+  });
+  var row = function (txt, pill, del) { return '<div class="chip" style="cursor:default;align-items:flex-start"><span>' + esc(txt) + '</span>' + (pill ? '<span class="pill">' + esc(pill) + '</span>' : "") + (del ? '<button class="edit" data-deltip="' + del + '">✕</button>' : "") + '</div>'; };
+  var sec = function (lab, items, emptyKey) { return '<p class="lab" style="margin-top:8px">' + esc(lab) + '</p>' + (items.length ? '<div class="list">' + items.join("") + '</div>' : '<div class="empty">' + esc(x(emptyKey)) + '</div>'); };
+  return { cls: "calm", html: orbs() + tabs() + '<p class="big">' + x("tipsT") + '</p>' + hdr("", x(him ? "tipsCHim" : "tipsCHer"), x(him ? "tipsBHim" : "tipsBHer")) +
+    sec(x("tFrom"), theirs.map(function (tp) { return row(tp.text, "♡"); }), him ? "tFromEmptyHim" : "tFromEmptyHer") +
+    sec(x("tLearned"), learned.map(function (l) { return row(l, "✦"); }), "tLearnedEmpty") +
+    sec(x("tMine"), mine.map(function (tp) { return row(tp.text, tp.sent ? x("tSentPill") : x("tPrivPill"), tp.id); }), "tMineEmpty") +
+    '<p class="lab" style="margin-top:10px">' + esc(x("tAdd")) + '</p>' + field("tipTxt", x(him ? "tAddPhHim" : "tAddPhHer"), "", true) +
+    '<button class="btn" data-act="tipSend">' + esc(x("tSend")) + '</button>' + ghost(x("tKeep"), "tipKeep") };
 };
 SC.settings = function () {
   var h = orbs() + tabs() + '<p class="mid">' + t("setL") + '</p><p class="lab">' + t("language") + '</p><div class="seg2"><button data-lang="en" class="' + (S.lang === "en" ? "sel" : "") + '">English</button><button data-lang="he" class="he ' + (S.lang === "he" ? "sel" : "") + '">עברית</button></div>' +
@@ -521,6 +556,7 @@ SC.say = function () {
 };
 SC.note = function () { var m = M(); return { cls: "calm", html: orbs() + hdr(x("st5"), x("noteC")) + '<p class="mid">' + t("noteQ") + '</p>' + field("noteTxt", t("notePh"), m.noteDraft, true) + '<div class="push">' + btn(t("sendNote"), "sendNote") + '</div>' }; };
 SC.rate = function () {
+  if (!M()) return SC.home();
   var m = M(), r = m.rating || 0, hs = "";
   for (var i = 1; i <= 5; i++) hs += '<button data-heart="' + i + '" class="' + (i <= r ? "on" : "") + '" aria-label="' + i + '">♥</button>';
   return { cls: "calm", html: orbs() + hdr(x("st6"), x("rateC"), x("rateB")) + '<p class="mid">' + t("m6") + '</p><div class="hearts">' + hs + '</div>' + field("react", t("whatPh"), m.howItWent, true) + '<div class="push">' + (m.toldHow === "person" ? chip(t("letHer"), "sendListened") : "") + btn(x("rateBtn"), "finishRate", !r) + '</div>' };
@@ -532,6 +568,7 @@ SC.herIntro3 = function () { return { cls: "", html: orbs() + '<div class="top">
 SC.herHome = function () {
   if (V.tab === "settings") return SC.settings();
   if (V.tab === "story") return SC.story();
+  if (V.tab === "tips") return SC.tips();
   var asked = S.moments.filter(function (m) { return m.status === "asked"; });
   var listened = S.moments.filter(function (m) { return m.status === "listened"; });
   var mine = S.moments.filter(function (m) { return m.from === "her" && m.status !== "asked" && m.status !== "listened"; });
@@ -576,6 +613,8 @@ function copyLinkBlock() { return V.lastLink ? '<p class="lab mutedlab">' + t("c
 
 /* ===================== Actions ===================== */
 var A = {
+  tipSend: function () { var v = val("tipTxt"); if (!v) return; var tp = { id: uid(), from: S.role, text: v, sent: true, createdAt: Date.now() }; S.tips = S.tips || []; S.tips.unshift(tp); persist(); send("tip", { id: tp.id, text: v }, "wTip"); setTimeout(render, 300); },
+  tipKeep: function () { var v = val("tipTxt"); if (!v) return; S.tips = S.tips || []; S.tips.unshift({ id: uid(), from: S.role, text: v, sent: false, createdAt: Date.now() }); persist(); toast(t("savedToast")); render(); },
   explainDone: function () { S.seenSteps[V.after] = true; persist(); go(V.after); },
   linkIsMe: function () { var msg = V.pending; V.pending = null; S.role = msg.f === "her" ? "him" : "her"; S.couple = msg.c; S.partner = msg.n || S.partner; S.me = msg.p || S.me; S.seen.push(msg.id); apply(msg); persist(); render(true); },
   linkIsSender: function () {
@@ -689,6 +728,7 @@ function bind() {
     };
   });
   app.querySelectorAll("[data-nav]").forEach(function (b) { b.onclick = function () { if (b.dataset.nav === "back") { try { history.back(); } catch (e) { goBack(); } } else goFwd(); }; });
+  app.querySelectorAll("[data-deltip]").forEach(function (b) { b.onclick = function () { S.tips = S.tips.filter(function (x) { return x.id !== b.dataset.deltip; }); persist(); render(); }; });
   app.querySelectorAll("[data-edit]").forEach(function (b) { b.onclick = function () { var k = b.dataset.edit.split(":"); V.mid = k[1]; V.tmp.editField = k[0]; go("edit"); }; });
   app.querySelectorAll("[data-tab]").forEach(function (b) { b.onclick = function () { V.tab = b.dataset.tab; V.tmp.sure = false; V.tmp.restoring = false; go("home"); }; });
   app.querySelectorAll("[data-lang]").forEach(function (b) { b.onclick = function () { saveTyped(); S.lang = b.dataset.lang; persist(); render(); }; });
@@ -701,7 +741,7 @@ function bind() {
 function saveTyped() { if (document.getElementById("me")) S.me = val("me"); if (document.getElementById("partner")) S.partner = val("partner"); }
 
 /* ===================== Start ===================== */
-window.addEventListener("popstate", function () { if (V.back.length) goBack(); });
+window.addEventListener("popstate", function () { if ((location.hash || "").indexOf("m=") > -1) return; if (V.back.length) goBack(); });
 window.addEventListener("hashchange", function () { if (receive()) render(true); });
 if (!receive()) V.screen = S.role ? "home" : "welcome";
 render(true);
