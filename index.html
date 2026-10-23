@@ -313,7 +313,7 @@ svg.i { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-widt
 button:focus-visible, textarea:focus-visible, input:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
 @media (prefers-reduced-motion: no-preference) { #app.anim { animation: in .3s ease; } @keyframes in { from { opacity: .3; transform: translateY(6px); } } }
 
-/* Her side, v27: v22 colors and thin v22 headings, bigger reading text, home as pink-purple tiles. His side unchanged. */
+/* Her side, v28: v22 colors and thin v22 headings, bigger reading text on every screen; layout changes (tiles) on her home only. His side unchanged. */
 body.her {
   --grad: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
   --bg: #fdfbfe; --card: #ffffff; --ink: #2b1a3a; --muted: #6f5f80; --line: #ece2f5; --acc: #b5479a; --fill: #a855f7; --soft: #f3e8ff;
@@ -331,14 +331,10 @@ body.her #app { font-size: 17.5px; }
 body.her #app .txt, body.her #app .ctx, body.her #app .bub, body.her #app textarea, body.her #app input[type=text], body.her #app .sv, body.her #app .tabs button { font-size: 18px; }
 body.her #app .lab, body.her #app .sn, body.her #app .hli small, body.her #app .conv small, body.her #app .focal small, body.her #app .learned, body.her #app .rleft, body.her #app .bub small, body.her #app .howto small { font-size: 17px; }
 body.her #app .hli b, body.her #app .conv b, body.her #app .fold .ft { font-size: 19.5px; }
-body.her #app .btn, body.her #app .cta2 { font-size: 19px; box-shadow: none; }
-/* fewer filled blocks */
+body.her #app .btn, body.her #app .cta2 { font-size: 19px; }
+/* layout changes on her home only; every other screen keeps the v25 layout */
 body.her .focal { box-shadow: none; padding: 0; }
 body.her .focal > div { background: linear-gradient(135deg, #c4b5fd 0%, #f9a8d4 100%) !important; }
-body.her .howto { background: transparent; border: 1px solid var(--line); }
-body.her .howto small { color: var(--muted); }
-body.her .scard { box-shadow: none; border: 1px solid var(--line); }
-body.her .stop.now::before { box-shadow: none; }
 /* her home: 2 x 2 tiles in pink and purple shades */
 body.her .hlist { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 body.her .hli { min-height: 132px; flex-direction: column-reverse; align-items: flex-start; justify-content: space-between; padding: 16px; border-radius: 22px; box-shadow: none; }
