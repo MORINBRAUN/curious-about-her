@@ -195,9 +195,9 @@ body.her .stop.done:not(.hers)::before { background: #c9a9bd; }
 body.her .stop.hers .sn { color: var(--muted); }
 .stop.now .sn { color: var(--acc); padding: 9px 0 6px; }
 .stop.next .sn { padding: 6px 0; opacity: .75; }
-.srow { width: 100%; display: flex; flex-direction: column; gap: 1px; text-align: start; font: inherit; color: var(--ink); background: none; border: 0; padding: 9px 0; cursor: pointer; }
-.srow .sv { font-size: 16.5px; font-weight: 600; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
-.srow[aria-expanded="true"] .sv { -webkit-line-clamp: unset; white-space: pre-wrap; }
+.trow { width: 100%; display: flex; flex-direction: column; gap: 1px; text-align: start; font: inherit; color: var(--ink); background: none; border: 0; padding: 9px 0; cursor: pointer; }
+.trow .sv { font-size: 16.5px; font-weight: 600; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.trow[aria-expanded="true"] .sv { -webkit-line-clamp: unset; white-space: pre-wrap; }
 .scard { display: flex; flex-direction: column; gap: 12px; padding: 18px 16px; margin-bottom: 8px; border-radius: 24px; background: var(--card); box-shadow: var(--raise); }
 body:not(.her) .scard textarea, body:not(.her) .scard input { background: #0f0d12; }
 .scard.closed { margin-top: 6px; }
@@ -217,6 +217,39 @@ body:not(.her) .ropt { background: #221d26; }
 .dots3 i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); opacity: .5; }
 .rleft { margin: 4px 0 0; text-align: center; font-size: 15.5px; font-weight: 600; color: var(--muted); }
 @media (prefers-reduced-motion: reduce) { .ropt { transition: none; } }
+/* Her side follows the Soft UI reference on every screen (chat 7): tabs in an inset track with a raised active pill,
+   rows flat on the surface with round raised buttons, the active row pressed with a filled circle, sliders with a knob. */
+body.her .tabs { padding: 5px; gap: 2px; border-radius: 999px; box-shadow: var(--press); }
+body.her .tabs button { flex: 1 0 auto; padding: 9px 12px; border-radius: 999px; text-align: center; transition: color .15s ease-out; }
+body.her .tabs button.on { background: var(--bg); color: var(--acc); box-shadow: 4px 4px 10px var(--lo), -4px -4px 10px var(--hi); }
+body.her .tabs button.on::after { display: none; }
+body.her .learned .tr i::after, .rprog .tr i::after { content: ""; position: absolute; inset-inline-end: -8px; top: 50%; width: 16px; height: 16px; margin-top: -8px; border-radius: 50%; background: var(--bg); box-shadow: 3px 3px 6px var(--lo), -2px -2px 5px var(--hi), inset 0 0 0 4px #c21d6e; }
+body.her .hli:nth-child(odd), body.her .hli:nth-child(even) { background: var(--bg); }
+body.her .hli { box-shadow: 6px 6px 14px var(--lo), -6px -6px 14px var(--hi); }
+body.her .hli.on { background: linear-gradient(145deg, #fdeaf3, #f8e6f5); box-shadow: var(--press); }
+body.her .conv { background: var(--bg); }
+body.her .conv.go { background: linear-gradient(145deg, #fdeaf3, #f8e6f5); box-shadow: var(--press); }
+body.her .conv .st { box-shadow: 3px 3px 7px var(--lo), -3px -3px 7px var(--hi); background: var(--bg); }
+body.her .conv.go .st { background: var(--fill); box-shadow: none; }
+body.her .fold:nth-child(odd), body.her .fold:nth-child(even) { background: var(--bg); }
+body.her .fold[open] { box-shadow: var(--press); }
+body.her .storycard, body.her .chip { box-shadow: 6px 6px 14px var(--lo), -6px -6px 14px var(--hi); }
+.rprog { display: flex; flex-direction: column; gap: 10px; padding: 4px 4px 8px; }
+.rprog > span:first-child { font-size: 15.5px; font-weight: 700; color: var(--muted); text-align: center; }
+.rprog .tr { position: relative; height: 8px; border-radius: 4px; box-shadow: inset 2px 2px 4px var(--lo), inset -2px -2px 4px var(--hi); }
+.rprog .tr i { position: absolute; inset-inline-start: 0; top: 0; bottom: 0; border-radius: 4px; background: linear-gradient(90deg, #f39ac4, #7d6cf0); }
+[dir="rtl"] .rprog .tr i { background: linear-gradient(270deg, #f39ac4, #7d6cf0); }
+.trow { flex-direction: row; align-items: center; gap: 12px; }
+.stx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.sic { display: none; }
+body.her .trail { padding-inline-start: 0; gap: 10px; }
+body.her .trail::before, body.her .stop::before { display: none; }
+body.her .stop.done .trow { padding: 12px 14px; border-radius: 20px; background: var(--bg); box-shadow: 6px 6px 14px var(--lo), -6px -6px 14px var(--hi); }
+body.her .sic { display: grid; place-items: center; flex: none; width: 36px; height: 36px; border-radius: 50%; color: var(--acc); background: var(--bg); box-shadow: 4px 4px 9px var(--lo), -4px -4px 9px var(--hi); }
+body.her .sic svg.i { width: 18px; height: 18px; }
+body.her .stop.now > .sn { display: flex; align-items: center; gap: 10px; padding: 12px 14px; margin-bottom: 10px; border-radius: 20px; background: linear-gradient(145deg, #fdeaf3, #f8e6f5); box-shadow: var(--press); }
+body.her .stop.now > .sn::after { content: ""; margin-inline-start: auto; width: 14px; height: 14px; border-radius: 50%; background: var(--fill); box-shadow: 0 0 0 5px var(--soft); }
+body.her .stop.next .sn { padding: 4px 14px; }
 /* Conversations list: one raised row per moment; "your turn" rows lit (crimson on his side, rose on hers) */
 .conv { width: 100%; display: flex; align-items: center; gap: 12px; padding: 14px; border: 0; border-radius: 22px; font: inherit; color: var(--ink); text-align: start; background: var(--card); box-shadow: var(--raise); cursor: pointer; transition: transform .15s ease-out; }
 .conv:active { transform: scale(.97); }
@@ -575,19 +608,19 @@ SC.notice = function () { return { cls: "calm", html: orbs() + '<p class="mid" s
 /* --- screen copy: where you are · why you're here · what to do --- */
 var CX = {
   en: {
-    rH1: "Her moment", rH1own: "Your moment", rH2: "What you think you did", rH3: "How you'll find out", rH4: "Her answer", rH5: "She loves it when I…", rH6: "What you want her to know", rH7: "Her reaction",
+    rH1: "Her moment", rH1own: "Your moment", rH2: "What you think you did", rH3: "How you'll find out", rH4: "Her answer", rH5: "She loves it when I…", rH6: "Tell her", rH7: "Her reaction",
     rS1: "Your moment", rS1his: "His moment", rS2: "He thinks about what he did", rS3: "He comes to find out", rS4: "Your answer", rS5: "He learns", rS6: "What he wants you to know", rS7: "Your reaction",
     rQ2: "What do you think you did there?", rQ2s: "About you, not her. Only you see this.", rPh2: "Maybe that I…", rNext: "Next", rC2: "Think about what you did just before she felt that way.",
     rQ3: "How will you find out if you're right?", rTalk: "Talk to her tonight", rTalkS: "Face to face, best. Then write what you heard", rAsk: "Ask her", rAskS: "She answers from her phone", rWrite: "Write her what you think", rWriteS: "She'll tell you if you're right",
     rAskQ: "What will you ask her?", rWriteQ: "What do you think you did?", rSend: "Send it to her", rOther: "Choose another way", rTalkSys: "You chose to talk tonight, face to face", rTalkSysHer: "{n} wants to talk with you tonight, face to face",
     rW4: "Waiting for {n}", rW4s: "She answers from her phone", rRecQ: "What did she tell you?", rRecS: "Write in your own words what you heard tonight.", rRecPh: "She said…", rRecAlt: "Talked face to face? Write what she said",
     rQ5: "What did you learn?", rQ5s: "Finish it in your own words. It's saved in “What draws her”.", rLead: "She loves it when I", rSave: "Save it",
-    rQ6: "What do you want her to know?", rQ6s: "Short and true beats perfect.", rPh6: "In your own words…", rFace: "I told her face to face", rFaceSys: "You told her face to face", rFaceSysHer: "{n} told you face to face", rC6: "Write about you: what you understood, and what you want to do with it.",
+    rQ6: "What do you want her to know?", rQ6s: "Short and true beats perfect.", rPh6: "In your own words…", rFace: "I told her face to face", rFaceS: "Then she gets a link to tell you how it felt", rFaceSys: "You told her face to face", rFaceSysHer: "{n} told you face to face", rC6: "Write about you: what you understood, and what you want to do with it.",
     rW7: "Waiting for her reaction", rW7s: "Her reaction closes the moment", rDone: "This moment is closed",
     rW2: "{n} read your moment", rW2s: "He's thinking about what he did there", rW3: "{n} is choosing how to find out", rW3s: "Face to face, a question, or what he thinks", rTalkW: "Talk tonight", rTalkWs: "{n} will write down what he heard from you",
     rQ4: "What will you answer him?", rQ4w: "Was he right?", rQ4s: "A small story beats one word.", rW5: "{n} is learning", rW5s: "What he takes from this moment", rW6: "{n} is writing to you", rW6s: "In his own words",
     rQ7: "What will you tell him?", rQ7s: "Your reaction closes the moment.", rPh7: "A word, a line, whatever you feel…", rBtn7: "Send and close the moment", rDoneHer: "{n} kept what he learned about you.",
-    rOnlyMe: "only you", rOnlyHim: "Only he sees this", rLeft: "{k} more stops until the moment closes", rLeft1: "1 more stop until the moment closes", rLast: "The last stop", rWaitL: "Waiting", lLoves: "things she loves",
+    rOnlyMe: "only you", rOnlyHim: "Only he sees this", rLeft: "{k} more stops until the moment closes", rLeft1: "1 more stop until the moment closes", rLast: "The last stop", rWaitL: "Waiting", lLoves: "things she loves", rStep: "Stop {k} of 7", rSub: "{k} of 3", rBack: "Back",
     cvYour: "Your turn", cvWaitHim: "Waiting for her", cvWaitHer: "Waiting for him", cvDone: "Closed", cvEmpty: "No conversations yet. Every moment opens one.", cvSubHim: "Every moment is its own conversation. Tap one to open it.", cvSubHer: "Every moment is its own conversation. Tap one to open it.", cvWaitTxtHim: "When she answers, it shows up here.", cvWaitTxtHer: "When he answers, it shows up here.", cvDoneHim: "This moment is closed. Ready for the next one?", cvDoneHer: "This moment is closed. Ready for the next one?", cvEditRate: "Edit how it landed", cvNewL: "New conversation", mvOpen: "Tap a box to open it",
     thHer: "Her moment", thHim: "The moment you noticed", thMine: "Your moment", thHis: "His moment", thGuess: "Your guess", thHisGuess: "His guess", thAsked: "You asked", thAsks: "{n} asks", thSaid: "{n} said", thMyAns: "Your answer", thLearned: "You learned", thWrote: "You wrote her", thWroteYou: "{n} wrote you", thReact: "{n} replied", thMyReact: "Your reply", thLocked: "Locked until you open it", yourTurn: "Your turn", ansT: "What will you tell him?",
     homeB: "Crack enough of them, and you'll know exactly how to bring that look back.", whyB: "Find the trigger, and you can pull it again.", askB: "Being asked about herself is a gift to her, and her answer is your cheat sheet.", recB: "Her exact words are the clue.", learnedB: "Most men never find this out. You just did.", feelB: "Name it, and your words will sound like you, not like a greeting card.", wordsB: "This is the raw material of what you'll tell her.", sayB: "Said your way, it lands. That's the whole secret.", rateB: "Every round sharpens your aim.", sealedB: "Guess right, and you'll know her a little better.", gainL: "What you gain", drawsC2: "Your private file on her: everything you've cracked so far. It grows every round.", drawsB: "The more you know, the easier it gets.", lMoments: "moments explored", lAnswers: "answers from her", lAvg: "how it landed (avg ♥)", lDraws: "What draws her", lWords: "In her words", lHers: "Her moments", lReacts: "How she reacted", lGuessed: "You guessed:", lShe: "She said:", tipsT: "Tips & ideas", tipsCHim: "Your playbook: what worked, hints from her, and your own ideas.", tipsBHim: "Small move, right moment, big effect.", tipsCHer: "Give him a hint. He gets it on WhatsApp, and he'll love the head start.", tipsBHer: "He doesn't have to guess everything.", lvL: "One more thing", lvC: "Tell her one thing you love that she does. She gets it as a tip, so she knows what makes you happy.", lvB: "She'll do more of what you love.", lvQ: "What do you love that she does?", lvPh: "e.g. When you send me a photo in the middle of the day", lvBtn: "Send it to her on WhatsApp", lvLater: "Save it, send later",  lvSkip: "Not now", cLoves: "He loves this about you: “{w}”. Men feel loved when you do what they enjoy: do it more, and let him see you chose to.",
@@ -633,19 +666,19 @@ var CX = {
     editShort: "Edit", editMomentL: "Edit your moment", editAnswerL: "Edit your answer", editC: "Fix anything you like. He gets the corrected version on WhatsApp.", editBtn: "Save and send the correction", cancel: "Cancel"
   },
   he: {
-    rH1: "הרגע שלה", rH1own: "הרגע שלך", rH2: "מה לדעתך עשית שם", rH3: "איך תגלה", rH4: "התשובה שלה", rH5: "היא אוהבת כשאני…", rH6: "מה אתה רוצה שהיא תדע", rH7: "התגובה שלה",
+    rH1: "הרגע שלה", rH1own: "הרגע שלך", rH2: "מה לדעתך עשית שם", rH3: "איך תגלה", rH4: "התשובה שלה", rH5: "היא אוהבת כשאני…", rH6: "תגיד לה", rH7: "התגובה שלה",
     rS1: "הרגע שלך", rS1his: "הרגע שלו", rS2: "הוא חושב מה עשה", rS3: "הוא בא לגלות", rS4: "התשובה שלך", rS5: "הוא לומד", rS6: "מה הוא רוצה שתדעי", rS7: "התגובה שלך",
     rQ2: "מה לדעתך עשית שם?", rQ2s: "על עצמך, לא עליה. רק אתה רואה את זה.", rPh2: "אולי ש…", rNext: "הבא", rC2: "תחשוב מה עשית רגע לפני שהיא הרגישה ככה.",
     rQ3: "איך תגלה אם צדקת?", rTalk: "תדבר איתה הערב", rTalkS: "פנים אל פנים, הכי טוב. אחר כך תכתוב מה שמעת", rAsk: "תשאל אותה", rAskS: "היא עונה מהטלפון", rWrite: "תכתוב לה מה אתה חושב", rWriteS: "היא תגיד לך אם צדקת",
     rAskQ: "מה תשאל אותה?", rWriteQ: "מה אתה חושב שעשית?", rSend: "תשלח לה", rOther: "תבחר דרך אחרת", rTalkSys: "בחרת לדבר איתה הערב, פנים אל פנים", rTalkSysHer: "{n} רוצה לדבר איתך הערב, פנים אל פנים",
     rW4: "מחכים ל{n}", rW4s: "היא עונה מהטלפון", rRecQ: "מה היא אמרה לך?", rRecS: "תכתוב במילים שלך מה שמעת הערב.", rRecPh: "היא אמרה ש…", rRecAlt: "דיברתם פנים אל פנים? תכתוב מה היא אמרה",
     rQ5: "מה למדת?", rQ5s: "תשלים במילים שלך. זה נשמר ב״מה מושך אותה״.", rLead: "היא אוהבת כשאני", rSave: "תשמור",
-    rQ6: "מה אתה רוצה שהיא תדע?", rQ6s: "קצר ואמיתי עדיף על מושלם.", rPh6: "במילים שלך…", rFace: "אמרתי לה פנים אל פנים", rFaceSys: "אמרת לה פנים אל פנים", rFaceSysHer: "{n} אמר לך פנים אל פנים", rC6: "תכתוב על עצמך: מה הבנת, ומה אתה רוצה לעשות עם זה.",
+    rQ6: "מה אתה רוצה שהיא תדע?", rQ6s: "קצר ואמיתי עדיף על מושלם.", rPh6: "במילים שלך…", rFace: "אמרתי לה פנים אל פנים", rFaceS: "אחר כך היא מקבלת קישור לספר לך איך זה הרגיש", rFaceSys: "אמרת לה פנים אל פנים", rFaceSysHer: "{n} אמר לך פנים אל פנים", rC6: "תכתוב על עצמך: מה הבנת, ומה אתה רוצה לעשות עם זה.",
     rW7: "מחכים לתגובה שלה", rW7s: "התגובה שלה סוגרת את הרגע", rDone: "הרגע נסגר",
     rW2: "{n} קרא את הרגע שלך", rW2s: "הוא חושב מה עשה שם", rW3: "{n} בוחר איך לגלות", rW3s: "פנים אל פנים, שאלה, או מה שהוא חושב", rTalkW: "דברו הערב", rTalkWs: "{n} יכתוב אחר כך מה שמע ממך",
     rQ4: "מה תעני לו?", rQ4w: "הוא צדק?", rQ4s: "סיפור קטן עדיף על מילה אחת.", rW5: "{n} לומד", rW5s: "מה הוא לוקח מהרגע הזה", rW6: "{n} כותב לך", rW6s: "במילים שלו",
     rQ7: "מה תגידי לו?", rQ7s: "התגובה שלך סוגרת את הרגע.", rPh7: "מילה, משפט, מה שבא לך…", rBtn7: "שלחי וסגרי את הרגע", rDoneHer: "{n} שמר אצלו מה למד עלייך.",
-    rOnlyMe: "רק אצלך", rOnlyHim: "רק אצלו", rLeft: "עוד {k} עצירות עד שהרגע נסגר", rLeft1: "עוד עצירה אחת עד שהרגע נסגר", rLast: "העצירה האחרונה", rWaitL: "מחכים", lLoves: "דברים שהיא אוהבת",
+    rOnlyMe: "רק אצלך", rOnlyHim: "רק אצלו", rLeft: "עוד {k} עצירות עד שהרגע נסגר", rLeft1: "עוד עצירה אחת עד שהרגע נסגר", rLast: "העצירה האחרונה", rWaitL: "מחכים", lLoves: "דברים שהיא אוהבת", rStep: "עצירה {k} מתוך 7", rSub: "{k} מתוך 3", rBack: "חזרה",
     cvYour: "תורך", cvWaitHim: "מחכים לה", cvWaitHer: "מחכים לו", cvDone: "נסגר", cvEmpty: "עוד אין שיחות. כל רגע פותח שיחה.", cvSubHim: "כל רגע הוא שיחה נפרדת. לחץ כדי לפתוח.", cvSubHer: "כל רגע הוא שיחה נפרדת. לחצי כדי לפתוח.", cvWaitTxtHim: "כשהיא תענה, זה יופיע כאן.", cvWaitTxtHer: "כשהוא יענה, זה יופיע כאן.", cvDoneHim: "הרגע הזה נסגר. מוכן לבא?", cvDoneHer: "הרגע הזה נסגר. מוכנה לבא?", cvEditRate: "לערוך איך זה התקבל", cvNewL: "שיחה חדשה", mvOpen: "לחיצה על קופסה פותחת אותה",
     thHer: "הרגע שלה", thHim: "הרגע ששמת לב אליו", thMine: "הרגע שלך", thHis: "הרגע שלו", thGuess: "הניחוש שלך", thHisGuess: "הניחוש שלו", thAsked: "שאלת", thAsks: "{n} שואל", thSaid: "{n} אמרה", thMyAns: "התשובה שלך", thLearned: "גילית", thWrote: "כתבת לה", thWroteYou: "{n} כתב לך", thReact: "{n} הגיבה", thMyReact: "התגובה שלך", thLocked: "נעול עד שתפתח", yourTurn: "תורך", ansT: "מה תעני לו?",
     homeB: "תפצח מספיק מהם, ותדע בדיוק איך להחזיר את המבט הזה.", whyB: "תמצא את הטריגר, ותוכל ללחוץ עליו שוב.", askB: "עצם השאלה היא מתנה בשבילה, והתשובה שלה היא השליף שלך.", recB: "המילים המדויקות שלה הן הרמז.", learnedB: "רוב הגברים לא מגלים את זה אף פעם. אתה גילית.", feelB: "כשאתה נותן לזה שם, המילים שלך יישמעו כמוך ולא כמו כרטיס ברכה.", wordsB: "זה חומר הגלם של מה שתגיד לה.", sayB: "כשזה נאמר בדרך שלך, זה פוגע בול. זה כל הסוד.", rateB: "כל סיבוב מחדד לך את הכוונת.", sealedB: "תנחש נכון, ותכיר אותה קצת יותר.", gainL: "מה תרוויח", drawsC2: "התיק הסודי שלך עליה: כל מה שפיצחת עד עכשיו. הוא גדל בכל סיבוב.", drawsB: "ככל שתדע יותר, יהיה לך קל יותר.", lMoments: "רגעים שחקרת", lAnswers: "תשובות ממנה", lAvg: "איך זה התקבל (ממוצע ♥)", lDraws: "מה מושך אותה", lWords: "במילים שלה", lHers: "הרגעים שלה", lReacts: "איך היא הגיבה", lGuessed: "ניחשת:", lShe: "היא אמרה:", tipsT: "טיפים ורעיונות", tipsCHim: "ספר המהלכים שלך: מה עבד, רמזים ממנה ורעיונות שלך.", tipsBHim: "מהלך קטן, ברגע הנכון, אפקט גדול.", tipsCHer: "תני לו רמז. הוא יקבל אותו בוואטסאפ, וישמח שיש לו יתרון.", tipsBHer: "הוא לא חייב לנחש הכל.", lvL: "עוד דבר אחד", lvC: "ספר לה דבר אחד שאתה אוהב שהיא עושה. היא תקבל את זה כטיפ, ותדע מה משמח אותך.", lvB: "היא תעשה יותר ממה שאתה אוהב.", lvQ: "מה אתה אוהב שהיא עושה?", lvPh: "למשל: כשאת שולחת לי תמונה באמצע היום", lvBtn: "שלח לה בוואטסאפ", lvLater: "שמור, אשלח אחר כך", lvSkip: "לא עכשיו", cLoves: "הוא אוהב את זה אצלך: “{w}”. גברים מרגישים אהובים כשעושים את מה שהם נהנים ממנו: עשי את זה יותר, ותני לו לראות שבחרת בזה.",
@@ -787,7 +820,23 @@ function stopNow(m, k) {
   }
   if (k === 4) return rq(x("rRecQ"), x("rRecS")) + field("ans", x("rRecPh"), m.answer, true) + btn(x("rNext"), "saveRecord");
   if (k === 5) return rq(x("rQ5"), x("rQ5s")) + '<p class="rlead">' + esc(x("rLead")) + '…</p>' + field("draw", "", m.drawEnd || "", true) + btn(x("rSave"), "saveLoves") + coachB(x("learnedC0"));
-  return rq(x("rQ6"), x("rQ6s")) + field("noteTxt", x("rPh6"), m.noteDraft, true) + btn(x("rSend"), "sendNote") + ghost(x("rFace"), "tellFace") + coachB(x("rC6"));
+  return sayIt(m);
+}
+/* Stop 6 "Tell her" (brief: say it), in three small steps: name what you felt, your own words, then how to tell her (face to face first) */
+function sub6(m) { if (V.tmp.sub6For === m.id && V.tmp.sub6) return V.tmp.sub6; return m.wordsDone ? "say" : (m.feelings || []).length ? "words" : "feel"; }
+function sayIt(m) {
+  var sub = sub6(m), n = { feel: 1, words: 2, say: 3, note: 3 }[sub], lab = '<p class="lab">' + esc(x("rSub").replace("{k}", n)) + '</p>', back = n > 1 ? ghost(bk() + x("rBack"), "sub6Back") : "";
+  if (sub === "feel") {
+    var sel = m.feelings || [];
+    return lab + rq(t("m5a"), t("pickUp")) + '<div class="chips">' + t("feelings").map(function (w, i) { return '<button data-feel="' + i + '" class="' + (sel.indexOf(i) > -1 ? "sel" : "") + '">' + w + '</button>'; }).join("") + '</div>' + btn(x("rNext"), "feelNext", !sel.length) + coachB(x("feelC"));
+  }
+  if (sub === "words") return lab + rq(t("seeQ")) + field("see", t("seePh"), m.see, true) + rq(t("knowQ")) + field("know", t("knowPh"), m.know, true) + btn(x("rNext"), "saveWords") + back;
+  if (sub === "note") return lab + rq(t("tell2"), t("tell2s")) + field("noteTxt", x("rPh6"), m.noteDraft || m.know || "", true) + btn(x("rSend"), "sendNote") + ghost(x("rOther"), "noteBack");
+  var f = (m.feelings || []).map(function (i) { return "<b>" + t("feelings")[i] + "</b>"; }).join(S.lang === "he" ? " ו" : " and ");
+  var sum = (f ? t("youFelt") + " " + f + ". " : "") + (m.see ? t("youSee") + ": " + esc(m.see) + ". " : "") + (m.know ? t("youWant") + ": " + esc(m.know) + "." : "");
+  var o = function (lab2, sub2, act, first) { return '<button class="ropt' + (first ? " first" : "") + '" data-act="' + act + '"><b>' + esc(lab2) + (first ? ' · ' + esc(t("best")) : "") + '</b><small>' + esc(sub2) + '</small></button>'; };
+  return lab + rq(t("m5c")) + (sum ? '<div class="box">' + sum + '</div>' : "") + '<p class="txt">' + t("tip") + '</p><p class="lab mutedlab">' + t("tellLab") + '</p>' +
+    o(t("tell1"), x("rFaceS"), "tellFace", true) + o(t("tell2"), t("tell2s"), "tellNote") + o(t("tell3"), t("tell3s"), "tellLater") + back;
 }
 SC.round = function () {
   var m = M(); if (!m) return SC.home();
@@ -796,7 +845,7 @@ SC.round = function () {
     var hers = (s === 1 && m.from === "her") || s === 4 || s === 7, cls = "stop" + (hers ? " hers" : "");
     if (s < k) {
       var tx = stopText(m, s), priv = him && s === 2 && m.askedHow !== "write";
-      h += '<div class="' + cls + ' done"><button class="srow" data-fold aria-expanded="false"><span class="sn">' + esc(stopName(m, s)) + (priv ? ' · ' + esc(x("rOnlyMe")) : "") + '</span>' + (tx ? '<span class="sv">' + esc(tx) + '</span>' : "") + '</button></div>';
+      h += '<div class="' + cls + ' done"><button class="trow" data-fold aria-expanded="false"><span class="stx"><span class="sn">' + esc(stopName(m, s)) + (priv ? ' · ' + esc(x("rOnlyMe")) : "") + '</span>' + (tx ? '<span class="sv">' + esc(tx) + '</span>' : "") + '</span><span class="sic">' + ic("check") + '</span></button></div>';
     } else if (s === k) {
       h += '<div class="' + cls + ' now' + (myTurn(m, k) ? " mine" : "") + '"><p class="sn">' + esc(stopName(m, s)) + '</p><div class="scard">' + stopNow(m, k) + '</div></div>';
     } else h += '<div class="' + cls + ' next"><p class="sn">' + esc(stopName(m, s)) + '</p></div>';
@@ -804,7 +853,8 @@ SC.round = function () {
   var left = 7 - k;
   var foot = k >= 8 ? '<div class="scard closed"><p class="mid">' + esc(x("rDone")) + '</p><p class="txt">' + esc(him ? (m.draw || "") : x("rDoneHer")) + '</p>' + btn(him ? x("dTileM") : x("rShare"), him ? "newConv" : "toAddMore") + ghost(bk() + t("backHome"), "home") + '</div>'
     : '<p class="rleft">' + esc(left > 1 ? x("rLeft").replace("{k}", left) : left === 1 ? x("rLeft1") : x("rLast")) + '</p>';
-  return { cls: "calm", title: partnerTitle(), html: '<div class="trail">' + h + '</div>' + foot };
+  var prog = him ? "" : '<div class="rprog"><span>' + esc(k >= 8 ? x("rDone") : x("rStep").replace("{k}", k)) + '</span><span class="tr"><i style="width:' + Math.round(Math.min(k - 1, 7) / 7 * 100) + '%"></i></span></div>';
+  return { cls: "calm", title: partnerTitle(), html: prog + '<div class="trail">' + h + '</div>' + foot };
 };
 /* old screen names (back history, links) all open the Trail */
 ["sealed", "guess", "reveal", "why", "ask", "record", "sent", "learned", "feel", "words", "say", "note", "rate", "answer", "listened", "conv"].forEach(function (n) { SC[n] = SC.round; });
@@ -947,7 +997,7 @@ SC.herHub = function () {
     row(x("rTips"), x("rTipsS"), 'data-tab="tips"', "play") + '</div>';
   return { cls: "soft", html: h };
 };
-var ICONS = { heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>', msg: '<path d="M5 5h14v10H9l-4 4z"/>', menu: '<path d="M4 7h16M4 12h16M4 17h16"/>', play: '<path d="M9 6.5v11l9-5.5z"/>', plus: '<path d="M12 5v14M5 12h14"/>', chev: '<path d="M15 6l-6 6 6 6"/>', back: '<path d="M9 6l6 6-6 6"/>', lock: '<path d="M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3"/>', spark: '<path d="M12 3v5M12 16v5M3 12h5M16 12h5M6.5 6.5l2.5 2.5M15 15l2.5 2.5M6.5 17.5L9 15M15 9l2.5-2.5"/>' };
+var ICONS = { check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>', heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>', msg: '<path d="M5 5h14v10H9l-4 4z"/>', menu: '<path d="M4 7h16M4 12h16M4 17h16"/>', play: '<path d="M9 6.5v11l9-5.5z"/>', plus: '<path d="M12 5v14M5 12h14"/>', chev: '<path d="M15 6l-6 6 6 6"/>', back: '<path d="M9 6l6 6-6 6"/>', lock: '<path d="M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3"/>', spark: '<path d="M12 3v5M12 16v5M3 12h5M16 12h5M6.5 6.5l2.5 2.5M15 15l2.5 2.5M6.5 17.5L9 15M15 9l2.5-2.5"/>' };
 function ic(n) { return '<svg class="i" viewBox="0 0 24 24" aria-hidden="true">' + ICONS[n] + '</svg>'; }
 SC.addMore = function () {
   return { cls: "", html: orbs() + hdr(x("amL"), x("amC")) + '<p class="mid">' + t("hFirstQ") + '</p>' + field("herMoment", t("hFirstPh"), "", true) +
@@ -1037,8 +1087,14 @@ var A = {
 
 
 
-  sendNote: function () { var m = M(); var n = val("noteTxt"); if (!n) return; m.noteDraft = n; m.note = n; m.toldHow = "note"; m.status = "told"; persist(); send("note", told(m, { note: n }), "wNote"); setTimeout(function () { render(); }, 300); },
-  tellFace: function () { var m = M(); var n = val("noteTxt"); if (n) { m.noteDraft = n; m.note = n; } m.toldHow = "person"; m.status = "told"; persist(); send("listened", told(m, { note: m.note || "", face: 1 }), "wListened"); setTimeout(function () { render(); }, 300); },
+  sendNote: function () { var m = M(); var n = val("noteTxt"); if (!n) return; m.noteDraft = n; m.note = n; m.toldHow = "note"; m.status = "told"; V.tmp.sub6 = ""; persist(); send("note", told(m, { note: n }), "wNote"); setTimeout(function () { render(); }, 300); },
+  feelNext: function () { var m = M(); if (!(m.feelings || []).length) return; V.tmp.sub6 = ""; persist(); render(); },
+  saveWords: function () { var m = M(); m.see = val("see"); m.know = val("know"); if (!m.know) return toast(t("knowQ")); m.wordsDone = true; V.tmp.sub6 = ""; persist(); render(); },
+  sub6Back: function () { var m = M(), cur = sub6(m); V.tmp.sub6For = m.id; V.tmp.sub6 = cur === "say" || cur === "note" ? "words" : "feel"; render(); },
+  tellNote: function () { V.tmp.sub6For = V.mid; V.tmp.sub6 = "note"; render(); },
+  noteBack: function () { V.tmp.sub6For = V.mid; V.tmp.sub6 = "say"; render(); },
+  tellLater: function () { var m = M(); m.status = "saved"; persist(); toast(t("savedToast")); V.mid = null; go("home"); },
+  tellFace: function () { var m = M(); m.toldHow = "person"; m.status = "told"; V.tmp.sub6 = ""; persist(); send("listened", told(m, { face: 1 }), "wListened"); setTimeout(function () { render(); }, 300); },
 
 
   goTips: function () { V.tab = "tips"; go("home"); },
@@ -1147,6 +1203,7 @@ function bind() {
   app.querySelectorAll("[data-lang]").forEach(function (b) { b.onclick = function () { saveTyped(); S.lang = b.dataset.lang; persist(); render(); }; });
   app.querySelectorAll("[data-role]").forEach(function (b) { b.onclick = function () { saveTyped(); V.tmp.role = b.dataset.role; render(); }; });
   app.querySelectorAll("[data-mic]").forEach(function (b) { b.onclick = function () { startMic(b, b.dataset.mic); }; });
+  app.querySelectorAll("[data-feel]").forEach(function (b) { b.onclick = function () { var m = M(), k = +b.dataset.feel; m.feelings = m.feelings || []; var p = m.feelings.indexOf(k); if (p > -1) m.feelings.splice(p, 1); else if (m.feelings.length < 3) m.feelings.push(k); V.tmp.sub6For = m.id; V.tmp.sub6 = "feel"; persist(); render(); }; });
   app.querySelectorAll("[data-fold]").forEach(function (b) { b.onclick = function () { b.setAttribute("aria-expanded", b.getAttribute("aria-expanded") === "true" ? "false" : "true"); }; });
 
   app.querySelectorAll("input[type=text]").forEach(function (i) { i.onkeydown = function (e) { if (e.key === "Enter") { e.preventDefault(); var b = i.closest(".fieldwrap") ? i.closest(".fieldwrap").nextElementSibling : null; if (b && b.classList.contains("btn")) b.click(); } }; });
