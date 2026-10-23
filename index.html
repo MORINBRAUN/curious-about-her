@@ -343,6 +343,157 @@ body.her .hli:nth-child(3) { background: #f6dcf5; } body.her .hli:nth-child(4) {
 body.her .hli .pb { box-shadow: none; background: rgba(255,255,255,.75); color: var(--acc); }
 body.her .hli.on { box-shadow: none; }
 body.her .hli.on .pb { background: #ec4899; color: #fff; }
+/* v31: the intro-screens design on every screen (approved). Glow backgrounds, flat glassy cards with thin borders, no soft relief. */
+body:not(.her) { --bg: #0d0d12; --card: rgba(255,255,255,.06); --line: rgba(255,255,255,.14); --well: rgba(255,255,255,.04); --tile: rgba(255,255,255,.06); --tipbg: rgba(255,255,255,.06); }
+body.her { --bg: #ffffff; --card: rgba(255,255,255,.62); --line: #eadcf2; --well: rgba(255,255,255,.7); --tile: rgba(255,255,255,.62); --tipbg: rgba(255,255,255,.62); }
+html, body { background: var(--bg) !important; }
+body::before { content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(260px 260px at 10% 12%, rgba(139,92,246,.55), transparent 70%), radial-gradient(240px 240px at 95% 30%, rgba(236,72,153,.45), transparent 70%), radial-gradient(220px 220px at 30% 85%, rgba(109,40,217,.35), transparent 70%); filter: blur(10px); }
+body.her::before { background: radial-gradient(260px 260px at 10% 12%, rgba(249,168,212,.7), transparent 70%), radial-gradient(240px 240px at 95% 30%, rgba(196,181,253,.7), transparent 70%), radial-gradient(220px 220px at 30% 85%, rgba(251,207,232,.6), transparent 70%); }
+#app { z-index: 1; background: transparent !important; }
+#app *:not(.btn):not(.cta2):not(.ropt.first):not(.badge):not(.st):not(.pill) { box-shadow: none !important; }
+#app .scard, #app .turn, #app .htile, #app .hli, #app .conv, #app .fold, #app .chip, #app .ropt:not(.first), #app .cbub, #app .howto, #app .box, #app textarea, #app input[type=text], #app .rb, #app .bub, #app .tabs, #app .storycard {
+  background: var(--card) !important; border: 1px solid var(--line) !important; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+#app .btn, #app .cta2 { border-radius: 16px; box-shadow: none !important; }
+[dir="ltr"] #app .lab, [dir="ltr"] #app .sn { letter-spacing: .14em; text-transform: uppercase; } [dir="rtl"] #app .lab, [dir="rtl"] #app .sn, [dir="rtl"] #app .tl { letter-spacing: 0 !important; }
+#app .tabs { border: 0 !important; background: transparent !important; backdrop-filter: none; }
+#app .dial { background: rgba(255,255,255,.04) !important; border: 1px solid var(--line); }
+#app .dial .in { background: transparent !important; }
+#app .focal > div { background: transparent !important; }
+#app .focal { background: transparent !important; border: 1px solid var(--line); height: auto; padding: 26px 18px; }
+#app .focal span { color: var(--ink) !important; text-shadow: none !important; }
+#app .focal::before { content: "♡"; display: block; text-align: center; font-size: 56px; line-height: 1; margin-bottom: 8px; color: var(--acc); }
+body.her .hli:nth-child(n) { background: rgba(255,255,255,.62) !important; }
+body.her .hli .pb { background: linear-gradient(135deg,#8b5cf6,#ec4899) !important; color: #fff !important; }
+.trail::before { background: var(--line) !important; }
+
+/* v31: less text on every screen. Explanations live behind a small "✦" chip (tap to open) and in Settings → How it works. */
+#app > .big + .txt, #app > .mid + .txt, #app .scard .mid + .txt, #app .lab + .txt, #app .stats + .txt { display: none; }
+#app .dhead .ds, #app .htile small, #app.soft > .hlab, #app .rleft, #app .gain { display: none; }
+body.her .hli:nth-child(3) small, body.her .hli:nth-child(4) small { display: none; }
+#app .scard.closed .mid + .txt { display: block; }
+details.hint { align-self: flex-start; max-width: 100%; }
+details.hint > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 15.5px; font-weight: 500; color: var(--acc); padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); }
+details.hint > summary::-webkit-details-marker { display: none; }
+details.hint[open] > summary { margin-bottom: 8px; }
+details.hint .howto small, details.hint .cbub small { display: none; }
+
+/* The map tab (Deck): a stack of cards to flip; insights and whispers below. */
+.deck { position: relative; height: 230px; margin-bottom: 18px; }
+.dcard { position: absolute; inset: 0; padding: 20px; border-radius: 24px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; border: 1px solid var(--line); transition: transform 240ms cubic-bezier(.23,1,.32,1), opacity 240ms cubic-bezier(.23,1,.32,1); }
+body:not(.her) .dcard { background: #18151f; } body.her .dcard { background: #ffffff; }
+.dcard.p0 { z-index: 3; cursor: pointer; } .dcard.p1 { z-index: 2; transform: translateY(10px) scale(.95); opacity: .55; } .dcard.p2 { z-index: 1; transform: translateY(20px) scale(.9); opacity: .25; }
+.dcard .q { font-weight: 200; font-size: 26px; line-height: 1.2; }
+.dfoot { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 15px; color: var(--muted); }
+.dnew { font-size: 13px; font-weight: 600; color: #fff; background: var(--grad); border-radius: 999px; padding: 2px 10px; }
+.dnav { display: flex; align-items: center; justify-content: space-between; font-size: 15px; color: var(--muted); }
+.dic { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); color: var(--ink); display: grid; place-items: center; cursor: pointer; }
+.dic:active, .dcard.p0:active { transform: scale(.97); }
+.dk-empty { padding: 16px; border-radius: 20px; border: 1px dashed var(--line); color: var(--muted); font-size: 16px; }
+.ins { padding: 16px; border-radius: 22px; border: 1px solid var(--line); background: var(--card); display: flex; flex-direction: column; gap: 6px; }
+.ins b { font-weight: 500; font-size: 17.5px; line-height: 1.4; }
+.ins span { font-size: 16px; color: var(--muted); }
+.ins i { font-style: normal; font-weight: 600; color: var(--acc); }
+.wmsg { padding: 12px 14px; border-radius: 18px; border: 1px solid var(--line); background: var(--card); display: flex; flex-direction: column; gap: 6px; }
+.wmsg.p { border-inline-start: 3px solid #f9a8d4; } body.her .wmsg.p { border-inline-start-color: var(--acc); }
+.wmsg .k { font-size: 14px; font-weight: 600; color: var(--acc); }
+.wmsg .t { font-size: 17px; line-height: 1.4; }
+.wmsg .r { display: flex; gap: 8px; }
+.wmsg .r button { font: inherit; font-size: 15px; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+.wmsg .r button.sel { background: var(--grad); color: #fff; border-color: transparent; }
+.whbox { display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 22px; border: 1px solid var(--line); background: var(--card); }
+.whrow { display: flex; gap: 8px; flex-wrap: wrap; }
+.wk { font: inherit; font-size: 16px; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 9px 16px; cursor: pointer; }
+.wk.on { background: var(--grad); color: #fff; border-color: transparent; }
+@media (prefers-reduced-motion: reduce) { .dcard { transition: none; } }
+
+/* Whispers (chat 7): her/his whispers as a deck; the invitation with two doors */
+.wdeck { height: 220px; }
+.dcard.ws { border-inline-start: 3px solid #f9a8d4; } body.her .dcard.ws { border-inline-start-color: var(--acc); }
+.wsfrom { display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 600; color: #f9a8d4; } body.her .wsfrom { color: var(--acc); }
+.wsav { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; background: #f9a8d4; color: #4a0f2c; }
+body.her .wsav { background: #2b1b29; color: #fff; }
+.dcard.ws .q { font-size: 23px; }
+.dcard.ws .r { display: flex; gap: 8px; }
+.dcard.ws .r button { font: inherit; font-size: 15px; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+.invite { display: flex; flex-direction: column; gap: 12px; padding: 22px 18px; border-radius: 26px; border: 1px solid var(--line); background: linear-gradient(135deg, rgba(139,92,246,.22), rgba(236,72,153,.18)); }
+.invite .iq { margin: 0; font-weight: 200; font-size: 28px; line-height: 1.15; }
+#app .invite .txt { display: block; margin-top: -6px; }
+.doors { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.door { font: inherit; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 16px; min-height: 104px; border-radius: 20px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; text-align: start; font-size: 17px; font-weight: 500; transition: transform .15s ease-out; }
+.door svg.i { width: 26px; height: 26px; color: var(--acc); }
+.door.on { background: var(--grad); color: #fff; border-color: transparent; } .door.on svg.i { color: #fff; }
+.door:active { transform: scale(.97); }
+
+/* Map zones (chat 7): three parts on one screen, told apart by look, not tabs.
+   A = solid cards (what touches her), B = a sideways strip of notes (between the lines), C = a glowing whisper band. */
+.zone { display: flex; flex-direction: column; gap: 12px; padding: 18px 14px; border-radius: 28px; margin-top: 4px; }
+.zh { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 500; }
+.zh svg.i { width: 26px; height: 26px; padding: 6px; box-sizing: content-box; border-radius: 50%; color: #fff; background: var(--grad); }
+.zh b { margin-inline-start: auto; font-weight: 200; font-size: 30px; line-height: 1; }
+.zh b.hot { font-size: 14px; font-weight: 600; color: #fff; background: #ec4899; border-radius: 999px; padding: 3px 10px; }
+.za { background: rgba(236,72,153,.08); }
+.zb { background: rgba(167,139,250,.10); }
+.zb .zh svg.i { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
+.strip { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; margin: 0 -14px; padding-inline: 14px; scrollbar-width: none; }
+.strip::-webkit-scrollbar { display: none; }
+.strip .ins { flex: 0 0 78%; scroll-snap-align: start; border-style: dashed; }
+.strip .ins.w b { font-style: italic; }
+.strip .ins small { font-size: 13.5px; font-weight: 600; color: var(--acc); }
+.zc { background: radial-gradient(120% 90% at 100% 0%, rgba(236,72,153,.28), transparent 60%), radial-gradient(120% 90% at 0% 100%, rgba(139,92,246,.3), transparent 60%); border: 1px solid rgba(236,72,153,.35); }
+body.her .zc { background: radial-gradient(120% 90% at 100% 0%, rgba(249,168,212,.45), transparent 60%), radial-gradient(120% 90% at 0% 100%, rgba(196,181,253,.45), transparent 60%); }
+.seg { display: flex; gap: 6px; padding: 4px; border-radius: 999px; border: 1px solid var(--line); align-self: flex-start; }
+.seg button { font: inherit; font-size: 15px; border: 0; background: transparent; color: var(--muted); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+.seg button.on { background: var(--grad); color: #fff; }
+.wsd { margin-inline-start: auto; font-weight: 400; font-size: 13.5px; color: var(--muted); }
+.dcard.ws.mine { border-inline-start-color: #a78bfa; }
+.wsans { font-size: 15px; color: var(--muted); }
+.zc .invite { background: var(--card); }
+
+/* v32 map look (Morin, chat 7): the three parts are colored bands. His side: hues of black. Her side: hues of pink.
+   Whispers: what HE sent is black; what SHE sent is white with a touch of pink, on both phones. */
+body:not(.her) .za { background: #141219; border: 0; } body:not(.her) .zb { background: #1b1822; border: 0; } body:not(.her) .zc { background: #24202c; border: 0; }
+body.her .za { background: #fdeaf3; border: 0; } body.her .zb { background: #fbdcec; border: 0; } body.her .zc { background: #f8cde3; border: 0; }
+.zone { border-radius: 0; margin-inline: -18px; padding-inline: 18px; }
+#app .dcard.ws { border: 0; border-inline-start: 0; box-shadow: 0 6px 18px rgba(0,0,0,.18) !important; }
+#app .dcard.ws.from-her { background: #fff6fa; color: #2b1a3a; }
+#app .dcard.ws.from-him { background: #0d0d12; color: #f4f2fb; }
+.dcard.ws.from-her .wsfrom { color: #b5479a; } .dcard.ws.from-her .wsav { background: #f9a8d4; color: #4a0f2c; }
+.dcard.ws.from-him .wsfrom { color: #c4b5fd; } .dcard.ws.from-him .wsav { background: #2b2633; color: #fff; }
+.dcard.ws.from-her .wsd, .dcard.ws.from-her .wsans { color: #6f5f80; } .dcard.ws.from-him .wsd, .dcard.ws.from-him .wsans { color: #a9a7ba; }
+.dcard.ws.from-her .r button { color: #2b1a3a; border-color: #eadcf2; } .dcard.ws.from-him .r button { color: #f4f2fb; border-color: rgba(255,255,255,.2); }
+#app .zc .invite { background: transparent; border: 0; padding: 6px 0 0; }
+.doors { grid-template-columns: 1fr; }
+#app .door { flex-direction: row; align-items: center; min-height: 0; padding: 16px 18px; border: 0; border-radius: 18px; background: var(--grad); color: #fff; font-size: 18px; font-weight: 500; box-shadow: 0 8px 20px rgba(139,92,246,.3) !important; }
+#app .door svg.i { color: #fff; }
+#app .door.on { outline: 2px solid #fff; outline-offset: -4px; }
+
+/* v32 map, round 3: every part has its own card color; the invitation is its own band with small buttons.
+   His side cards: plum (what touches her), indigo (between the lines); her side: white, lilac. Her side shows his whispers in his purple, not black. */
+body:not(.her) .za .dcard { background: #2a1830 !important; border-color: rgba(249,168,212,.25) !important; }
+body:not(.her) .zb .ins { background: #1f1f3a !important; border-color: rgba(167,139,250,.35) !important; }
+body.her .za .dcard { background: #ffffff !important; border-color: #f3c7dc !important; }
+body.her .zb .ins { background: #f1e8ff !important; border-color: #d9c8fb !important; }
+body.her #app .dcard.ws.from-him { background: #e9e3f2; color: #2a2236; }
+body.her .dcard.ws.from-him .wsav { background: #3b3048; color: #fff; }
+body.her .dcard.ws.from-him .wsfrom { color: #5b4a78; }
+body.her .dcard.ws.from-him .wsd, body.her .dcard.ws.from-him .wsans { color: #6b5f7d; }
+body.her .dcard.ws.from-him .r button { color: #2a2236; border-color: #cfc5df; }
+body:not(.her) .zd { background: linear-gradient(135deg, #3a1f52, #5a1d45); }
+body.her .zd { background: linear-gradient(135deg, #f3d9ff, #ffd6ea); }
+#app .zd .invite { padding: 0; background: transparent; border: 0; }
+#app .zd .iq { font-size: 22px; }
+.zd .doors { display: flex; flex-wrap: wrap; gap: 8px; }
+#app .zd .door { flex: 0 1 auto; padding: 10px 16px; border-radius: 999px; font-size: 16px; gap: 8px; box-shadow: none !important; }
+#app .zd .door svg.i { width: 18px; height: 18px; }
+
+/* v32: the invitation opens in place (home tile, or "whisper back" under her whisper) */
+.invite { display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 22px; border: 1px solid var(--line); background: var(--card); }
+#app .invite .doors { display: flex; flex-wrap: wrap; gap: 8px; }
+#app .invite .door { flex: 0 1 auto; flex-direction: row; align-items: center; min-height: 0; padding: 10px 16px; border: 0; border-radius: 999px; background: var(--grad); color: #fff; font-size: 16px; font-weight: 500; gap: 8px; box-shadow: none !important; }
+#app .invite .door svg.i { width: 18px; height: 18px; color: #fff; }
+.wback { display: inline-flex; align-items: center; gap: 6px; margin-inline-start: auto; }
+.wback svg.i { width: 16px; height: 16px; }
 </style>
 </head>
 <body>
@@ -364,7 +515,7 @@ var T = {
     // his intro
     skip: "Skip", i1: "Find out what really draws her to you.", i2: "Three steps. Real moments.", s1: "Pick a moment", s2: "Find out why", s3: "Tell her", i3: "The more you ask, the better you know her.", i3s: "Your “What draws her” list grows with every moment.", firstMoment: "Add your first moment", continueBtn: "Continue",
     // his home
-    tMoments: "Moments", tDraws: "What draws her", tSettings: "Settings", tToday: "Today", tConvs: "Conversations", wDate: "Date tonight? Just the two of us ♡",
+    tMoments: "Moments", tDraws: "What draws her", tSettings: "Settings", tToday: "Today", tConvs: "Our moments", tMapHim: "Her map", tMapHer: "His map", wDate: "Date tonight? Just the two of us ♡",
     m1: "Was there a moment she couldn't keep her hands off you?", tryOne: "Try one of these", sugA: "Your first date", sugB: "A night she couldn't stop smiling", sugC: "When she looked at you across a room", ownPh: "Or your own moment", add: "Add",
     fromHer: "From her", sealedPill: "New", waiting: "Waiting for her", answered: "She answered", saved: "Saved for later", done: "Told her", toldList: "Told her",
     // steps
@@ -389,7 +540,7 @@ var T = {
     // settings
     setL: "Settings", names: "Names", reset: "Start over", resetSure: "Erase everything on this phone?", yesErase: "Yes, erase", cancel: "Cancel", backup: "Copy a backup", restore: "Restore from backup", restorePh: "Paste your backup link here", restoreBtn: "Restore", bkL: "Backup", bkC: "Reinstalling or changing phones? Save a backup link now. Open it later and everything comes back.", bkWa: "Send a backup to myself", wBackup: "My Curious About Her backup. Open this link to get everything back 🔒", bkAskT: "Restore this backup?", bkAskC: "It will replace what is on this phone now.", bkYes: "Yes, restore", bkDone: "Everything is back ♡", bkBad: "This backup could not be read", bkHint: "If the link opens in the browser and not in the app, copy it and paste it here.",
     // whatsapp texts
-    wLoves: "Something I love that you do ♡", wInvite: "I picked a moment for you ♡", wMoment: "Another moment for you ♡", wTalk: "Let's talk tonight about your moment ♡", wQuestion: "I have a question for you ♡", wAnswer: "Here's my answer ♡", wNote: "I wrote you something ♡", wListened: "I listened ♡", wReaction: "Here's how it felt ♡", wEdit: "I fixed something small ✎", tStory: "Our moments", wTip: "A little tip for you ♡", tTips: "Tips", tSettingsS: "⚙",
+    wLoves: "Something I love that you do ♡", wInvite: "I whispered you a moment ♡", wMoment: "I whispered you another moment ♡", wSecret: "I have a little secret for you ♡", wDesire: "I whispered you something… ♡", wTalk: "Let's talk tonight about your moment ♡", wReply: "I got your whisper ♡", wQuestion: "I have a question for you ♡", wAnswer: "Here's my answer ♡", wNote: "I wrote you something ♡", wListened: "I listened ♡", wReaction: "Here's how it felt ♡", wEdit: "I fixed something small ✎", tStory: "Our moments", wTip: "A little tip for you ♡", tTips: "Tips", tSettingsS: "⚙",
     copied: "Link copied", sentNote: "Opening WhatsApp…", savedToast: "Saved", copyLink: "Or copy the link", got: "Got it",
     oldLink: "This link was already opened.", otherCouple: "This link belongs to someone else's app.",
     whoLinkL: "Before we open it", gameL: "Curious About Her", gameQ: "{n} invited you to a game for two.", gameTxt: "She wrote down moments when she was really into you. You find out what you did there, and learn what draws her to you.", gameYes: "I'm {p}, let's play", gameNo: "I'm {n}, I sent this", whoLinkQ: "Is this you, {p}?", whoLinkTxt: "{n} sent this link to {p}.", yesMe: "Yes, I'm {p}", noSender: "No, I'm {n}. I sent it",
@@ -405,7 +556,7 @@ var T = {
     gotIt: "קלעתי ✦", notQuite: "לא בדיוק", gotItSay: "✦ אתה מכיר אותה.", notQuiteSay: "✦ עכשיו אתה יודע משהו חדש.",
     mission: "<b>המשימה שלך:</b> לגלות מה ברגע הזה הדליק אותה כל כך, כדי שתוכל להחזיר את זה.", go: "יאללה, מתחילים",
     skip: "דלג", i1: "גלה מה באמת מושך אותה אליך.", i2: "שלושה צעדים. רגעים אמיתיים.", s1: "בחר רגע", s2: "גלה למה", s3: "תגיד לה", i3: "ככל שתשאל יותר, תכיר אותה יותר.", i3s: "הרשימה ״מה מושך אותה״ שלך גדלה עם כל רגע.", firstMoment: "הוסף את הרגע הראשון", continueBtn: "המשך",
-    tMoments: "רגעים", tDraws: "מה מושך אותה", tSettings: "הגדרות", tToday: "היום", tConvs: "השיחות", wDate: "דייט הערב? רק שנינו ♡",
+    tMoments: "רגעים", tDraws: "מה מושך אותה", tSettings: "הגדרות", tToday: "היום", tConvs: "הרגעים שלנו", tMapHim: "המפה שלה", tMapHer: "המפה שלו", wDate: "דייט הערב? רק שנינו ♡",
     m1: "היה רגע שהיא לא הצליחה להוריד ממך את הידיים?", tryOne: "נסה אחד מאלה", sugA: "הדייט הראשון", sugB: "ערב שהיא לא הפסיקה לחייך", sugC: "כשהיא הסתכלה עליך מהצד השני של החדר", ownPh: "או רגע משלך", add: "הוסף",
     fromHer: "ממנה", sealedPill: "חדש", waiting: "מחכה לה", answered: "היא ענתה", saved: "שמור לאחר כך", done: "סיפרת לה", toldList: "סיפרת לה",
     m2: "מה קרה רגע לפני?", whyPh: "הניחוש שלך (לא חובה)", iKnow: "אני יודע", iDont: "אני לא יודע",
@@ -426,7 +577,7 @@ var T = {
     hAddL: "רגע שריגש אותך", hAddPh: "רגע שהתאהבת בו מחדש", hNotes: "הערות פרטיות", hNotesPh: "רק בשבילך", saveNotes: "שמירה",
     hMyMoments: "רגעים ששיתפת",
     setL: "הגדרות", names: "שמות", reset: "להתחיל מחדש", resetSure: "למחוק הכל מהטלפון הזה?", yesErase: "כן, למחוק", cancel: "ביטול", backup: "העתקת גיבוי", restore: "שחזור מגיבוי", restorePh: "הדביקו כאן את קישור הגיבוי", restoreBtn: "שחזור", bkL: "גיבוי", bkC: "מתקינים מחדש או מחליפים טלפון? שמרו עכשיו קישור גיבוי. פותחים אותו אחר כך והכל חוזר.", bkWa: "לשלוח לעצמי גיבוי", wBackup: "הגיבוי שלי ב-Curious About Her. פותחים את הקישור והכל חוזר 🔒", bkAskT: "לשחזר את הגיבוי?", bkAskC: "הוא יחליף את מה שיש עכשיו בטלפון הזה.", bkYes: "כן, לשחזר", bkDone: "הכל חזר ♡", bkBad: "לא הצלחנו לקרוא את הגיבוי", bkHint: "אם הקישור נפתח בדפדפן ולא באפליקציה, העתיקו אותו והדביקו כאן.",
-    wLoves: "משהו שאני אוהב שאת עושה ♡", wInvite: "בחרתי רגע בשבילך ♡", wMoment: "עוד רגע בשבילך ♡", wTalk: "בואי נדבר הערב על הרגע שלך ♡", wQuestion: "יש לי שאלה בשבילך ♡", wAnswer: "הנה התשובה שלי ♡", wNote: "כתבתי לך משהו ♡", wListened: "הקשבתי ♡", wReaction: "ככה זה הרגיש ♡", wEdit: "תיקנתי משהו קטן ✎", tStory: "הרגעים שלנו", wTip: "טיפ קטן בשבילך ♡", tTips: "טיפים", tSettingsS: "⚙",
+    wLoves: "משהו שאני אוהב שאת עושה ♡", wInvite: "לחשתי לך רגע ♡", wMoment: "לחשתי לך עוד רגע ♡", wSecret: "יש לי סוד קטן בשבילך ♡", wDesire: "לחשתי לך משהו… ♡", wTalk: "בואי נדבר הערב על הרגע שלך ♡", wReply: "קיבלתי את הלחישה שלך ♡", wQuestion: "יש לי שאלה בשבילך ♡", wAnswer: "הנה התשובה שלי ♡", wNote: "כתבתי לך משהו ♡", wListened: "הקשבתי ♡", wReaction: "ככה זה הרגיש ♡", wEdit: "תיקנתי משהו קטן ✎", tStory: "הרגעים שלנו", wTip: "טיפ קטן בשבילך ♡", tTips: "טיפים", tSettingsS: "⚙",
     copied: "הקישור הועתק", sentNote: "פותח את וואטסאפ…", savedToast: "נשמר", copyLink: "או העתקת הקישור", got: "הבנתי",
     oldLink: "הקישור הזה כבר נפתח.", otherCouple: "הקישור הזה שייך לאפליקציה של מישהו אחר.",
     whoLinkL: "לפני שפותחים", gameL: "Curious About Her", gameQ: "{n} הזמינה אותך למשחק לשניים.", gameTxt: "היא כתבה רגעים שבהם היא ממש נמשכה אליך. אתה מגלה מה עשית שם, ולומד מה מושך אותה אליך.", gameYes: "אני {p}, יאללה נשחק", gameNo: "אני {n}, אני שלחתי", whoLinkQ: "זה את/ה, {p}?", whoLinkTxt: "{n} שלח/ה את הקישור הזה ל{p}.", yesMe: "כן, אני {p}", noSender: "לא, אני {n}. אני שלחתי",
@@ -516,6 +667,8 @@ function apply(msg) {
     S.tips = S.tips || []; var ex0 = S.tips.filter(function (x) { return x.id === d.id; })[0]; if (ex0) ex0.text = d.text; else S.tips.unshift({ id: d.id, from: msg.f, text: d.text, kind: d.kind, createdAt: Date.now() });
   } else if (msg.t === "edit") {
     m = byId(d.mid); if (m) { if (d.field === "title") m.title = d.value; if (d.field === "reaction") m.reaction = d.value; if (d.field === "note") m.note = d.value; if (d.field === "answer") { m.answer = d.value; if (m.status === "asked") m.status = "answered"; } }
+  } else if (msg.t === "tipReply") {
+    var tr = (S.tips || []).filter(function (z) { return z.id === d.id; })[0]; if (tr) tr.reply = d.r;
   } else if (msg.t === "reaction") {
     m = byId(d.mid); if (m) { m.reaction = d.text; m.status = "done"; }
   }
@@ -527,12 +680,12 @@ function route(msg) {
   var d = msg.d || {};
   V.mid = d.mid;
   if (S.role === "him") {
-    if (msg.t === "tip") { V.tab = "tips"; V.screen = "home"; setTimeout(function () { toast(x("tipArrived")); }, 300); return; }
+    if (msg.t === "tip" || msg.t === "tipReply") { V.tab = "map"; V.screen = "home"; V.tmp.wsDir = msg.t === "tipReply" ? "sent" : "got"; V.tmp.wsI = 0; setTimeout(function () { toast(x("tipArrived")); }, 300); return; }
     if (msg.t === "invite" || msg.t === "moment") V.screen = S.introHim ? "round" : "intro1";
     else if (msg.t === "answer" || msg.t === "reaction" || (msg.t === "edit" && (msg.d || {}).field === "answer" && byId(d.mid) && byId(d.mid).status !== "done")) V.screen = "round";
     else V.screen = "home";
   } else {
-    if (msg.t === "tip") { V.tab = "tips"; V.screen = "home"; setTimeout(function () { toast(x("tipArrived")); }, 300); return; }
+    if (msg.t === "tip" || msg.t === "tipReply") { V.tab = "map"; V.screen = "home"; V.tmp.wsDir = msg.t === "tipReply" ? "sent" : "got"; V.tmp.wsI = 0; setTimeout(function () { toast(x("tipArrived")); }, 300); return; }
     if (msg.t === "question") V.screen = S.introHer ? "round" : "herIntro1";
     else if (msg.t === "note" || msg.t === "listened" || msg.t === "talk") V.screen = "round";
     else V.screen = "home";
@@ -577,9 +730,9 @@ function pillFor(m) {
 /* Top bar on inner screens: round back button, centered label (DESIGN.md Navigation) */
 function topBar(backAttr, label, fwd) { return '<div class="hbar"><button class="rb" ' + backAttr + ' aria-label="' + esc(x("navBack")) + '">' + ic("back") + '</button><span class="hlab">' + (label || "") + '</span>' + (fwd ? '<button class="rb" data-nav="fwd" aria-label="' + esc(x("navFwd")) + '">' + ic("chev") + '</button>' : '<span class="rb ghostrb"></span>') + '</div>'; }
 function tabs() {
-  var a = [["moments", "tToday"], ["convs", "tConvs"], ["draws", "tDraws"], ["tips", "tTips"], ["settings", "tSettingsS"]];
-  if (S.role === "her") a = [["moments", "hubTab"], ["inbox", "tConvs"], ["story", "tStory"], ["tips", "tTips"], ["settings", "tSettingsS"]];
-  return '<div class="tabs">' + a.map(function (x) { return '<button class="' + (V.tab === x[0] ? "on" : "") + '" data-tab="' + x[0] + '">' + t(x[1]) + '</button>'; }).join("") + '</div>';
+  var a = [["moments", "tToday"], ["convs", "tConvs"], ["map", "tMapHim"], ["settings", "tSettingsS"]];
+  if (S.role === "her") a = [["moments", "hubTab"], ["inbox", "tConvs"], ["map", "tMapHer"], ["settings", "tSettingsS"]];
+  return '<div class="tabs">' + a.map(function (x) { return '<button class="' + (V.tab === x[0] || (x[0] === "map" && /^(draws|tips|story)$/.test(V.tab)) ? "on" : "") + '" data-tab="' + x[0] + '">' + t(x[1]) + '</button>'; }).join("") + '</div>';
 }
 
 /* ===================== Screens ===================== */
@@ -606,6 +759,20 @@ SC.notice = function () { return { cls: "calm", html: orbs() + '<p class="mid" s
 /* --- screen copy: where you are · why you're here · what to do --- */
 var CX = {
   en: {
+    wsFromHim: "{n} whispered to you…", wsFromHer: "{n} whispered to you…", wsEmptyHim: "When {n} whispers something to you, it shows up here.", wsEmptyHer: "When {n} whispers something to you, it shows up here.",
+    wsAskHim: "Is there something she doesn't know about you yet?", wsAskHer: "Is there something he doesn't know about you yet?", wsOnlyHim: "Only she will hear this.", wsOnlyHer: "Only he will hear this.",
+    wsSecret: "A little secret about me", wsDesire: "What turns me on", wsDoorSecretHim: "Tell her a little secret", wsDoorDesireHim: "Tell her what turns you on", wsDoorSecretHer: "Tell him a little secret", wsDoorDesireHer: "Tell him what turns you on", wsPhSecretHim: "Something I've never told you…", wsPhSecretHer: "Something I've never told you…", wsPhDesireHim: "It turns me on when you…", wsPhDesireHer: "It turns me on when you…",
+    wsSendHim: "Whisper it to her", wsSendHer: "Whisper it to him", wsMineHim: "You whispered", wsMineHer: "You whispered", wsZone: "Whispers between you", wsBack: "Whisper back", wsInvHim: "Feel like whispering to her?", wsInvHer: "Feel like whispering to him?", wsNoneSent: "Nothing whispered yet. Try one of the doors below.", wsWaiting: "Waiting for {n}", cvWhisperedHim: "{n} whispered you a moment",
+    mSubHim: "What you found out about her, and it keeps growing", mSubHer: "What you learned about him, from what he wrote you",
+    mLearnHim: "What touches her", mLearnHer: "What makes him fall for you", mCoach: "Between the lines", mWords: "In his words", mWhHim: "Whisper to her", mWhHer: "Whisper to him",
+    mEmptyHim: "Every moment you finish adds a card here.", mEmptyHer: "When {n} whispers what he loves, it shows up here.", mCoachEmpty: "The coach writes here once there are a few moments.",
+    mFromMoment: "From the moment: {t}", mTryHer: "Try:", mWhispered: "{n} whispered it to you", mTry: "Try:", mNew: "new", mOf: "{i} / {c}",
+    mKLoves: "Something I love", mKWish: "A small wish", mPhLovesHim: "I love it when you…", mPhLovesHer: "I love it when you…", mPhWish: "I'd love it if…",
+    mSendHim: "Send it to her", mSendHer: "Send it to him", mOnIt: "On it", mSentL: "sent", mGot: "{n}: {r}",
+    mcTouchQ: "{n} describes her moments through touch: a hand, a dance, a hug.", mcTouchT: "Touch her on an ordinary day, not only at night.",
+    mcInitQ: "Her moments happened when you chose her without being asked.", mcInitT: "One small move this week, before she asks.",
+    mcTeamQ: "What matters to her: feeling you're a team.", mcTeamT: "Stand by her next time you're with others.",
+    mcAskQ: "She opens up when you ask about what you did, not about her feelings.", mcAskT: "Next moment, ask her the same way.",
     rH1: "Her moment", rH1own: "Your moment", rH2: "What you think you did", rH3: "How you'll find out", rH4: "Her answer", rH5: "She loves it when I…", rH6: "What you want her to know", rH7: "Her reaction",
     rS1: "Your moment", rS1his: "His moment", rS2: "He thinks about what he did", rS3: "He comes to find out", rS4: "Your answer", rS5: "He learns", rS6: "What he wants you to know", rS7: "Your reaction",
     rQ2: "What do you think you did there?", rQ2s: "About you, not her. Only you see this.", rPh2: "Maybe that I…", rNext: "Next", rC2: "Think about what you did just before she felt that way.",
@@ -625,13 +792,13 @@ var CX = {
     coachL: "From the coach", coachC: "Read from what {n} wrote you", coachEmpty: "When {n} writes to you, the coach will read it and give you tips here.", coachTag: "Coach",
     cAdm: "He admires you. Men glow when admiration goes both ways: tell him one thing you admire in him.", cDes: "He told you he wants you. Men need to feel wanted too: show him, a look or a touch is enough.", cCare: "He wants to take care of you. Men want to feel needed: let him help, and tell him it made a difference.", cTime: "He misses time with you. Men often connect by doing things together: suggest a plan just for the two of you.", cSoft: "He showed you something soft. For most men that takes courage. Receive it gently, without fixing or joking.", cThx: "He thanked you. Men open up more when they feel appreciated: thank him back for something specific he did.", cLove: "He wrote to you about love. Men are rarely sure their words landed: tell him which word stayed with you.",
     cNote: "He put his feelings into words for you. That's hard for most men: tell him it reached you, so he'll do it again.", cAsk: "He asked about your feelings. Most men rarely do: answer with a small story, and thank him for asking.", cGuess: "He guessed “{w}”. Men love to win: next time, give him a small hint so he gets it right.", cDraw: "He learned what draws you: “{w}”. Men repeat what they see works: show him when he gets it right.",
-    tToHim: "Send her a tip", tToHer: "Send him a tip", tToCHim: "Tell her something you love, or a small hint. She gets it on WhatsApp.", tToCHer: "Tell him something you love, or a small hint. He gets it on WhatsApp.", tNowHim: "Send it to her now", tNowHer: "Send it to him now", tLaterHim: "Save for later", tLaterHer: "Save for later", tSavedL: "Saved for later", tSavedEmpty: "Nothing saved yet. Save a tip and send it when the moment is right.", tSentL: "Already sent", tSendOneHim: "Send to her", tSendOneHer: "Send to him", tNew: "new", tipArrived: "A new tip from {n} ♡", hubTip: "{n} sent you a tip ♡ See what he loves.", hubTipBtn: "See his tip ♡", hTipsL: "Tips from him", herTipsL: "More tips", herTip0: "When he asks, answer with a small story, not just a word. A story gives him something to hold on to.", herTip1: "Tell him what happened just before the moment. That's the part he can bring back.", herTip2: "When he tries, even clumsily, let him see it touched you. A smile is enough.", herTip3: "Pick moments you'd love to live again, not only the big ones. Small everyday things count too.", herTip4: "Keep it light and playful. A moment is a game, not a test.", herTip5: "Want something specific? Send him a hint from here. He gets it on WhatsApp.", tFrom: "From {n}", tFromEmptyHim: "When she sends you a tip, it shows up here.", tFromEmptyHer: "When he sends you an idea, it shows up here.", tLearned: "Learned from your moments", tLearnedEmpty: "Tips appear here as you finish moments.", tMine: "My ideas", tMineEmpty: "Add your first idea below.", tAdd: "Add a tip or an idea", tAddPhHim: "e.g. I love it when you wake me up with a kiss", tAddPhHer: "e.g. I love it when you hold my hand in public", tSend: "Send it on WhatsApp", tKeep: "Keep it just for me", tSentPill: "sent", tPrivPill: "private", tDoMore: "Do more of this: {d}", tWorked: "This worked ({r}♥): {m}, {h}", tHowNote: "with a note", tHowPerson: "face to face", tHeKnows: "He learned: {d}", tHeSaid: "He told you: {d}", stL: "The coach suggests a start", stH: "Tap one and finish it in your own words.", stA: "When you told me “{a}”, I felt…", stB: "I didn't know that moment meant so much to you…", stC: "I felt {f} when…", stD: "What I see in you now is…", stE: "I want you to know…", stF: "Since you told me, I keep thinking about…", nsL: "Start from…", nsPick: "Choose a start (optional)", nsOwn: "Your own words", nsOther: "Something else", nsNew: "Write something new", amL: "Another moment?", amC: "Each moment you add starts a new round for him.", skipReact: "Skip for now", notNow: "Not now", lTold: "What you told her", editReactL: "Edit what you told him", editNoteL: "Edit your note", editDrawL: "Edit what draws her", editHowL: "Edit how it went", editTipL: "Edit your tip", editLocalC: "Only you see this. Fix it however you like.", st1: "Step 1 of 6 · Pick a moment", st2: "Step 2 of 6 · Find out why", st3: "Step 3 of 6 · Ask her", st4: "Step 4 of 6 · What you learned", st5: "Step 5 of 6 · Say it", st6: "Step 6 of 6 · How it landed",
+    tToHim: "Send her a tip", tToHer: "Send him a tip", tToCHim: "Tell her something you love, or a small hint. She gets it on WhatsApp.", tToCHer: "Tell him something you love, or a small hint. He gets it on WhatsApp.", tNowHim: "Send it to her now", tNowHer: "Send it to him now", tLaterHim: "Save for later", tLaterHer: "Save for later", tSavedL: "Saved for later", tSavedEmpty: "Nothing saved yet. Save a tip and send it when the moment is right.", tSentL: "Already sent", tSendOneHim: "Send to her", tSendOneHer: "Send to him", tNew: "new", tipArrived: "{n} whispered you something ♡", hubTip: "{n} sent you a tip ♡ See what he loves.", hubTipBtn: "See his tip ♡", hTipsL: "Tips from him", herTipsL: "More tips", herTip0: "When he asks, answer with a small story, not just a word. A story gives him something to hold on to.", herTip1: "Tell him what happened just before the moment. That's the part he can bring back.", herTip2: "When he tries, even clumsily, let him see it touched you. A smile is enough.", herTip3: "Pick moments you'd love to live again, not only the big ones. Small everyday things count too.", herTip4: "Keep it light and playful. A moment is a game, not a test.", herTip5: "Want something specific? Send him a hint from here. He gets it on WhatsApp.", tFrom: "From {n}", tFromEmptyHim: "When she sends you a tip, it shows up here.", tFromEmptyHer: "When he sends you an idea, it shows up here.", tLearned: "Learned from your moments", tLearnedEmpty: "Tips appear here as you finish moments.", tMine: "My ideas", tMineEmpty: "Add your first idea below.", tAdd: "Add a tip or an idea", tAddPhHim: "e.g. I love it when you wake me up with a kiss", tAddPhHer: "e.g. I love it when you hold my hand in public", tSend: "Send it on WhatsApp", tKeep: "Keep it just for me", tSentPill: "sent", tPrivPill: "private", tDoMore: "Do more of this: {d}", tWorked: "This worked ({r}♥): {m}, {h}", tHowNote: "with a note", tHowPerson: "face to face", tHeKnows: "He learned: {d}", tHeSaid: "He told you: {d}", stL: "The coach suggests a start", stH: "Tap one and finish it in your own words.", stA: "When you told me “{a}”, I felt…", stB: "I didn't know that moment meant so much to you…", stC: "I felt {f} when…", stD: "What I see in you now is…", stE: "I want you to know…", stF: "Since you told me, I keep thinking about…", nsL: "Start from…", nsPick: "Choose a start (optional)", nsOwn: "Your own words", nsOther: "Something else", nsNew: "Write something new", amL: "Another moment?", amC: "Each moment you add starts a new round for him.", skipReact: "Skip for now", notNow: "Not now", lTold: "What you told her", editReactL: "Edit what you told him", editNoteL: "Edit your note", editDrawL: "Edit what draws her", editHowL: "Edit how it went", editTipL: "Edit your tip", editLocalC: "Only you see this. Fix it however you like.", st1: "Step 1 of 6 · Pick a moment", st2: "Step 2 of 6 · Find out why", st3: "Step 3 of 6 · Ask her", st4: "Step 4 of 6 · What you learned", st5: "Step 5 of 6 · Say it", st6: "Step 6 of 6 · How it landed",
     sealedL: "Her moment · locked", sealedC: "{n} hid a moment in here. She wrote it, you guess it.",
     guessC: "No pressure, there's no wrong guess. Go with your gut.",
     revealL: "Unlocked", revealC: "This is the moment {n} wrote down.", revealBtn: "Start your mission",
     howL: "How it works",
-    dMonth: "Your month", dSub: "What you learned about her", dTurn: "Your turn", dAns: "{n} answered you", dNew: "{n} shared a moment", dLoves: "{k} things she loves", dLovesIn: "things she<br>loves", dAnsBtn: "Answer her", dNewBtn: "Open her moment",
-    dTileM: "Add a moment you noticed", dTileMs: "Something that lit her up today?", dTileT: "Send her a tip", dTileTs: "Something you love that she does", dDate: "Invite her on a date tonight", dCoach: "Coach suggestion",
+    dMonth: "Your month", dSub: "What you learned about her", dTurn: "Your turn", dAns: "{n} answered you", dNew: "{n} whispered you a moment", dLoves: "{k} things she loves", dLovesIn: "things she<br>loves", dAnsBtn: "Answer her", dNewBtn: "Open her moment",
+    dTileM: "Add a moment you noticed", dTileMs: "Something that lit her up today?", dTileT: "Feel like whispering to her?", dTileTs: "A little secret, or what turns you on", dDate: "Invite her on a date tonight", dCoach: "Coach suggestion",
     dcAns: "Answer her tonight in one sentence: what you felt when she told you what you did. Not just \"thanks\".", dc0: "Notice one moment today when she smiled at you, and add it here.", dc1: "Ask her tonight what the best moment of her week was, and listen to the end.", dc2: "Do one thing from \"What draws her\" again this week, without announcing it.",
     homeL: "Your moments", homeC: "Every moment she was into you hides a secret. Pick one and crack it.", ideas: "Ideas to start with", addBtn: "Add this moment",
     whyC: "Detective mode: what happened right before she lit up?", whyKnow: "I know, I'll write it", whyDont: "I don't know, I'll ask her",
@@ -652,7 +819,7 @@ var CX = {
     hubD0: "Being asked about yourself feels good. Enjoy it.", hubD1: "He's learning you, one moment at a time.", hubD2: "Your moments are the map. He's the one exploring.", hubD3: "Some things are worth being asked about twice.", hubD4: "Tonight, notice one small thing he gets right.",
     tiFrom: "From him", tiFromS: "{k} new", tiFromNone: "Nothing new yet", tiStory: "Our moments", tiStoryS: "{k} moments together", tiAdd: "Send a moment", tiAddS: "Let him find out", tiTips: "Tips", tiTipsS: "For him, from you",
     hqT: "{n} is curious about you, he has a question", hqBtn: "Answer him", htT: "{n} sent you a tip", htBtn: "Read it", hlT: "{n} listened to you", hlBtn: "See what he wrote", hiT: "Did he do something that touched you?", hiSub: "Tell him about it", hiBtn: "Share a moment",
-    hHello: "Hi {me}", learnedL: "{n} learned <b>{k}</b> things about you", rFrom: "Conversations", rFromNew: "{k} new", rFromOne: "1 new", rFromNone: "Nothing new yet", rStory: "Our moments", rStoryS: "{k} conversations", rShare: "Share a moment", rShareS: "Something you want him to know", rTips: "Tips", rTipsS: "From him, from the coach, and from you to him", menuL: "Settings",
+    hHello: "Hi {me}", learnedL: "{n} learned <b>{k}</b> things about you", rFrom: "Our moments", rFromNew: "{k} new", rFromOne: "1 new", rFromNone: "Nothing new yet", rStory: "His map", rStoryS: "{k} things", rShare: "Share a moment", rShareS: "Something you want him to know", rTips: "Feel like whispering to him?", rTipsS: "A little secret, or what turns you on", menuL: "Settings",
     hHomeC: "This is where he shows up: his questions, his notes, his curiosity about you.", hAddC: "Send him another moment. Each one starts a new round.", hAddBtn: "Send it to him on WhatsApp", hNotesC: "Just for you. Not him, not anyone.",
     ansL: "A question from {n}", ansC: "{n} is curious about you. Answer however you like, there's no wrong answer.", ansBtn: "Send my answer on WhatsApp",
     lisL: "{n} listened", lisC: "{n} heard you, and here's what he made of it.", lisReactBtn: "Send it back to him on WhatsApp", lisMore: "Add another moment",
@@ -664,6 +831,20 @@ var CX = {
     editShort: "Edit", editMomentL: "Edit your moment", editAnswerL: "Edit your answer", editC: "Fix anything you like. He gets the corrected version on WhatsApp.", editBtn: "Save and send the correction", cancel: "Cancel"
   },
   he: {
+    wsFromHim: "{n} לחשה לך…", wsFromHer: "{n} לחש לך…", wsEmptyHim: "כש{n} תלחש לך משהו, זה יופיע כאן.", wsEmptyHer: "כש{n} ילחש לך משהו, זה יופיע כאן.",
+    wsAskHim: "יש משהו שהיא עוד לא יודעת עליך?", wsAskHer: "יש משהו שהוא עוד לא יודע עלייך?", wsOnlyHim: "רק היא תשמע את זה.", wsOnlyHer: "רק הוא ישמע את זה.",
+    wsSecret: "סוד קטן עליי", wsDesire: "מה מדליק אותי", wsDoorSecretHim: "תגלה לה סוד קטן", wsDoorDesireHim: "תגלה לה מה מדליק אותך", wsDoorSecretHer: "תגלי לו סוד קטן", wsDoorDesireHer: "תגלי לו מה מדליק אותך", wsPhSecretHim: "משהו שלא סיפרתי לך אף פעם…", wsPhSecretHer: "משהו שלא סיפרתי לך אף פעם…", wsPhDesireHim: "זה מדליק אותי כשאת…", wsPhDesireHer: "זה מדליק אותי כשאתה…",
+    wsSendHim: "תלחש לה", wsSendHer: "לחשי לו", wsMineHim: "לחשת לה", wsMineHer: "לחשת לו", wsZone: "לחישות ביניכם", wsBack: "ללחוש בחזרה", wsInvHim: "בא לך ללחוש לה?", wsInvHer: "בא לך ללחוש לו?", wsNoneSent: "עוד לא לחשת. נסו אחת מהדלתות למטה.", wsWaiting: "מחכה ל{n}", cvWhisperedHim: "{n} לחשה לך רגע",
+    mSubHim: "מה שגילית עליה, וממשיך לגדול", mSubHer: "מה שלמדת עליו, מתוך מה שהוא כתב לך",
+    mLearnHim: "מה נוגע בה", mLearnHer: "מה גורם לו להתאהב בך", mCoach: "בין השורות", mWords: "במילים שלו", mWhHim: "תלחש לה", mWhHer: "לחשי לו",
+    mEmptyHim: "כל רגע שתסיים מוסיף כאן קלף.", mEmptyHer: "כש{n} ילחש לך מה הוא אוהב, זה יופיע כאן.", mCoachEmpty: "המאמן יכתוב כאן אחרי כמה רגעים.",
+    mFromMoment: "מהרגע: {t}", mTryHer: "נסי:", mWhispered: "{n} לחש לך", mTry: "נסה:", mNew: "חדש", mOf: "{i} / {c}",
+    mKLoves: "משהו שאני אוהב", mKWish: "משאלה קטנה", mPhLovesHim: "אני אוהב כשאת…", mPhLovesHer: "אני אוהבת כשאתה…", mPhWish: "הייתי רוצה ש…",
+    mSendHim: "תשלח לה", mSendHer: "שלחי לו", mOnIt: "על זה", mSentL: "נשלח", mGot: "{n}: {r}",
+    mcTouchQ: "{n} מתארת את הרגעים שלה דרך מגע: יד, ריקוד, חיבוק.", mcTouchT: "תיגע בה ביום רגיל, לא רק בערב.",
+    mcInitQ: "הרגעים שלה קרו כשבחרת בה בלי שביקשה.", mcInitT: "יוזמה קטנה השבוע, לפני שהיא מבקשת.",
+    mcTeamQ: "מה שחשוב לה: להרגיש שאתם צוות.", mcTeamT: "תעמוד לצידה בפעם הבאה מול אחרים.",
+    mcAskQ: "היא נפתחת כשאתה שואל מה עשית, לא מה היא הרגישה.", mcAskT: "ברגע הבא, תשאל אותה באותה דרך.",
     rH1: "הרגע שלה", rH1own: "הרגע שלך", rH2: "מה לדעתך עשית שם", rH3: "איך תגלה", rH4: "התשובה שלה", rH5: "היא אוהבת כשאני…", rH6: "מה אתה רוצה שהיא תדע", rH7: "התגובה שלה",
     rS1: "הרגע שלך", rS1his: "הרגע שלו", rS2: "הוא חושב מה עשה", rS3: "הוא בא לגלות", rS4: "התשובה שלך", rS5: "הוא לומד", rS6: "מה הוא רוצה שתדעי", rS7: "התגובה שלך",
     rQ2: "מה לדעתך עשית שם?", rQ2s: "על עצמך, לא עליה. רק אתה רואה את זה.", rPh2: "אולי ש…", rNext: "הבא", rC2: "תחשוב מה עשית רגע לפני שהיא הרגישה ככה.",
@@ -683,13 +864,13 @@ var CX = {
     coachL: "מהמאמן", coachC: "מתוך מה ש{n} כתב לך", coachEmpty: "כש{n} יכתוב לך, המאמן יקרא ויביא לך כאן טיפים.", coachTag: "מאמן",
     cAdm: "הוא מעריץ אותך. גברים פורחים כשההערצה הולכת לשני הכיוונים: ספרי לו דבר אחד שאת מעריכה בו.", cDes: "הוא אמר לך שהוא רוצה אותך. גם גברים צריכים להרגיש נחשקים: תראי לו, מבט או נגיעה מספיקים.", cCare: "הוא רוצה לדאוג לך. גברים רוצים להרגיש שצריכים אותם: תני לו לעזור, וספרי לו שזה שינה לך.", cTime: "הוא מתגעגע לזמן איתך. גברים מתחברים הרבה פעמים דרך עשייה משותפת: הציעי תוכנית רק לשניכם.", cSoft: "הוא הראה לך צד רך. לרוב הגברים זה דורש אומץ. קבלי את זה ברכות, בלי לתקן ובלי להתבדח.", cThx: "הוא הודה לך. גברים נפתחים יותר כשמעריכים אותם: הודי לו בחזרה על משהו מסוים שהוא עשה.", cLove: "הוא כתב לך על אהבה. גברים לא תמיד בטוחים שהמילים שלהם הגיעו: ספרי לו איזו מילה נשארה איתך.",
     cNote: "הוא שם את הרגשות שלו במילים בשבילך. לרוב הגברים זה קשה: ספרי לו שזה הגיע אלייך, כדי שיעשה את זה שוב.", cAsk: "הוא שאל על הרגשות שלך. רוב הגברים כמעט לא שואלים: עני בסיפור קטן, והודי לו ששאל.", cGuess: "הוא ניחש “{w}”. גברים אוהבים לנצח: בפעם הבאה תני לו רמז קטן כדי שיצליח.", cDraw: "הוא למד מה מושך אותך: “{w}”. גברים חוזרים על מה שעובד: תראי לו כשהוא מצליח.",
-    tToHim: "שלח לה טיפ", tToHer: "שלחי לו טיפ", tToCHim: "ספר לה משהו שאתה אוהב, או רמז קטן. היא תקבל את זה בוואטסאפ.", tToCHer: "ספרי לו משהו שאת אוהבת, או רמז קטן. הוא יקבל את זה בוואטסאפ.", tNowHim: "שלח לה עכשיו", tNowHer: "שלחי לו עכשיו", tLaterHim: "שמור לאחר כך", tLaterHer: "שמרי לאחר כך", tSavedL: "שמורים לאחר כך", tSavedEmpty: "עוד לא נשמר כלום. אפשר לשמור טיפ ולשלוח כשהרגע מתאים.", tSentL: "כבר נשלחו", tSendOneHim: "שלח לה", tSendOneHer: "שלחי לו", tNew: "חדש", tipArrived: "טיפ חדש מ{n} ♡", hubTip: "{n} שלח לך טיפ ♡ תראי מה הוא אוהב.", hubTipBtn: "לראות את הטיפ שלו ♡", hTipsL: "טיפים ממנו", herTipsL: "עוד טיפים", herTip0: "כשהוא שואל, עני בסיפור קטן ולא במילה אחת. סיפור נותן לו משהו להיאחז בו.", herTip1: "ספרי לו מה קרה רגע לפני. זה החלק שהוא יכול להחזיר.", herTip2: "כשהוא מנסה, גם אם קצת מגושם, תני לו לראות שזה נגע בך. חיוך מספיק.", herTip3: "בחרי רגעים שהיית רוצה לחוות שוב, לא רק את הגדולים. גם דברים קטנים מהיומיום נחשבים.", herTip4: "שמרי על זה קליל ומשחקי. רגע הוא משחק, לא מבחן.", herTip5: "רוצה משהו מסוים? שלחי לו רמז מכאן. הוא יקבל אותו בוואטסאפ.", tFrom: "מ{n}", tFromEmptyHim: "כשהיא תשלח לך טיפ, הוא יופיע כאן.", tFromEmptyHer: "כשהוא ישלח לך רעיון, הוא יופיע כאן.", tLearned: "נלמד מהרגעים שלכם", tLearnedEmpty: "טיפים יופיעו כאן כשתסיימו רגעים.", tMine: "הרעיונות שלי", tMineEmpty: "הוסיפו את הרעיון הראשון למטה.", tAdd: "הוספת טיפ או רעיון", tAddPhHim: "למשל: אני אוהב כשאת מעירה אותי עם נשיקה", tAddPhHer: "למשל: אני אוהבת כשאתה מחזיק לי את היד מול אנשים", tSend: "שליחה בוואטסאפ", tKeep: "לשמור רק לעצמי", tSentPill: "נשלח", tPrivPill: "פרטי", tDoMore: "עוד מזה: {d}", tWorked: "זה עבד ({r}♥): {m}, {h}", tHowNote: "בפתק", tHowPerson: "פנים אל פנים", tHeKnows: "הוא למד: {d}", tHeSaid: "הוא אמר לך: {d}", stL: "המאמן מציע התחלה", stH: "לחץ על אחת, והמשך במילים שלך.", stA: "כשאמרת לי ״{a}״, הרגשתי…", stB: "לא ידעתי שהרגע הזה היה כל כך חשוב לך…", stC: "הרגשתי {f} כש…", stD: "מה שאני רואה בך עכשיו זה…", stE: "אני רוצה שתדעי…", stF: "מאז שסיפרת לי, אני לא מפסיק לחשוב על…", nsL: "להתחיל מ…", nsPick: "בחר התחלה (לא חובה)", nsOwn: "המילים שלך", nsOther: "משהו אחר", nsNew: "לכתוב משהו חדש", amL: "עוד רגע?", amC: "כל רגע שתוסיפי מתחיל לו סיבוב חדש.", skipReact: "לדלג בינתיים", notNow: "לא עכשיו", lTold: "מה שסיפרת לה", editReactL: "עריכת מה שסיפרת לו", editNoteL: "עריכת הפתק שלך", editDrawL: "עריכת מה מושך אותה", editHowL: "עריכת איך זה הלך", editTipL: "עריכת הטיפ שלך", editLocalC: "רק אתה רואה את זה. אפשר לתקן איך שרוצים.", st1: "שלב 1 מתוך 6 · בחר רגע", st2: "שלב 2 מתוך 6 · גלה למה", st3: "שלב 3 מתוך 6 · תשאל אותה", st4: "שלב 4 מתוך 6 · מה גילית", st5: "שלב 5 מתוך 6 · תגיד לה", st6: "שלב 6 מתוך 6 · איך זה התקבל",
+    tToHim: "שלח לה טיפ", tToHer: "שלחי לו טיפ", tToCHim: "ספר לה משהו שאתה אוהב, או רמז קטן. היא תקבל את זה בוואטסאפ.", tToCHer: "ספרי לו משהו שאת אוהבת, או רמז קטן. הוא יקבל את זה בוואטסאפ.", tNowHim: "שלח לה עכשיו", tNowHer: "שלחי לו עכשיו", tLaterHim: "שמור לאחר כך", tLaterHer: "שמרי לאחר כך", tSavedL: "שמורים לאחר כך", tSavedEmpty: "עוד לא נשמר כלום. אפשר לשמור טיפ ולשלוח כשהרגע מתאים.", tSentL: "כבר נשלחו", tSendOneHim: "שלח לה", tSendOneHer: "שלחי לו", tNew: "חדש", tipArrived: "יש לך לחישה חדשה מ{n} ♡", hubTip: "{n} שלח לך טיפ ♡ תראי מה הוא אוהב.", hubTipBtn: "לראות את הטיפ שלו ♡", hTipsL: "טיפים ממנו", herTipsL: "עוד טיפים", herTip0: "כשהוא שואל, עני בסיפור קטן ולא במילה אחת. סיפור נותן לו משהו להיאחז בו.", herTip1: "ספרי לו מה קרה רגע לפני. זה החלק שהוא יכול להחזיר.", herTip2: "כשהוא מנסה, גם אם קצת מגושם, תני לו לראות שזה נגע בך. חיוך מספיק.", herTip3: "בחרי רגעים שהיית רוצה לחוות שוב, לא רק את הגדולים. גם דברים קטנים מהיומיום נחשבים.", herTip4: "שמרי על זה קליל ומשחקי. רגע הוא משחק, לא מבחן.", herTip5: "רוצה משהו מסוים? שלחי לו רמז מכאן. הוא יקבל אותו בוואטסאפ.", tFrom: "מ{n}", tFromEmptyHim: "כשהיא תשלח לך טיפ, הוא יופיע כאן.", tFromEmptyHer: "כשהוא ישלח לך רעיון, הוא יופיע כאן.", tLearned: "נלמד מהרגעים שלכם", tLearnedEmpty: "טיפים יופיעו כאן כשתסיימו רגעים.", tMine: "הרעיונות שלי", tMineEmpty: "הוסיפו את הרעיון הראשון למטה.", tAdd: "הוספת טיפ או רעיון", tAddPhHim: "למשל: אני אוהב כשאת מעירה אותי עם נשיקה", tAddPhHer: "למשל: אני אוהבת כשאתה מחזיק לי את היד מול אנשים", tSend: "שליחה בוואטסאפ", tKeep: "לשמור רק לעצמי", tSentPill: "נשלח", tPrivPill: "פרטי", tDoMore: "עוד מזה: {d}", tWorked: "זה עבד ({r}♥): {m}, {h}", tHowNote: "בפתק", tHowPerson: "פנים אל פנים", tHeKnows: "הוא למד: {d}", tHeSaid: "הוא אמר לך: {d}", stL: "המאמן מציע התחלה", stH: "לחץ על אחת, והמשך במילים שלך.", stA: "כשאמרת לי ״{a}״, הרגשתי…", stB: "לא ידעתי שהרגע הזה היה כל כך חשוב לך…", stC: "הרגשתי {f} כש…", stD: "מה שאני רואה בך עכשיו זה…", stE: "אני רוצה שתדעי…", stF: "מאז שסיפרת לי, אני לא מפסיק לחשוב על…", nsL: "להתחיל מ…", nsPick: "בחר התחלה (לא חובה)", nsOwn: "המילים שלך", nsOther: "משהו אחר", nsNew: "לכתוב משהו חדש", amL: "עוד רגע?", amC: "כל רגע שתוסיפי מתחיל לו סיבוב חדש.", skipReact: "לדלג בינתיים", notNow: "לא עכשיו", lTold: "מה שסיפרת לה", editReactL: "עריכת מה שסיפרת לו", editNoteL: "עריכת הפתק שלך", editDrawL: "עריכת מה מושך אותה", editHowL: "עריכת איך זה הלך", editTipL: "עריכת הטיפ שלך", editLocalC: "רק אתה רואה את זה. אפשר לתקן איך שרוצים.", st1: "שלב 1 מתוך 6 · בחר רגע", st2: "שלב 2 מתוך 6 · גלה למה", st3: "שלב 3 מתוך 6 · תשאל אותה", st4: "שלב 4 מתוך 6 · מה גילית", st5: "שלב 5 מתוך 6 · תגיד לה", st6: "שלב 6 מתוך 6 · איך זה התקבל",
     sealedL: "הרגע שלה · נעול", sealedC: "{n} הסתירה כאן רגע. היא כתבה, ואתה מנחש.",
     guessC: "בלי לחץ, אין ניחוש לא נכון. לך עם הבטן.",
     revealL: "נפתח", revealC: "זה הרגע ש{n} כתבה.", revealBtn: "להתחיל במשימה",
     howL: "איך זה עובד",
-    dMonth: "החודש שלכם", dSub: "מה למדת עליה", dTurn: "תורך", dAns: "{n} ענתה לך", dNew: "{n} שיתפה רגע", dLoves: "{k} דברים שהיא אוהבת", dLovesIn: "דברים שהיא<br>אוהבת", dAnsBtn: "תענה לה", dNewBtn: "תפתח את הרגע שלה",
-    dTileM: "תוסיף רגע ששמת לב אליו", dTileMs: "משהו שהדליק אותה היום?", dTileT: "תשלח לה טיפ", dTileTs: "משהו שאתה אוהב שהיא עושה", dDate: "תזמין אותה לדייט הערב", dCoach: "הצעה מהמאמן",
+    dMonth: "החודש שלכם", dSub: "מה למדת עליה", dTurn: "תורך", dAns: "{n} ענתה לך", dNew: "{n} לחשה לך רגע", dLoves: "{k} דברים שהיא אוהבת", dLovesIn: "דברים שהיא<br>אוהבת", dAnsBtn: "תענה לה", dNewBtn: "תפתח את הרגע שלה",
+    dTileM: "תוסיף רגע ששמת לב אליו", dTileMs: "משהו שהדליק אותה היום?", dTileT: "בא לך ללחוש לה?", dTileTs: "סוד קטן, או מה מדליק אותך", dDate: "תזמין אותה לדייט הערב", dCoach: "הצעה מהמאמן",
     dcAns: "תענה לה הערב במשפט אחד: מה הרגשת כשהיא סיפרה לך מה עשית. לא רק \"תודה\".", dc0: "תשים לב היום לרגע אחד שבו היא חייכה אליך, ותוסיף אותו כאן.", dc1: "תשאל אותה הערב מה היה הרגע הכי טוב שלה השבוע, ותקשיב עד הסוף.", dc2: "תעשה שוב השבוע משהו אחד מ\"מה מושך אותה\", בלי להודיע.",
     homeL: "הרגעים שלך", homeC: "בכל רגע שהיא נמשכה אליך מסתתר סוד. בחר אחד ותפצח אותו.", ideas: "רעיונות להתחלה", addBtn: "הוסף את הרגע",
     whyC: "מצב בלש: מה קרה רגע לפני שהיא נדלקה?", whyKnow: "אני יודע, אכתוב", whyDont: "לא יודע, אשאל אותה",
@@ -710,7 +891,7 @@ var CX = {
     hubD0: "כשמתעניינים בך, זה מרגיש טוב. תיהני מזה.", hubD1: "הוא לומד אותך, רגע אחרי רגע.", hubD2: "הרגעים שלך הם המפה. הוא זה שמגלה.", hubD3: "יש דברים ששווה שישאלו עליהם פעמיים.", hubD4: "הערב, שימי לב לדבר קטן אחד שהוא עושה נכון.",
     tiFrom: "ממנו", tiFromS: "{k} חדשים", tiFromNone: "עדיין אין חדש", tiStory: "הרגעים שלנו", tiStoryS: "{k} רגעים ביחד", tiAdd: "שלחי לו רגע", tiAddS: "שיגלה", tiTips: "טיפים", tiTipsS: "בשבילו, ממך",
     hqT: "{n} סקרן לגבייך, יש לו שאלה", hqBtn: "לענות לו", htT: "{n} שלח לך טיפ", htBtn: "לקרוא", hlT: "{n} הקשיב לך", hlBtn: "לראות מה הוא כתב", hiT: "הוא עשה משהו שנגע בך?", hiSub: "ספרי לו על זה", hiBtn: "לשתף רגע",
-    hHello: "היי {me}", learnedL: "{n} למד עלייך <b>{k}</b> דברים", rFrom: "השיחות", rFromNew: "{k} חדשים", rFromOne: "משהו חדש", rFromNone: "עדיין אין משהו חדש", rStory: "הרגעים שלנו", rStoryS: "{k} שיחות", rShare: "לשתף רגע", rShareS: "משהו שאת רוצה שהוא ידע", rTips: "טיפים", rTipsS: "ממנו, מהמאמן, וממך אליו", menuL: "הגדרות",
+    hHello: "היי {me}", learnedL: "{n} למד עלייך <b>{k}</b> דברים", rFrom: "הרגעים שלנו", rFromNew: "{k} חדשים", rFromOne: "משהו חדש", rFromNone: "עדיין אין משהו חדש", rStory: "המפה שלו", rStoryS: "{k} דברים", rShare: "לשתף רגע", rShareS: "משהו שאת רוצה שהוא ידע", rTips: "בא לך ללחוש לו?", rTipsS: "סוד קטן, או מה מדליק אותך", menuL: "הגדרות",
     hHomeC: "כאן הוא מופיע: השאלות שלו, הפתקים שלו, הסקרנות שלו לגבייך.", hAddC: "שלחי לו עוד רגע. כל אחד מתחיל סיבוב חדש.", hAddBtn: "שלחי לו בוואטסאפ", hNotesC: "רק בשבילך. לא בשבילו, לא בשביל אף אחד.",
     ansL: "שאלה מ{n}", ansC: "{n} סקרן לגבייך. עני איך שבא לך, אין תשובה לא נכונה.", ansBtn: "שלחי את התשובה בוואטסאפ",
     lisL: "{n} הקשיב", lisC: "{n} הקשיב לך, וזה מה שיצא לו מזה.", lisReactBtn: "שלחי לו בחזרה בוואטסאפ", lisMore: "הוסיפי עוד רגע",
@@ -743,8 +924,7 @@ SC.intro3 = function () { return { cls: "", html: '<div class="top"><p class="la
 /* --- home --- */
 SC.home = function () {
   if (S.role === "her") return SC.herHome();
-  if (V.tab === "draws") return SC.draws();
-  if (V.tab === "tips") return SC.tips();
+  if (V.tab === "map" || V.tab === "draws" || V.tab === "tips") return SC.map();
   if (V.tab === "settings") return SC.settings();
   if (V.tab !== "convs") return SC.hisToday();
   var html = tabs() + '<p class="big">' + t("tConvs") + '</p><p class="txt">' + esc(x("cvSubHim")) + '</p>' + convList() +
@@ -759,6 +939,7 @@ function convState(m) {
   return k >= 8 ? "done" : myTurn(m, k) ? "go" : "wait";
 }
 function lastLine(m) {
+  if (S.role === "him" && m.status === "sealed") return x("cvWhisperedHim");
   return m.reaction || m.note || m.answer || m.question || m.guess || m.why || m.hisGuess || "";
 }
 function convList() {
@@ -843,6 +1024,76 @@ SC.round = function () {
 };
 /* old screen names (back history, links) all open the Trail */
 ["sealed", "guess", "reveal", "why", "ask", "record", "sent", "learned", "feel", "words", "say", "note", "rate", "answer", "listened", "conv"].forEach(function (n) { SC[n] = SC.round; });
+/* The map (chat 7, prototype "Deck"): what he learned / what makes him fall for her as a stack of cards to flip,
+   the coach's conclusions ("between the lines"), his own words (her side, only words he sent) and the whisper box. */
+function mapCards() {
+  var him = S.role === "him", out = [];
+  S.moments.forEach(function (m) { if (him && m.draw) out.push({ q: m.draw, src: x("mFromMoment").replace("{t}", snip(m.title)), at: m.listenedAt || m.createdAt || 0 }); });
+  (S.tips || []).forEach(function (tp) { if (tp.from !== S.role && tp.myReply) out.push({ q: tp.text, src: x("mWhispered").replace("{n}", S.partner || ""), at: tp.createdAt || 0 }); });
+  return out.sort(function (a, b) { return b.at - a.at; });
+}
+function hisInsights() {
+  var txt = S.moments.map(function (m) { return [m.title, m.answer, m.draw].join(" "); }).join(" "), out = [];
+  var R = [["mcTouch", /יד|חיבוק|נגיע|ריקוד|רקד|מגע|hand|hug|touch|danc/i], ["mcInit", /בלי ש?(לבקש|ביקשתי|אבקש)|לא חיכית|יוזמ|without (me )?asking|didn.t wait|on your own/i], ["mcTeam", /צוות|בצד שלי|בצד שלך|ביחד|team|my side|together/i]];
+  R.forEach(function (r) { if (r[1].test(txt)) out.push({ q: x(r[0] + "Q"), t: x(r[0] + "T") }); });
+  if (S.moments.some(function (m) { return m.answer; })) out.push({ q: x("mcAskQ"), t: x("mcAskT") });
+  return out;
+}
+SC.map = function () {
+  var him = S.role === "him", G = function (k) { return x(k + (him ? "Him" : "Her")); };
+  var cards = mapCards(), n = cards.length, i = Math.min(V.tmp.deckI || 0, Math.max(n - 1, 0));
+  var h = tabs() + '<p class="big">' + esc(t(him ? "tMapHim" : "tMapHer")) + '</p><p class="txt">' + esc(G("mSub")) + '</p>';
+  h += '<section class="zone za"><p class="zh">' + ic("heart") + '<span>' + esc(G("mLearn")) + '</span>' + (n ? '<b>' + n + '</b>' : "") + '</p>';
+  if (!n) h += '<div class="dk-empty">' + esc(G("mEmpty")) + '</div>';
+  else {
+    h += '<div class="deck">' + cards.map(function (c, j) {
+      var pos = (j - i + n) % n; if (pos > 2) return "";
+      return '<div class="dcard p' + pos + '"' + (pos === 0 ? ' data-act="deckNext" role="button" tabindex="0"' : "") + '><span class="q">' + esc(c.q) + '</span><span class="dfoot"><span>' + esc(c.src) + '</span>' + (j === 0 ? '<span class="dnew">' + esc(x("mNew")) + '</span>' : "") + '</span></div>';
+    }).join("") + '</div>';
+    if (n > 1) h += '<div class="dnav"><button class="dic" data-act="deckNext" aria-label="›">' + ic("back") + '</button><span>' + esc(x("mOf").replace("{i}", i + 1).replace("{c}", n)) + '</span><button class="dic" data-act="deckPrev" aria-label="‹">' + ic("chev") + '</button></div>';
+  }
+  h += '</section>';
+  var ins = him ? hisInsights() : herCoachAll().filter(function (c) { return !c.from; }).map(function (c) { return { q: c.text }; });
+  var words = him ? [] : herCoachAll().filter(function (c) { return c.from; }).map(function (c) { return { q: "״" + snip(c.from) + "״", t: c.text }; });
+  var card = function (c) { return '<div class="ins"><b>' + esc(c.q) + '</b>' + (c.t ? '<span><i>' + esc(x(him ? "mTry" : "mTryHer")) + '</i> ' + esc(c.t) + '</span>' : "") + '</div>'; };
+  h += '<section class="zone zb"><p class="zh">' + ic("spark") + '<span>' + esc(x("mCoach")) + '</span></p>' + (ins.length || words.length ? '<div class="strip">' + ins.map(card).join("") + words.map(function (c) { return card(c).replace('<div class="ins">', '<div class="ins w"><small>' + esc(x("mWords")) + '</small>'); }).join("") + '</div>' : '<div class="dk-empty">' + esc(x("mCoachEmpty")) + '</div>') + '</section>';
+  return { cls: "calm", html: h + whisperBox() };
+};
+/* Whispers: what the partner whispered (a deck to flip, answer ♥ / "on it"; answered ones join the map),
+   then an invitation with two doors: a little secret (closeness) or what turns me on (desire). */
+function wsCount() { var dir = V.tmp.wsDir || "got"; return (S.tips || []).filter(function (tp) { return dir === "got" ? tp.from !== S.role : tp.from === S.role && tp.sent; }).length; }
+function wsKind(k) { return k === "secret" ? x("wsSecret") : k === "desire" || k === "wish" ? x("wsDesire") : x("mKLoves"); }
+function wsDate(ts) { var d = new Date(ts || Date.now()); return d.getDate() + "." + (d.getMonth() + 1); }
+function whisperBox() {
+  var him = S.role === "him", G = function (k) { return x(k + (him ? "Him" : "Her")); }, P = S.partner || "", me = S.me || "";
+  var dir = V.tmp.wsDir || "got", all = (S.tips || []).filter(function (tp) { return dir === "got" ? tp.from !== S.role : tp.from === S.role && tp.sent; });
+  var fresh = (S.tips || []).filter(function (tp) { return tp.from !== S.role && !tp.myReply; }).length;
+  if (dir === "got") all.sort(function (a, b) { return (a.myReply ? 1 : 0) - (b.myReply ? 1 : 0) || (b.createdAt || 0) - (a.createdAt || 0); });
+  var n = all.length, i = Math.min(V.tmp.wsI || 0, Math.max(n - 1, 0));
+  var h = '<section class="zone zc" id="whisper"><p class="zh">' + ic("msg") + '<span>' + esc(x("wsZone")) + '</span>' + (fresh ? '<b class="hot">' + fresh + '</b>' : "") + '</p>';
+  h += '<div class="seg" role="group"><button class="' + (dir === "got" ? "on" : "") + '" data-act="wsGot">' + esc(G("wsFrom").replace("{n}", P).replace("…", "")) + '</button><button class="' + (dir === "sent" ? "on" : "") + '" data-act="wsSent">' + esc(G("wsMine")) + '</button></div>';
+  if (!n) h += '<div class="dk-empty">' + esc(dir === "got" ? G("wsEmpty").replace("{n}", P) : x("wsNoneSent")) + '</div>';
+  else {
+    h += '<div class="deck wdeck">' + all.map(function (tp, j) {
+      var pos = (j - i + n) % n; if (pos > 2) return "";
+      var from = tp.from !== S.role, who = from ? P : me;
+      return '<div class="dcard ws ' + ((from ? (him ? "her" : "him") : (him ? "him" : "her")) === "her" ? "from-her" : "from-him") + ' p' + pos + '"><span class="wsfrom"><span class="wsav">' + esc(who.charAt(0) || "♡") + '</span>' + esc(wsKind(tp.kind)) + '<span class="wsd">' + wsDate(tp.createdAt) + '</span></span><span class="q">' + esc(tp.text) + '</span>' +
+        (pos === 0 ? (from ? '<span class="r">' + ["♥", x("mOnIt")].map(function (r) { return '<button data-reply="' + tp.id + '|' + r + '" class="' + (tp.myReply === r ? "sel" : "") + '">' + esc(r) + '</button>'; }).join("") + '<button class="wback" data-act="whBack">' + ic("msg") + esc(x("wsBack")) + '</button></span>' : '<span class="wsans">' + esc(tp.reply ? x("mGot").replace("{n}", P).replace("{r}", tp.reply) : x("wsWaiting").replace("{n}", P)) + '</span>') : "") + '</div>';
+    }).join("") + '</div>';
+    if (n > 1) h += '<div class="dnav"><button class="dic" data-act="wsNext" aria-label="›">' + ic("back") + '</button><span>' + esc(x("mOf").replace("{i}", i + 1).replace("{c}", n)) + '</span><button class="dic" data-act="wsPrev" aria-label="‹">' + ic("chev") + '</button></div>';
+  }
+  if (V.tmp.inviteAt === "map") h += inviteBlock();
+  return h + '</section>';
+}
+/* The invitation: two small buttons (a little secret / what turns me on), then the box to write. Opens from the home tile or "whisper back". */
+function inviteBlock() {
+  var him = S.role === "him", G = function (k) { return x(k + (him ? "Him" : "Her")); }, k = V.tmp.whKind || "";
+  var h = '<div class="invite"><div class="doors">' +
+    '<button class="door' + (k === "secret" ? " on" : "") + '" data-act="whSecret">' + ic("lock") + '<span>' + esc(G("wsDoorSecret")) + '</span></button>' +
+    '<button class="door' + (k === "desire" ? " on" : "") + '" data-act="whDesire">' + ic("spark") + '<span>' + esc(G("wsDoorDesire")) + '</span></button></div>';
+  if (k) h += field("tipTxt", G(k === "secret" ? "wsPhSecret" : "wsPhDesire"), "", true) + btn(G("wsSend"), "whSend");
+  return h + '</div>';
+}
 /* His Today (DESIGN.md, Dial alert): the dial says what waits, then his move, coach, two tiles, small date link */
 SC.hisToday = function () {
   var w = S.moments.filter(function (m) { return m.status === "answered"; })[0] || S.moments.filter(function (m) { return m.status === "sealed"; })[0];
@@ -851,13 +1102,14 @@ SC.hisToday = function () {
   var ring = '<svg class="ring" viewBox="0 0 220 220"><circle cx="110" cy="110" r="100" fill="none" stroke="var(--lo)" stroke-width="6"/><circle cx="110" cy="110" r="100" fill="none" stroke="var(--fill)" stroke-width="6" stroke-linecap="round" stroke-dasharray="' + Math.round(628 * Math.max(.04, Math.min(k, 10) / 10)) + ' 628"/></svg>';
   var dial = w ? '<button class="dial alert" data-act="open:' + w.id + '"><span class="badge">' + esc(x("dTurn")) + '</span>' + ring + '<span class="in"><span class="herav">' + esc(P.charAt(0) || "♡") + '</span><b>' + esc(x(w.status === "answered" ? "dAns" : "dNew")) + '</b></span><span class="stat">' + esc(x("dLoves").replace("{k}", k)) + '</span></button>' +
       '<button class="btn" data-act="open:' + w.id + '">' + esc(x(w.status === "answered" ? "dAnsBtn" : "dNewBtn")) + '</button>'
-    : '<button class="dial" data-tab="draws">' + ring + '<span class="in"><b class="num">' + k + '</b><small>' + x("dLovesIn") + '</small></span></button>';
+    : '<button class="dial" data-tab="map">' + ring + '<span class="in"><b class="num">' + k + '</b><small>' + x("dLovesIn") + '</small></span></button>';
   var day = Math.floor(Date.now() / 864e5);
   var coach = w && w.status === "answered" ? x("dcAns") : x("dc" + (day % 3));
   var tile = function (lab, sub, attr, icon) { return '<button class="htile" ' + attr + '><span class="hic">' + ic(icon) + '</span><b>' + esc(lab) + '</b><small>' + esc(sub) + '</small></button>'; };
   var h = tabs() + '<div class="dhead"><p class="dt">' + esc(x("dMonth")) + '</p><p class="ds">' + esc(x("dSub")) + '</p></div>' + dial +
     '<div class="cbub"><small>' + esc(x("dCoach")) + '</small>' + esc(coach) + '</div>' +
-    '<div class="htiles">' + tile(x("dTileM"), x("dTileMs"), 'data-tab="convs"', "plus") + tile(x("dTileT"), x("dTileTs"), 'data-tab="tips"', "msg") + '</div>' +
+    '<div class="htiles">' + tile(x("dTileM"), x("dTileMs"), 'data-tab="convs"', "plus") + tile(x("dTileT"), x("dTileTs"), 'data-act="toWhisper"', "msg") + '</div>' +
+    (V.tmp.inviteAt === "home" ? inviteBlock() : "") +
     '<button class="datelink" data-act="inviteDate">' + ic("heart") + esc(x("dDate")) + '</button>';
   return { cls: "night", html: h };
 };
@@ -939,6 +1191,7 @@ SC.tips = function () {
 SC.settings = function () {
   var h = orbs() + tabs() + '<p class="mid">' + t("setL") + '</p><p class="lab">' + t("language") + '</p><div class="seg2"><button data-lang="en" class="' + (S.lang === "en" ? "sel" : "") + '">English</button><button data-lang="he" class="he ' + (S.lang === "he" ? "sel" : "") + '">עברית</button></div>' +
     '<p class="lab">' + t("names") + '</p><input type="text" id="me" placeholder="' + esc(t("yourName")) + '" value="' + esc(S.me) + '"><input type="text" id="partner" placeholder="' + esc(S.role === "her" ? t("hisName") : t("herName")) + '" value="' + esc(S.partner) + '">' + btn(t("save"), "saveNames") +
+    ghost("✦ " + x("howL"), "howItWorks") +
     '<p class="lab" style="margin-top:8px">' + t("bkL") + '</p><p class="txt">' + t("bkC") + '</p>' + btn(t("bkWa"), "backupSend") + ghost(t("backup"), "backup") + restoreBlock() +
     (V.tmp.sure ? '<div class="box">' + t("resetSure") + '</div><div class="seg2"><button data-act="doReset">' + t("yesErase") + '</button><button data-act="cancelReset">' + t("cancel") + '</button></div>' : ghost(t("reset"), "askReset"));
   return { cls: "calm", html: h };
@@ -950,8 +1203,7 @@ SC.herIntro2 = function () { return { cls: "", html: '<div class="top"><p class=
 SC.herIntro3 = function () { return { cls: "", html: '<div class="top"><p class="lab">' + x("howL") + '</p></div>' + art("lock") + '<div class="push"><p class="big">' + t("hi3") + '</p><p class="txt">' + t("hi3s") + '</p>' + dots(2) + btn(t("seeQBtn"), "herIntroDone") + '</div>' }; };
 SC.herHome = function () {
   if (V.tab === "settings") return SC.settings();
-  if (V.tab === "story") return SC.story();
-  if (V.tab === "tips") return SC.tips();
+  if (V.tab === "map" || V.tab === "story" || V.tab === "tips") return SC.map();
   if (V.tab !== "inbox") return SC.herHub();
   var hisTips = (S.tips || []).filter(function (tp) { return tp.from === "him"; });
   var h = tabs() + '<p class="big">' + t("tConvs") + '</p><p class="txt">' + esc(x("cvSubHer")) + '</p>' + convList() + btn(x("rShare"), "toAddMore") +
@@ -974,12 +1226,12 @@ SC.herHub = function () {
   var h = tabs() + '<p class="hlab">' + esc(x("hHello").replace("{me}", S.me || "")) + '</p>' +
     '<div class="focal"><div><span>' + esc(f[0]) + (f[1] ? '<small>' + esc(snip(f[1])) + '</small>' : "") + '</span></div></div>' +
     '<button class="cta2" ' + f[3] + '>' + esc(f[2]) + '</button>' +
-    '<button class="learned" data-tab="story"><span>' + x("learnedL").replace("{k}", learned) + '</span><span class="tr"><i style="width:' + (learned ? Math.max(8, Math.min(learned, 10) * 10) : 0) + '%"></i></span>' + ic("chev") + '</button>' +
+    '<button class="learned" data-tab="map"><span>' + x("learnedL").replace("{k}", learned) + '</span><span class="tr"><i style="width:' + (learned ? Math.max(8, Math.min(learned, 10) * 10) : 0) + '%"></i></span>' + ic("chev") + '</button>' +
     '<div class="hlist">' +
     row(x("rFrom"), newN === 1 ? x("rFromOne") : newN ? x("rFromNew").replace("{k}", newN) : x("rFromNone"), 'data-tab="inbox"', "play", newN) +
-    row(x("rStory"), x("rStoryS").replace("{k}", story.length), 'data-tab="story"', "play") +
+    row(x("rStory"), x("rStoryS").replace("{k}", mapCards().length), 'data-tab="map"', "spark") +
     row(x("rShare"), x("rShareS"), 'data-act="toAddMore"', "plus") +
-    row(x("rTips"), x("rTipsS"), 'data-tab="tips"', "play") + '</div>';
+    row(x("rTips"), x("rTipsS"), 'data-act="toWhisper"', "heart") + '</div>' + (V.tmp.inviteAt === "home" ? inviteBlock() : "");
   return { cls: "soft", html: h };
 };
 var ICONS = { heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>', msg: '<path d="M5 5h14v10H9l-4 4z"/>', menu: '<path d="M4 7h16M4 12h16M4 17h16"/>', play: '<path d="M9 6.5v11l9-5.5z"/>', plus: '<path d="M12 5v14M5 12h14"/>', chev: '<path d="M15 6l-6 6 6 6"/>', back: '<path d="M9 6l6 6-6 6"/>', lock: '<path d="M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3"/>', spark: '<path d="M12 3v5M12 16v5M3 12h5M16 12h5M6.5 6.5l2.5 2.5M15 15l2.5 2.5M6.5 17.5L9 15M15 9l2.5-2.5"/>' };
@@ -1073,6 +1325,18 @@ var A = {
 
 
   sendNote: function () { var m = M(); var n = val("noteTxt"); if (!n) return; m.noteDraft = n; m.note = n; m.toldHow = "note"; m.status = "told"; persist(); send("note", told(m, { note: n }), "wNote"); setTimeout(function () { render(); }, 300); },
+  deckNext: function () { var n = mapCards().length; if (n) { V.tmp.deckI = ((V.tmp.deckI || 0) + 1) % n; render(); } },
+  deckPrev: function () { var n = mapCards().length; if (n) { V.tmp.deckI = ((V.tmp.deckI || 0) - 1 + n) % n; render(); } },
+  whSecret: function () { V.tmp.whKind = V.tmp.whKind === "secret" ? "" : "secret"; render(); },
+  whDesire: function () { V.tmp.whKind = V.tmp.whKind === "desire" ? "" : "desire"; render(); },
+  wsNext: function () { var n = wsCount(); if (n) { V.tmp.wsI = ((V.tmp.wsI || 0) + 1) % n; render(); } },
+  wsPrev: function () { var n = wsCount(); if (n) { V.tmp.wsI = ((V.tmp.wsI || 0) - 1 + n) % n; render(); } },
+  wsGot: function () { V.tmp.wsDir = "got"; V.tmp.wsI = 0; render(); },
+  wsSent: function () { V.tmp.wsDir = "sent"; V.tmp.wsI = 0; render(); },
+  whSend: function () { var v = val("tipTxt"); if (!v) return; var tp = { id: uid(), from: S.role, text: v, kind: V.tmp.whKind || "secret", sent: true, createdAt: Date.now() }; S.tips = S.tips || []; S.tips.unshift(tp); V.tmp.whKind = ""; V.tmp.inviteAt = ""; persist(); send("tip", { id: tp.id, text: tp.text, kind: tp.kind }, tp.kind === "desire" ? "wDesire" : "wSecret"); setTimeout(render, 300); },
+  toWhisper: function () { V.tmp.inviteAt = V.tmp.inviteAt === "home" ? "" : "home"; V.tmp.whKind = ""; render(); },
+  whBack: function () { V.tmp.inviteAt = V.tmp.inviteAt === "map" ? "" : "map"; V.tmp.whKind = ""; render(); },
+  howItWorks: function () { V.mid = null; go(S.role === "her" ? "herIntro1" : "intro1"); },
   feelNext: function () { var m = M(); if (!(m.feelings || []).length) return; m.feltDone = true; persist(); render(); },
   feelBack: function () { var m = M(); m.feltDone = false; persist(); render(); },
   tellFace: function () { var m = M(); var n = val("noteTxt"); if (n) { m.noteDraft = n; m.note = n; } m.toldHow = "person"; m.status = "told"; persist(); send("listened", told(m, { note: m.note || "", face: 1 }), "wListened"); setTimeout(function () { render(); }, 300); },
@@ -1162,6 +1426,12 @@ function render(anim) {
   var root = V.screen === "welcome" || V.screen === "whoLink" || (V.screen === "home" && !V.back.length);
   var nav = root || (!V.back.length && !V.fwd.length && !s.title) ? "" : topBar(V.back.length ? 'data-nav="back"' : 'data-act="home"', s.title, V.fwd.length);
   app.innerHTML = nav + s.html;
+  /* coach and explanation boxes start closed: a small chip opens them */
+  app.querySelectorAll(".howto, .cbub").forEach(function (el) {
+    var d = document.createElement("details"), sm = document.createElement("summary"), lab = el.querySelector("small");
+    d.className = "hint"; sm.textContent = "✦ " + (lab ? lab.textContent : x("dCoach")); d.appendChild(sm);
+    el.parentNode.insertBefore(d, el); d.appendChild(el);
+  });
   bind();
 }
 function bind() {
@@ -1180,11 +1450,13 @@ function bind() {
   app.querySelectorAll("[data-sendtip]").forEach(function (b) { b.onclick = function () { var tp = (S.tips || []).filter(function (x) { return x.id === b.dataset.sendtip; })[0]; if (!tp) return; tp.sent = true; persist(); send("tip", { id: tp.id, text: tp.text, kind: tp.kind }, tp.kind === "loves" ? "wLoves" : "wTip"); setTimeout(render, 300); }; });
   app.querySelectorAll("[data-deltip]").forEach(function (b) { b.onclick = function () { S.tips = S.tips.filter(function (x) { return x.id !== b.dataset.deltip; }); persist(); render(); }; });
   app.querySelectorAll("[data-edit]").forEach(function (b) { b.onclick = function () { var k = b.dataset.edit.split(":"); V.tmp.editFrom = V.tab; V.tmp.editField = k[0]; if (k[0] === "tip") V.tmp.tipId = k[1]; else V.mid = k[1]; go("edit"); }; });
-  app.querySelectorAll("[data-tab]").forEach(function (b) { b.onclick = function () { V.tab = b.dataset.tab; V.tmp.sure = false; V.tmp.restoring = false; go("home"); }; });
+  app.querySelectorAll("[data-tab]").forEach(function (b) { b.onclick = function () { V.tmp.inviteAt = ""; V.tab = b.dataset.tab; V.tmp.sure = false; V.tmp.restoring = false; go("home"); }; });
   app.querySelectorAll("[data-lang]").forEach(function (b) { b.onclick = function () { saveTyped(); S.lang = b.dataset.lang; persist(); render(); }; });
   app.querySelectorAll("[data-role]").forEach(function (b) { b.onclick = function () { saveTyped(); V.tmp.role = b.dataset.role; render(); }; });
   app.querySelectorAll("[data-mic]").forEach(function (b) { b.onclick = function () { startMic(b, b.dataset.mic); }; });
   app.querySelectorAll("[data-feel]").forEach(function (b) { b.onclick = function () { var m = M(), k = +b.dataset.feel; m.feelings = m.feelings || []; var p = m.feelings.indexOf(k); if (p > -1) m.feelings.splice(p, 1); else if (m.feelings.length < 3) m.feelings.push(k); persist(); render(); }; });
+  app.querySelectorAll("[data-reply]").forEach(function (b) { b.onclick = function () { var p = b.dataset.reply.split("|"), tp = (S.tips || []).filter(function (z) { return z.id === p[0]; })[0]; if (!tp) return; tp.myReply = tp.myReply === p[1] ? "" : p[1]; persist(); if (tp.myReply) send("tipReply", { id: tp.id, r: tp.myReply }, "wReply"); setTimeout(render, 300); }; });
+  app.querySelectorAll(".dcard[data-act]").forEach(function (c) { c.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); A.deckNext(); } }; });
   app.querySelectorAll("[data-fold]").forEach(function (b) { b.onclick = function () { b.setAttribute("aria-expanded", b.getAttribute("aria-expanded") === "true" ? "false" : "true"); }; });
 
   app.querySelectorAll("input[type=text]").forEach(function (i) { i.onkeydown = function (e) { if (e.key === "Enter") { e.preventDefault(); var b = i.closest(".fieldwrap") ? i.closest(".fieldwrap").nextElementSibling : null; if (b && b.classList.contains("btn")) b.click(); } }; });
