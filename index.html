@@ -313,25 +313,25 @@ svg.i { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-widt
 button:focus-visible, textarea:focus-visible, input:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
 @media (prefers-reduced-motion: no-preference) { #app.anim { animation: in .3s ease; } @keyframes in { from { opacity: .3; transform: translateY(6px); } } }
 
-/* Her side, v28: v22 colors and thin v22 headings, bigger reading text on every screen; layout changes (tiles) on her home only. His side unchanged. */
+/* v29: one type system on both sides (thin v22 headings, bigger reading text). Her side: v22 colors; layout change (tiles) on her home only. His side keeps his colors. */
 body.her {
   --grad: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
   --bg: #fdfbfe; --card: #ffffff; --ink: #2b1a3a; --muted: #6f5f80; --line: #ece2f5; --acc: #b5479a; --fill: #a855f7; --soft: #f3e8ff;
   --tipbg: #f7f0fd; --hi: #ffffff; --lo: #ece4f4; --well: #faf6fd; --tile: #ffffff;
 }
 html:has(> body.her) { background: #fdfbfe; }
-body.her #app, body.her #app * { font-weight: 400; }
-body.her #app .big, body.her #app .mid, body.her #app .focal span, body.her #app .brand { font-weight: 200; }
-body.her #app .big { font-size: 38px; line-height: 1.08; }
-body.her #app .mid { font-size: 31px; line-height: 1.15; }
-body.her #app .focal span { font-size: 32px; line-height: 1.15; }
-body.her #app .btn, body.her #app .cta2, body.her #app .ropt b, body.her #app .hli b, body.her #app .conv b, body.her #app .tabs button.on, body.her #app .pill, body.her #app .st { font-weight: 500; }
-body.her #app .lab, body.her #app .sn, body.her #app .tl, body.her #app .bub small, body.her #app .howto small { font-weight: 500; letter-spacing: .04em; }
-body.her #app { font-size: 17.5px; }
-body.her #app .txt, body.her #app .ctx, body.her #app .bub, body.her #app textarea, body.her #app input[type=text], body.her #app .sv, body.her #app .tabs button { font-size: 18px; }
-body.her #app .lab, body.her #app .sn, body.her #app .hli small, body.her #app .conv small, body.her #app .focal small, body.her #app .learned, body.her #app .rleft, body.her #app .bub small, body.her #app .howto small { font-size: 17px; }
-body.her #app .hli b, body.her #app .conv b, body.her #app .fold .ft { font-size: 19.5px; }
-body.her #app .btn, body.her #app .cta2 { font-size: 19px; }
+#app, #app * { font-weight: 400; }
+#app .big, #app .mid, #app .focal span, #app .brand, #app .dial .num, #app .dt { font-weight: 200; }
+#app .big { font-size: 38px; line-height: 1.08; }
+#app .mid { font-size: 31px; line-height: 1.15; }
+#app .focal span { font-size: 32px; line-height: 1.15; }
+#app .btn, #app .cta2, #app .ropt b, #app .hli b, #app .conv b, #app .tabs button.on, #app .pill, #app .st { font-weight: 500; }
+#app .lab, #app .sn, #app .tl, #app .bub small, #app .howto small { font-weight: 500; letter-spacing: .04em; }
+#app { font-size: 17.5px; }
+#app .txt, #app .ctx, #app .bub, #app textarea, #app input[type=text], #app .sv, #app .tabs button { font-size: 18px; }
+#app .lab, #app .sn, #app .hli small, #app .conv small, #app .focal small, #app .learned, #app .rleft, #app .bub small, #app .howto small { font-size: 17px; }
+#app .hli b, #app .conv b, #app .fold .ft { font-size: 19.5px; }
+#app .btn, #app .cta2 { font-size: 19px; }
 /* layout changes on her home only; every other screen keeps the v25 layout */
 body.her .focal { box-shadow: none; padding: 0; }
 body.her .focal > div { background: linear-gradient(135deg, #c4b5fd 0%, #f9a8d4 100%) !important; }
@@ -818,7 +818,11 @@ function stopNow(m, k) {
   }
   if (k === 4) return rq(x("rRecQ"), x("rRecS")) + field("ans", x("rRecPh"), m.answer, true) + btn(x("rNext"), "saveRecord");
   if (k === 5) return rq(x("rQ5"), x("rQ5s")) + '<p class="rlead">' + esc(x("rLead")) + '…</p>' + field("draw", "", m.drawEnd || "", true) + btn(x("rSave"), "saveLoves") + coachB(x("learnedC0"));
-  return rq(x("rQ6"), x("rQ6s")) + field("noteTxt", x("rPh6"), m.noteDraft, true) + btn(x("rSend"), "sendNote") + ghost(x("rFace"), "tellFace") + coachB(x("rC6"));
+  /* brief: his main struggle is naming what he feels, so stop 6 starts with 1-3 feeling words, then his own words */
+  var sel = m.feelings || [];
+  if (!m.feltDone) return rq(t("m5a"), t("pickUp")) + '<div class="chips">' + t("feelings").map(function (w, i) { return '<button data-feel="' + i + '" class="' + (sel.indexOf(i) > -1 ? "sel" : "") + '">' + w + '</button>'; }).join("") + '</div>' + btn(x("rNext"), "feelNext", !sel.length) + coachB(x("feelC"));
+  var felt = sel.map(function (i) { return "<b>" + t("feelings")[i] + "</b>"; }).join(S.lang === "he" ? " ו" : " and ");
+  return '<div class="box">' + t("youFelt") + " " + felt + '. <button class="edit" data-act="feelBack">✎</button></div>' + rq(x("rQ6"), x("rQ6s")) + field("noteTxt", x("rPh6"), m.noteDraft, true) + btn(x("rSend"), "sendNote") + ghost(x("rFace"), "tellFace") + coachB(x("rC6"));
 }
 SC.round = function () {
   var m = M(); if (!m) return SC.home();
@@ -1069,6 +1073,8 @@ var A = {
 
 
   sendNote: function () { var m = M(); var n = val("noteTxt"); if (!n) return; m.noteDraft = n; m.note = n; m.toldHow = "note"; m.status = "told"; persist(); send("note", told(m, { note: n }), "wNote"); setTimeout(function () { render(); }, 300); },
+  feelNext: function () { var m = M(); if (!(m.feelings || []).length) return; m.feltDone = true; persist(); render(); },
+  feelBack: function () { var m = M(); m.feltDone = false; persist(); render(); },
   tellFace: function () { var m = M(); var n = val("noteTxt"); if (n) { m.noteDraft = n; m.note = n; } m.toldHow = "person"; m.status = "told"; persist(); send("listened", told(m, { note: m.note || "", face: 1 }), "wListened"); setTimeout(function () { render(); }, 300); },
 
 
@@ -1178,6 +1184,7 @@ function bind() {
   app.querySelectorAll("[data-lang]").forEach(function (b) { b.onclick = function () { saveTyped(); S.lang = b.dataset.lang; persist(); render(); }; });
   app.querySelectorAll("[data-role]").forEach(function (b) { b.onclick = function () { saveTyped(); V.tmp.role = b.dataset.role; render(); }; });
   app.querySelectorAll("[data-mic]").forEach(function (b) { b.onclick = function () { startMic(b, b.dataset.mic); }; });
+  app.querySelectorAll("[data-feel]").forEach(function (b) { b.onclick = function () { var m = M(), k = +b.dataset.feel; m.feelings = m.feelings || []; var p = m.feelings.indexOf(k); if (p > -1) m.feelings.splice(p, 1); else if (m.feelings.length < 3) m.feelings.push(k); persist(); render(); }; });
   app.querySelectorAll("[data-fold]").forEach(function (b) { b.onclick = function () { b.setAttribute("aria-expanded", b.getAttribute("aria-expanded") === "true" ? "false" : "true"); }; });
 
   app.querySelectorAll("input[type=text]").forEach(function (i) { i.onkeydown = function (e) { if (e.key === "Enter") { e.preventDefault(); var b = i.closest(".fieldwrap") ? i.closest(".fieldwrap").nextElementSibling : null; if (b && b.classList.contains("btn")) b.click(); } }; });
