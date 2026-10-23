@@ -178,6 +178,38 @@ body:not(.her) .turn .chip.rec { background: linear-gradient(140deg, rgba(194,19
 body:not(.her) .turn textarea, body:not(.her) .turn input, body:not(.her) .turn .box, body:not(.her) .turn select.sel { background: #0f0d12; }
 .hlab .av { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: #f7b8d4; color: #4a0f2c; font-weight: 800; font-size: 14px; vertical-align: middle; margin-inline-end: 8px; }
 body.her .hlab .av { background: #2b1b29; color: #fff; }
+/* Conversations list: one raised row per moment; "your turn" rows lit (crimson on his side, rose on hers) */
+.conv { width: 100%; display: flex; align-items: center; gap: 12px; padding: 14px; border: 0; border-radius: 22px; font: inherit; color: var(--ink); text-align: start; background: var(--card); box-shadow: var(--raise); cursor: pointer; transition: transform .15s ease-out; }
+.conv:active { transform: scale(.97); }
+.conv .cav { flex: none; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 17px; background: #2a2530; color: var(--ink); }
+.conv .cav.p { background: #f7b8d4; color: #4a0f2c; }
+body.her .conv .cav { background: #f4dff3; color: var(--ink); }
+body.her .conv .cav.p { background: #2b1b29; color: #fff; }
+.conv .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.conv b { font-size: 17px; font-weight: 700; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.conv small { font-size: 15.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.conv .st { flex: none; font-size: 15px; font-weight: 700; padding: 4px 11px; border-radius: 999px; color: var(--muted); background: var(--bg); box-shadow: var(--press); }
+.conv.go .st { color: #fff; background: var(--fill); box-shadow: none; }
+.conv.go { background: linear-gradient(140deg, rgba(194,19,74,.28), rgba(194,19,74,.06)), var(--card); }
+body.her .conv.go { background: linear-gradient(145deg, #fbd9ea, #f3cfe6); }
+.conv.done { opacity: .8; }
+/* Boxes that open (Our moments, What draws her) */
+.fold { border-radius: 22px; background: var(--card); box-shadow: var(--raise); overflow: hidden; }
+body.her .fold:nth-child(odd) { background: linear-gradient(145deg, #fdeaf3, #f8e6f5); }
+body.her .fold:nth-child(even) { background: linear-gradient(145deg, #f8e9f8, #f1e4f6); }
+.fold summary { list-style: none; display: flex; align-items: center; gap: 10px; padding: 16px; cursor: pointer; }
+.fold summary::-webkit-details-marker { display: none; }
+.fold .ft { flex: 1; min-width: 0; font-weight: 700; font-size: 17.5px; line-height: 1.35; }
+.fold .ft small { display: block; font-size: 15px; font-weight: 700; color: var(--acc); }
+body:not(.her) .fold .ft small { color: var(--muted); }
+.fold summary svg.i { transform: rotate(-90deg); transition: transform .2s ease-out; color: var(--muted); }
+.fold[open] summary svg.i { transform: rotate(90deg); }
+[dir="ltr"] .fold summary svg.i { transform: rotate(90deg); } [dir="ltr"] .fold[open] summary svg.i { transform: rotate(-90deg); }
+.fold .fb { display: flex; flex-direction: column; gap: 12px; padding: 0 16px 16px; }
+.frow { display: flex; flex-direction: column; gap: 4px; padding-top: 12px; border-top: 1px solid var(--line); }
+.frow:first-child { border-top: 0; padding-top: 0; }
+.frow .t { font-weight: 600; font-size: 17px; line-height: 1.4; }
+#app.soft > .hlab { margin: -6px 0 0; text-align: start; }
 [dir="ltr"] svg.i path[d^="M9 6l"] { transform: scaleX(-1); transform-origin: center; }
 /* His Today (DESIGN.md): velvet black, crimson dial, coach first, small date link */
 #app.night { gap: 16px; }
@@ -472,7 +504,7 @@ function pillFor(m) {
 function topBar(backAttr, label, fwd) { return '<div class="hbar"><button class="rb" ' + backAttr + ' aria-label="' + esc(x("navBack")) + '">' + ic("back") + '</button><span class="hlab">' + (label || "") + '</span>' + (fwd ? '<button class="rb" data-nav="fwd" aria-label="' + esc(x("navFwd")) + '">' + ic("chev") + '</button>' : '<span class="rb ghostrb"></span>') + '</div>'; }
 function tabs() {
   var a = [["moments", "tToday"], ["convs", "tConvs"], ["draws", "tDraws"], ["tips", "tTips"], ["settings", "tSettingsS"]];
-  if (S.role === "her") { return topBar('data-tab="moments"', esc(t("hiPair").replace("{me}", S.me || "").replace("{p}", S.partner || ""))); }
+  if (S.role === "her") a = [["moments", "hubTab"], ["inbox", "tConvs"], ["story", "tStory"], ["tips", "tTips"], ["settings", "tSettingsS"]];
   return '<div class="tabs">' + a.map(function (x) { return '<button class="' + (V.tab === x[0] ? "on" : "") + '" data-tab="' + x[0] + '">' + t(x[1]) + '</button>'; }).join("") + '</div>';
 }
 
@@ -500,6 +532,7 @@ SC.notice = function () { return { cls: "calm", html: orbs() + '<p class="mid" s
 /* --- screen copy: where you are · why you're here · what to do --- */
 var CX = {
   en: {
+    cvYour: "Your turn", cvWaitHim: "Waiting for her", cvWaitHer: "Waiting for him", cvDone: "Closed", cvEmpty: "No conversations yet. Every moment opens one.", cvSubHim: "Every moment is its own conversation. Tap one to open it.", cvSubHer: "Every moment is its own conversation. Tap one to open it.", cvWaitTxtHim: "When she answers, it shows up here.", cvWaitTxtHer: "When he answers, it shows up here.", cvDoneHim: "This moment is closed. Ready for the next one?", cvDoneHer: "This moment is closed. Ready for the next one?", cvEditRate: "Edit how it landed", cvNewL: "New conversation", mvOpen: "Tap a box to open it",
     thHer: "Her moment", thHim: "The moment you noticed", thMine: "Your moment", thHis: "His moment", thGuess: "Your guess", thHisGuess: "His guess", thAsked: "You asked", thAsks: "{n} asks", thSaid: "{n} said", thMyAns: "Your answer", thLearned: "You learned", thWrote: "You wrote her", thWroteYou: "{n} wrote you", thReact: "{n} replied", thMyReact: "Your reply", thLocked: "Locked until you open it", yourTurn: "Your turn", ansT: "What will you tell him?",
     homeB: "Crack enough of them, and you'll know exactly how to bring that look back.", whyB: "Find the trigger, and you can pull it again.", askB: "Being asked about herself is a gift to her, and her answer is your cheat sheet.", recB: "Her exact words are the clue.", learnedB: "Most men never find this out. You just did.", feelB: "Name it, and your words will sound like you, not like a greeting card.", wordsB: "This is the raw material of what you'll tell her.", sayB: "Said your way, it lands. That's the whole secret.", rateB: "Every round sharpens your aim.", sealedB: "Guess right, and you'll know her a little better.", gainL: "What you gain", drawsC2: "Your private file on her: everything you've cracked so far. It grows every round.", drawsB: "The more you know, the easier it gets.", lMoments: "moments explored", lAnswers: "answers from her", lAvg: "how it landed (avg ♥)", lDraws: "What draws her", lWords: "In her words", lHers: "Her moments", lReacts: "How she reacted", lGuessed: "You guessed:", lShe: "She said:", tipsT: "Tips & ideas", tipsCHim: "Your playbook: what worked, hints from her, and your own ideas.", tipsBHim: "Small move, right moment, big effect.", tipsCHer: "Give him a hint. He gets it on WhatsApp, and he'll love the head start.", tipsBHer: "He doesn't have to guess everything.", lvL: "One more thing", lvC: "Tell her one thing you love that she does. She gets it as a tip, so she knows what makes you happy.", lvB: "She'll do more of what you love.", lvQ: "What do you love that she does?", lvPh: "e.g. When you send me a photo in the middle of the day", lvBtn: "Send it to her on WhatsApp", lvLater: "Save it, send later",  lvSkip: "Not now", cLoves: "He loves this about you: “{w}”. Men feel loved when you do what they enjoy: do it more, and let him see you chose to.",
     coachL: "From the coach", coachC: "Read from what {n} wrote you", coachEmpty: "When {n} writes to you, the coach will read it and give you tips here.", coachTag: "Coach",
@@ -532,7 +565,7 @@ var CX = {
     hubD0: "Being asked about yourself feels good. Enjoy it.", hubD1: "He's learning you, one moment at a time.", hubD2: "Your moments are the map. He's the one exploring.", hubD3: "Some things are worth being asked about twice.", hubD4: "Tonight, notice one small thing he gets right.",
     tiFrom: "From him", tiFromS: "{k} new", tiFromNone: "Nothing new yet", tiStory: "Our moments", tiStoryS: "{k} moments together", tiAdd: "Send a moment", tiAddS: "Let him guess", tiTips: "Tips", tiTipsS: "For him, from you",
     hqT: "{n} is curious about you, he has a question", hqBtn: "Answer him", htT: "{n} sent you a tip", htBtn: "Read it", hlT: "{n} listened to you", hlBtn: "See what he wrote", hiT: "Did he do something that touched you?", hiSub: "Tell him about it", hiBtn: "Share a moment",
-    hHello: "Hi {me}", learnedL: "{n} learned <b>{k}</b> things about you", rFrom: "From him", rFromNew: "{k} new", rFromOne: "1 new", rFromNone: "Nothing new yet", rStory: "Our moments", rStoryS: "{k} conversations", rShare: "Share a moment", rShareS: "Something you want him to know", rTips: "Tips", rTipsS: "From him, from the coach, and from you to him", menuL: "Settings",
+    hHello: "Hi {me}", learnedL: "{n} learned <b>{k}</b> things about you", rFrom: "Conversations", rFromNew: "{k} new", rFromOne: "1 new", rFromNone: "Nothing new yet", rStory: "Our moments", rStoryS: "{k} conversations", rShare: "Share a moment", rShareS: "Something you want him to know", rTips: "Tips", rTipsS: "From him, from the coach, and from you to him", menuL: "Settings",
     hHomeC: "This is where he shows up: his questions, his notes, his curiosity about you.", hAddC: "Drop him another locked moment. Each one starts a new round.", hAddBtn: "Send it to him on WhatsApp", hNotesC: "Just for you. Not him, not anyone.",
     ansL: "A question from {n}", ansC: "{n} is curious about you. Answer however you like, there's no wrong answer.", ansBtn: "Send my answer on WhatsApp",
     lisL: "{n} listened", lisC: "{n} heard you, and here's what he made of it.", lisReactBtn: "Send it back to him on WhatsApp", lisMore: "Add another moment",
@@ -544,6 +577,7 @@ var CX = {
     editShort: "Edit", editMomentL: "Edit your moment", editAnswerL: "Edit your answer", editC: "Fix anything you like. He gets the corrected version on WhatsApp.", editBtn: "Save and send the correction", cancel: "Cancel"
   },
   he: {
+    cvYour: "תורך", cvWaitHim: "מחכים לה", cvWaitHer: "מחכים לו", cvDone: "נסגר", cvEmpty: "עוד אין שיחות. כל רגע פותח שיחה.", cvSubHim: "כל רגע הוא שיחה נפרדת. לחץ כדי לפתוח.", cvSubHer: "כל רגע הוא שיחה נפרדת. לחצי כדי לפתוח.", cvWaitTxtHim: "כשהיא תענה, זה יופיע כאן.", cvWaitTxtHer: "כשהוא יענה, זה יופיע כאן.", cvDoneHim: "הרגע הזה נסגר. מוכן לבא?", cvDoneHer: "הרגע הזה נסגר. מוכנה לבא?", cvEditRate: "לערוך איך זה התקבל", cvNewL: "שיחה חדשה", mvOpen: "לחיצה על קופסה פותחת אותה",
     thHer: "הרגע שלה", thHim: "הרגע ששמת לב אליו", thMine: "הרגע שלך", thHis: "הרגע שלו", thGuess: "הניחוש שלך", thHisGuess: "הניחוש שלו", thAsked: "שאלת", thAsks: "{n} שואל", thSaid: "{n} אמרה", thMyAns: "התשובה שלך", thLearned: "גילית", thWrote: "כתבת לה", thWroteYou: "{n} כתב לך", thReact: "{n} הגיבה", thMyReact: "התגובה שלך", thLocked: "נעול עד שתפתח", yourTurn: "תורך", ansT: "מה תעני לו?",
     homeB: "תפצח מספיק מהם, ותדע בדיוק איך להחזיר את המבט הזה.", whyB: "תמצא את הטריגר, ותוכל ללחוץ עליו שוב.", askB: "עצם השאלה היא מתנה בשבילה, והתשובה שלה היא השליף שלך.", recB: "המילים המדויקות שלה הן הרמז.", learnedB: "רוב הגברים לא מגלים את זה אף פעם. אתה גילית.", feelB: "כשאתה נותן לזה שם, המילים שלך יישמעו כמוך ולא כמו כרטיס ברכה.", wordsB: "זה חומר הגלם של מה שתגיד לה.", sayB: "כשזה נאמר בדרך שלך, זה פוגע בול. זה כל הסוד.", rateB: "כל סיבוב מחדד לך את הכוונת.", sealedB: "תנחש נכון, ותכיר אותה קצת יותר.", gainL: "מה תרוויח", drawsC2: "התיק הסודי שלך עליה: כל מה שפיצחת עד עכשיו. הוא גדל בכל סיבוב.", drawsB: "ככל שתדע יותר, יהיה לך קל יותר.", lMoments: "רגעים שחקרת", lAnswers: "תשובות ממנה", lAvg: "איך זה התקבל (ממוצע ♥)", lDraws: "מה מושך אותה", lWords: "במילים שלה", lHers: "הרגעים שלה", lReacts: "איך היא הגיבה", lGuessed: "ניחשת:", lShe: "היא אמרה:", tipsT: "טיפים ורעיונות", tipsCHim: "ספר המהלכים שלך: מה עבד, רמזים ממנה ורעיונות שלך.", tipsBHim: "מהלך קטן, ברגע הנכון, אפקט גדול.", tipsCHer: "תני לו רמז. הוא יקבל אותו בוואטסאפ, וישמח שיש לו יתרון.", tipsBHer: "הוא לא חייב לנחש הכל.", lvL: "עוד דבר אחד", lvC: "ספר לה דבר אחד שאתה אוהב שהיא עושה. היא תקבל את זה כטיפ, ותדע מה משמח אותך.", lvB: "היא תעשה יותר ממה שאתה אוהב.", lvQ: "מה אתה אוהב שהיא עושה?", lvPh: "למשל: כשאת שולחת לי תמונה באמצע היום", lvBtn: "שלח לה בוואטסאפ", lvLater: "שמור, אשלח אחר כך", lvSkip: "לא עכשיו", cLoves: "הוא אוהב את זה אצלך: “{w}”. גברים מרגישים אהובים כשעושים את מה שהם נהנים ממנו: עשי את זה יותר, ותני לו לראות שבחרת בזה.",
     coachL: "מהמאמן", coachC: "מתוך מה ש{n} כתב לך", coachEmpty: "כש{n} יכתוב לך, המאמן יקרא ויביא לך כאן טיפים.", coachTag: "מאמן",
@@ -576,7 +610,7 @@ var CX = {
     hubD0: "כשמתעניינים בך, זה מרגיש טוב. תיהני מזה.", hubD1: "הוא לומד אותך, רגע אחרי רגע.", hubD2: "הרגעים שלך הם המפה. הוא זה שמגלה.", hubD3: "יש דברים ששווה שישאלו עליהם פעמיים.", hubD4: "הערב, שימי לב לדבר קטן אחד שהוא עושה נכון.",
     tiFrom: "ממנו", tiFromS: "{k} חדשים", tiFromNone: "עדיין אין חדש", tiStory: "הרגעים שלנו", tiStoryS: "{k} רגעים ביחד", tiAdd: "שלחי לו רגע", tiAddS: "שינחש", tiTips: "טיפים", tiTipsS: "בשבילו, ממך",
     hqT: "{n} סקרן לגבייך, יש לו שאלה", hqBtn: "לענות לו", htT: "{n} שלח לך טיפ", htBtn: "לקרוא", hlT: "{n} הקשיב לך", hlBtn: "לראות מה הוא כתב", hiT: "הוא עשה משהו שנגע בך?", hiSub: "ספרי לו על זה", hiBtn: "לשתף רגע",
-    hHello: "היי {me}", learnedL: "{n} למד עלייך <b>{k}</b> דברים", rFrom: "ממנו", rFromNew: "{k} חדשים", rFromOne: "משהו חדש", rFromNone: "עדיין אין משהו חדש", rStory: "הרגעים שלנו", rStoryS: "{k} שיחות", rShare: "לשתף רגע", rShareS: "משהו שאת רוצה שהוא ידע", rTips: "טיפים", rTipsS: "ממנו, מהמאמן, וממך אליו", menuL: "הגדרות",
+    hHello: "היי {me}", learnedL: "{n} למד עלייך <b>{k}</b> דברים", rFrom: "השיחות", rFromNew: "{k} חדשים", rFromOne: "משהו חדש", rFromNone: "עדיין אין משהו חדש", rStory: "הרגעים שלנו", rStoryS: "{k} שיחות", rShare: "לשתף רגע", rShareS: "משהו שאת רוצה שהוא ידע", rTips: "טיפים", rTipsS: "ממנו, מהמאמן, וממך אליו", menuL: "הגדרות",
     hHomeC: "כאן הוא מופיע: השאלות שלו, הפתקים שלו, הסקרנות שלו לגבייך.", hAddC: "שלחי לו עוד רגע נעול. כל אחד מתחיל סיבוב חדש.", hAddBtn: "שלחי לו בוואטסאפ", hNotesC: "רק בשבילך. לא בשבילו, לא בשביל אף אחד.",
     ansL: "שאלה מ{n}", ansC: "{n} סקרן לגבייך. עני איך שבא לך, אין תשובה לא נכונה.", ansBtn: "שלחי את התשובה בוואטסאפ",
     lisL: "{n} הקשיב", lisC: "{n} הקשיב לך, וזה מה שיצא לו מזה.", lisReactBtn: "שלחי לו בחזרה בוואטסאפ", lisMore: "הוסיפי עוד רגע",
@@ -657,16 +691,48 @@ SC.home = function () {
   if (V.tab === "tips") return SC.tips();
   if (V.tab === "settings") return SC.settings();
   if (V.tab !== "convs") return SC.hisToday();
-  var open = S.moments.filter(function (m) { return m.status !== "done"; });
-  open.sort(function (a, b) { return (b.status === "saved") - (a.status === "saved"); });
-  var done = S.moments.filter(function (m) { return m.status === "done"; });
-  var row = function (m) { return chip(esc(m.title), "open:" + m.id, m.status === "sealed" || m.status === "answered" || m.status === "saved" ? "rec" : "", pillFor(m)); };
-  var html = orbs() + tabs() + pairLine() + hdr(x("homeL"), x("homeC"), x("homeB")) + '<p class="mid">' + t("m1") + '</p>' +
-    (open.length ? '<div class="list">' + open.map(row).join("") + '</div>' : "") +
-    (S.moments.length < 3 ? '<p class="lab mutedlab">' + x("ideas") + '</p><div class="list">' + ["sugA", "sugB", "sugC"].map(function (k) { return chip(t(k), "addSug:" + k, "", "<span>+</span>"); }).join("") + '</div>' : "") +
-    field("own", t("ownPh"), "", false) + btn(x("addBtn"), "addOwn") +
-    (done.length ? '<p class="lab mutedlab" style="margin-top:8px">' + t("toldList") + '</p><div class="list">' + done.map(row).join("") + '</div>' : "");
+  var html = tabs() + '<p class="big">' + t("tConvs") + '</p><p class="txt">' + esc(x("cvSubHim")) + '</p>' + convList() +
+    '<p class="lab" style="margin-top:10px">' + esc(x("cvNewL")) + '</p><p class="mid">' + t("m1") + '</p>' +
+    (S.moments.length < 3 ? '<div class="list">' + ["sugA", "sugB", "sugC"].map(function (k) { return chip(t(k), "addSug:" + k, "", "<span>+</span>"); }).join("") + '</div>' : "") +
+    field("own", t("ownPh"), "", false) + btn(x("addBtn"), "addOwn");
   return { cls: "calm", html: html };
+};
+/* Conversations (both sides): one row per moment; tapping opens that moment's own thread */
+function convState(m) {
+  if (S.role === "him") return { sealed: "go", answered: "go", saved: "go", "new": "go", asked: "wait", done: "done" }[m.status] || "go";
+  if (m.status === "asked" || (m.status === "listened" && !m.reaction)) return "go";
+  return m.status === "listened" ? "done" : "wait";
+}
+function lastLine(m) {
+  if (S.role === "him" && m.status === "sealed") return "🔒 " + x("thLocked");
+  return m.reaction || m.note || m.answer || m.question || m.guess || m.why || m.hisGuess || "";
+}
+function convList() {
+  var order = { go: 0, wait: 1, done: 2 }, ms = S.moments.slice().sort(function (a, b) { return order[convState(a)] - order[convState(b)]; });
+  if (!ms.length) return '<div class="empty">' + esc(x("cvEmpty")) + '</div>';
+  var P = S.partner || "", me = S.me || "";
+  return '<div class="list">' + ms.map(function (m) {
+    var st = convState(m), fromP = (m.from === "her") === (S.role === "him");
+    var lab = st === "go" ? x("cvYour") : st === "wait" ? x(S.role === "him" ? "cvWaitHim" : "cvWaitHer") : x("cvDone");
+    var title = S.role === "him" && m.status === "sealed" ? x("thHer") : m.title;
+    return '<button class="conv ' + st + '" data-act="conv:' + m.id + '"><span class="cav' + (fromP ? " p" : "") + '">' + esc((fromP ? P : me).charAt(0) || "♡") + '</span><span class="tx"><b>' + esc(title) + '</b><small>' + esc(snip(lastLine(m))) + '</small></span><span class="st">' + esc(lab) + '</span></button>';
+  }).join("") + '</div>';
+}
+function openConv(id) {
+  var m = byId(id); if (!m) return;
+  if (S.role === "him") return openMoment(id);
+  V.mid = id;
+  if (m.status === "asked") return go(S.introHer ? "answer" : "herIntro1");
+  if (m.status === "listened" && !m.reaction) return go("listened");
+  go("conv");
+}
+/* A moment with nothing to do right now: the thread, and what comes next */
+SC.conv = function () {
+  var m = M(); if (!m) return SC.home();
+  var him = S.role === "him", st = convState(m), G = function (k) { return x(k + (him ? "Him" : "Her")); };
+  var next = btn(him ? x("dTileM") : x("rShare"), him ? "newConv" : "toAddMore");
+  var inner = '<p class="mid">' + esc(G(st === "wait" ? "cvWaitTxt" : "cvDone")) + '</p>' + acts(next + (him && st === "done" ? ghost(x("cvEditRate"), "editRate") : "") + ghost(bk() + t("backHome"), "home"));
+  return { cls: "calm", title: partnerTitle(), html: thread(m) + turn(st === "wait" ? x(him ? "cvWaitHim" : "cvWaitHer") : x("cvDone"), inner) };
 };
 /* His Today (DESIGN.md, Dial alert): the dial says what waits, then his move, coach, two tiles, small date link */
 SC.hisToday = function () {
@@ -689,8 +755,10 @@ SC.draws = function () {
   var ms = S.moments.filter(function (m) { return m.status !== "sealed"; });
   var answers = ms.filter(function (m) { return m.answer; }), rated = ms.filter(function (m) { return m.rating; });
   var avg = rated.length ? (rated.reduce(function (a, m) { return a + m.rating; }, 0) / rated.length).toFixed(1) : "–";
-  var sec = function (lab, items) { return items.length ? '<p class="lab" style="margin-top:6px">' + esc(x(lab)) + '</p><div class="list">' + items.join("") + '</div>' : ""; };
-  var card = function (main, sub) { return '<div class="storycard" style="gap:4px"><div class="t" style="font-size:17px">' + main + '</div>' + (sub ? '<div class="txt" style="font-size:13px">' + sub + '</div>' : "") + '</div>'; };
+  var first = true;
+  /* each group is a box that opens; the first one starts open */
+  var sec = function (lab, items) { if (!items.length) return ""; var o = first; first = false; return '<details class="fold"' + (o ? " open" : "") + '><summary><span class="ft">' + esc(x(lab)) + '</span><span class="pill">' + items.length + '</span>' + ic("chev") + '</summary><div class="fb">' + items.join("") + '</div></details>'; };
+  var card = function (main, sub) { return '<div class="frow"><div class="t">' + main + '</div>' + (sub ? '<div class="txt">' + sub + '</div>' : "") + '</div>'; };
   var edb = function (f, m) { return '<button class="edit" data-edit="' + f + ':' + m.id + '">✎ ' + esc(x("editShort")) + '</button>'; };
   var draws = ms.filter(function (m) { return m.draw; }).map(function (m) { return card("✦ " + esc(m.draw) + edb("draw", m), esc(m.title)); });
   var told = ms.filter(function (m) { return m.note; }).map(function (m) { return card("“" + esc(m.note) + "”" + edb("note", m), esc(m.title)); });
@@ -698,9 +766,9 @@ SC.draws = function () {
   var hers = ms.filter(function (m) { return m.from === "her"; }).map(function (m) { return card(esc(m.title), m.guess ? esc(x("lGuessed")) + " " + esc(m.guess) : ""); });
   var reacts = ms.filter(function (m) { return m.rating || m.reaction || m.howItWent; }).map(function (m) { return card((m.rating ? "♥".repeat(m.rating) + " " : "") + esc(m.title) + (m.howItWent ? edb("howItWent", m) : ""), [m.howItWent ? esc(m.howItWent) : "", m.reaction ? esc(x("lShe")) + " “" + esc(m.reaction) + "”" : ""].filter(Boolean).join(" · ")); });
   var empty = !draws.length && !told.length && !words.length && !hers.length && !reacts.length;
-  return { cls: "calm", html: orbs() + tabs() + '<p class="big">' + t("drawsL") + '</p>' + hdr("", x("drawsC2"), x("drawsB")) +
+  return { cls: "calm", html: tabs() + '<p class="big">' + t("drawsL") + '</p>' + hdr("", x("drawsC2"), x("drawsB")) +
     '<div class="stats"><div><b>' + ms.length + '</b><small>' + x("lMoments") + '</small></div><div><b>' + answers.length + '</b><small>' + x("lAnswers") + '</small></div><div><b>' + avg + '</b><small>' + x("lAvg") + '</small></div></div>' +
-    (empty ? '<div class="empty">' + t("drawsEmpty") + '</div>' : sec("lDraws", draws) + sec("lWords", words) + sec("lTold", told) + sec("lHers", hers) + sec("lReacts", reacts)) };
+    (empty ? '<div class="empty">' + t("drawsEmpty") + '</div>' : '<p class="txt">' + esc(x("mvOpen")) + '</p><div class="list">' + sec("lDraws", draws) + sec("lWords", words) + sec("lTold", told) + sec("lHers", hers) + sec("lReacts", reacts) + '</div>') };
 };
 /* Her coach: reads what he sent (note, question, guess, what he learned) and turns it into tips about what men want. */
 var COACH = [
@@ -833,15 +901,9 @@ SC.herHome = function () {
   if (V.tab === "story") return SC.story();
   if (V.tab === "tips") return SC.tips();
   if (V.tab !== "inbox") return SC.herHub();
-  var asked = S.moments.filter(function (m) { return m.status === "asked"; });
-  var listened = S.moments.filter(function (m) { return m.status === "listened"; });
-  var mine = S.moments.filter(function (m) { return m.from === "her" && m.status !== "asked" && m.status !== "listened"; });
-  var h = orbs() + tabs() + pairLine() + '<p class="mid">' + t("hHome") + '</p><p class="ctx">' + esc(x("hHomeC")) + '</p>' +
-    (asked.length || listened.length ? '<div class="list">' + asked.map(function (m) { return chip(esc(m.question), "answer:" + m.id, "rec", '<span class="pill">♡</span>'); }).join("") + listened.map(function (m) { return chip(esc(x("lisL")) + (m.note ? " · ✉" : ""), "listened:" + m.id, "", ""); }).join("") + '</div>' : (S.tips || []).some(function (tp) { return tp.from === "him"; }) ? "" : '<div class="empty">' + t("hNone") + '</div>') +
-    (mine.length ? '<p class="lab mutedlab">' + t("hMyMoments") + '</p><div class="list">' + mine.map(function (m) { return '<div class="chip" style="cursor:default"><span>' + esc(m.title) + '</span><span class="pill">' + (m.status === "sent" ? "🔒 " + t("waitingGuess") : "🔒") + '</span></div>'; }).join("") + '</div>' : "") +
-    ((S.tips || []).some(function (tp) { return tp.from === "him"; }) ? '<p class="lab mutedlab">♡ ' + esc(x("hTipsL")) + '</p><div class="list">' + (S.tips || []).filter(function (tp) { return tp.from === "him"; }).map(function (tp) { return fromCard(tp, "goTips"); }).join("") + '</div>' : "") +
-    '<p class="lab" style="margin-top:6px">' + t("hAddL") + '</p><p class="ctx">' + esc(x("hAddC")) + '</p>' + field("herMoment", t("hAddPh"), "", false) + btn(x("hAddBtn"), "herAddMoment") +
-    '<p class="lab" style="margin-top:6px">🔒 ' + t("hNotes") + '</p><p class="ctx">' + esc(x("hNotesC")) + '</p><textarea id="notes" placeholder="' + esc(t("hNotesPh")) + '">' + esc(S.notes) + '</textarea>' + ghost(t("saveNotes"), "saveNotes");
+  var hisTips = (S.tips || []).filter(function (tp) { return tp.from === "him"; });
+  var h = tabs() + '<p class="big">' + t("tConvs") + '</p><p class="txt">' + esc(x("cvSubHer")) + '</p>' + convList() + btn(x("rShare"), "toAddMore") +
+    (hisTips.length ? '<p class="lab" style="margin-top:6px">♡ ' + esc(x("hTipsL")) + '</p><div class="list">' + hisTips.map(function (tp) { return fromCard(tp, "goTips"); }).join("") + '</div>' : "");
   return { cls: "calm", html: h };
 };
 SC.herHub = function () {
@@ -857,7 +919,7 @@ SC.herHub = function () {
     : newTips.length ? [x("htT"), "", x("htBtn"), 'data-tab="tips"']
     : [x("hiT"), x("hiSub"), x("hiBtn"), 'data-act="toAddMore"'];
   var row = function (lab, sub, attr, icon, on) { return '<button class="hli' + (on ? " on" : "") + '" ' + attr + '><span class="tx"><b>' + esc(lab) + '</b><small>' + esc(sub) + '</small></span><span class="pb">' + ic(icon) + '</span></button>'; };
-  var h = '<div class="hbar"><button class="rb" data-tab="settings" aria-label="' + esc(x("menuL")) + '">' + ic("menu") + '</button><span class="hlab">' + esc(x("hHello").replace("{me}", S.me || "")) + '</span><span class="rb ghostrb"></span></div>' +
+  var h = tabs() + '<p class="hlab">' + esc(x("hHello").replace("{me}", S.me || "")) + '</p>' +
     '<div class="focal"><div><span>' + esc(f[0]) + (f[1] ? '<small>' + esc(snip(f[1])) + '</small>' : "") + '</span></div></div>' +
     '<button class="cta2" ' + f[3] + '>' + esc(f[2]) + '</button>' +
     '<button class="learned" data-tab="story"><span>' + x("learnedL").replace("{k}", learned) + '</span><span class="tr"><i style="width:' + (learned ? Math.max(8, Math.min(learned, 10) * 10) : 0) + '%"></i></span>' + ic("chev") + '</button>' +
@@ -898,15 +960,19 @@ SC.story = function () {
   var list = S.moments.filter(function (m) { return m.from === "her" || m.question || m.note || m.status === "listened"; });
   var nQ = S.moments.filter(function (m) { return m.question; }).length, nN = S.moments.filter(function (m) { return m.note || m.status === "listened"; }).length;
   var stat = { sent: "waitingGuess", asked: "stCurious", answeredByMe: "stAnswered", listened: "hListened" };
-  var cards = list.map(function (m) {
+  /* every moment is a box: the title shows, a tap opens what each of you said */
+  var cards = list.map(function (m, i) {
     var r = function (lab, v, ed) { return v ? '<div class="srow"><span>' + esc(x(lab)) + (ed ? '<button class="edit" data-edit="' + ed + ':' + m.id + '">✎ ' + esc(x("editShort")) + '</button>' : "") + '</span>' + esc(v) + '</div>' : ""; };
-    return '<div class="storycard"><div class="row2"><span class="lab">' + esc(m.from === "her" ? x("yourMoment") : x("hisMoment")) + '</span><span class="pill">' + esc(stat[m.status] ? (stat[m.status] === "hListened" ? t("hListened") : stat[m.status] === "waitingGuess" ? t("waitingGuess") : x(stat[m.status])) : "") + '</span></div>' +
-      '<div class="t">' + esc(m.title) + (m.from === "her" ? '<button class="edit" data-edit="title:' + m.id + '">✎ ' + esc(x("editShort")) + '</button>' : "") + '</div>' +
-      r("sGuess", m.hisGuess) + r("sAsked", m.question) + r("sAnswer", m.answer, m.answer && m.status !== "asked" ? "answer" : "") + r("sDraw", m.draw) + r("sNote", m.note) + r("sYou", m.reaction, m.reaction ? "reaction" : "") + '</div>';
+    var pill = stat[m.status] ? (stat[m.status] === "hListened" ? t("hListened") : stat[m.status] === "waitingGuess" ? t("waitingGuess") : x(stat[m.status])) : "";
+    return '<details class="fold"' + (i === 0 ? " open" : "") + '><summary><span class="ft"><small>' + esc(m.from === "her" ? x("yourMoment") : x("hisMoment")) + (pill ? " · " + esc(pill) : "") + '</small>' + esc(m.title) + '</span>' + ic("chev") + '</summary><div class="fb">' +
+      (m.from === "her" ? '<div><button class="edit" data-edit="title:' + m.id + '">✎ ' + esc(x("editShort")) + '</button></div>' : "") +
+      r("sGuess", m.hisGuess) + r("sAsked", m.question) + r("sAnswer", m.answer, m.answer && m.status !== "asked" ? "answer" : "") + r("sDraw", m.draw) + r("sNote", m.note) + r("sYou", m.reaction, m.reaction ? "reaction" : "") +
+      '<button class="chip" data-act="conv:' + m.id + '"><span>' + esc(t("tConvs")) + '</span>' + ic("chev") + '</button></div></details>';
   }).join("");
-  return { cls: "calm", html: orbs() + tabs() + pairLine() + '<p class="big">' + x("storyT") + '</p><p class="ctx">' + esc(x("storyC")) + '</p>' +
+  return { cls: "calm", html: tabs() + '<p class="big">' + x("storyT") + '</p><p class="ctx">' + esc(x("storyC")) + '</p>' +
     '<div class="stats"><div><b>' + list.filter(function (m) { return m.from === "her"; }).length + '</b><small>' + x("stMoments") + '</small></div><div><b>' + nQ + '</b><small>' + x("stQuestions") + '</small></div><div><b>' + nN + '</b><small>' + x("stNotes") + '</small></div></div>' +
-    (cards ? '<div class="list">' + cards + '</div>' : '<div class="empty">' + x("storyEmpty") + '</div>') };
+    (cards ? '<p class="txt">' + esc(x("mvOpen")) + '</p><div class="list">' + cards + '</div>' : '<div class="empty">' + x("storyEmpty") + '</div>') +
+    '<p class="lab" style="margin-top:6px">🔒 ' + t("hNotes") + '</p><p class="txt">' + esc(x("hNotesC")) + '</p><textarea id="notes" placeholder="' + esc(t("hNotesPh")) + '">' + esc(S.notes) + '</textarea>' + ghost(t("saveNotes"), "saveNotes") };
 };
 function pairLine() { return S.role !== "her" && (S.me || S.partner) ? '<p class="lab mutedlab">' + esc(t("hiPair").replace("{me}", S.me || "").replace("{p}", S.partner || "")) + '</p>' : ""; }
 function restoreBlock() { return V.tmp.restoring ? '<p class="txt" style="font-size:13px">' + t("bkHint") + '</p><textarea id="restore" placeholder="' + esc(t("restorePh")) + '"></textarea>' + btn(t("restoreBtn"), "doRestore") : ghost(t("restore"), "restoreOpen"); }
@@ -989,13 +1055,15 @@ var A = {
   askReset: function () { V.tmp.sure = true; render(); }, cancelReset: function () { V.tmp.sure = false; render(); },
   doReset: function () { try { localStorage.removeItem(KEY); } catch (e) {} S = blank(); V = { screen: "welcome", mid: null, tab: "moments", tmp: {}, back: [], fwd: [] }; render(); },
   inviteDate: function () { send("date", {}, "wDate"); },
-  copyLink: function () { copy(V.lastLink); }
+  copyLink: function () { copy(V.lastLink); },
+  newConv: function () { V.mid = null; V.tab = "convs"; go("home"); },
+  editRate: function () { go("rate"); }
 };
 function told(m, extra) { var d = { mid: m.id, title: m.title, q: m.question || "", a: m.answer || "", guess: m.guess || m.why || "", draw: m.draw || "" }; for (var k in extra) d[k] = extra[k]; return d; }
 function addMoment(title) { var m = { id: uid(), title: title, from: "him", status: "new", createdAt: Date.now() }; S.moments.unshift(m); V.mid = m.id; persist(); go("why"); }
 function openMoment(id) {
   var m = byId(id); V.mid = id; if (!m) return;
-  var s = { sealed: "sealed", asked: "sent", answered: "learned", saved: "say", done: "rate" }[m.status] || "why";
+  var s = { sealed: "sealed", asked: "conv", answered: "learned", saved: "say", done: "conv" }[m.status] || "why";
   if (m.status === "asked") V.lastLink = null;
   go(s);
 }
@@ -1045,6 +1113,7 @@ function bind() {
     b.onclick = function () {
       var a = b.getAttribute("data-act"), k = a.split(":");
       if (k[0] === "open") return openMoment(k[1]);
+      if (k[0] === "conv") return openConv(k[1]);
       if (k[0] === "answer") { V.mid = k[1]; return go(S.introHer ? "answer" : "herIntro1"); }
       if (k[0] === "listened") { V.mid = k[1]; return go("listened"); }
       if (k[0] === "addSug") return addMoment(t(k[1]));
