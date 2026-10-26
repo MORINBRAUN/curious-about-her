@@ -599,7 +599,11 @@ body.her #app .hli.tl:active { transform: scale(.97); }
 .cfm .cq { margin: 0 0 4px; font-weight: 300; font-size: 26px; line-height: 1.2; }
 .privb { flex: none; margin-inline-start: auto; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); color: var(--muted); display: grid; place-items: center; cursor: pointer; padding: 0; }
 .privb svg.i { width: 19px; height: 19px; }
-.hbar .privb { margin: 0; width: 46px; height: 46px; }
+/* v37: the eye is one fixed button, the same corner on every screen */
+#privfix { position: fixed; z-index: 15; top: calc(16px + env(safe-area-inset-top, 0px)); inset-inline-end: max(14px, calc((100vw - 480px) / 2 + 14px)); margin: 0; width: 40px; height: 40px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+#app .tabs { padding-inline-end: 50px; }
+#app .hbar { padding-inline-end: 50px; }
+#app .hbar .ghostrb { display: none; }
 </style>
 </head>
 <body>
@@ -863,12 +867,12 @@ function pillFor(m) {
   return "";
 }
 /* Top bar on inner screens: round back button, centered label (DESIGN.md Navigation) */
-function topBar(backAttr, label, fwd, noPriv) { return '<div class="hbar"><button class="rb" ' + backAttr + ' aria-label="' + esc(x("navBack")) + '">' + ic("back") + '</button><span class="hlab">' + (label || "") + '</span>' + (fwd ? '<button class="rb" data-nav="fwd" aria-label="' + esc(x("navFwd")) + '">' + ic("chev") + '</button>' : noPriv ? '<span class="rb ghostrb"></span>' : privBtn()) + '</div>'; }
+function topBar(backAttr, label, fwd, noPriv) { return '<div class="hbar"><button class="rb" ' + backAttr + ' aria-label="' + esc(x("navBack")) + '">' + ic("back") + '</button><span class="hlab">' + (label || "") + '</span>' + (fwd ? '<button class="rb" data-nav="fwd" aria-label="' + esc(x("navFwd")) + '">' + ic("chev") + '</button>' : '<span class="rb ghostrb"></span>') + '</div>'; }
 function privBtn() { return '<button class="privb" data-act="privToggle" aria-label="' + esc(x("privOn")) + '">' + ic("eye") + '</button>'; }
 function tabs() {
   var a = [["moments", "tToday"], ["convs", "tConvs"], ["map", "tMapHim"], ["settings", "tSettingsS"]];
   if (S.role === "her") a = [["moments", "hubTab"], ["inbox", "tConvs"], ["map", "tMapHer"], ["settings", "tSettingsS"]];
-  return '<div class="tabs">' + a.map(function (x) { return '<button class="' + (V.tab === x[0] || (x[0] === "map" && /^(draws|tips|story)$/.test(V.tab)) ? "on" : "") + '" data-tab="' + x[0] + '">' + t(x[1]) + '</button>'; }).join("") + privBtn() + '</div>';
+  return '<div class="tabs">' + a.map(function (x) { return '<button class="' + (V.tab === x[0] || (x[0] === "map" && /^(draws|tips|story)$/.test(V.tab)) ? "on" : "") + '" data-tab="' + x[0] + '">' + t(x[1]) + '</button>'; }).join("") + '</div>';
 }
 
 /* ===================== Screens ===================== */
@@ -1485,7 +1489,7 @@ SC.settings = function () {
     '<p class="lab">' + t("names") + '</p><input type="text" id="me" placeholder="' + esc(t("yourName")) + '" value="' + esc(S.me) + '"><input type="text" id="partner" placeholder="' + esc(S.role === "her" ? t("hisName") : t("herName")) + '" value="' + esc(S.partner) + '">' + btn(t("save"), "saveNames") +
     ghost("✦ " + x("howL"), "howItWorks") +
     '<p class="lab" style="margin-top:8px">' + t("bkL") + '</p><p class="txt">' + t("bkC") + '</p>' + btn(t("bkWa"), "backupSend") + ghost(t("backup"), "backup") + restoreBlock() +
-    (V.tmp.sure ? '<div class="box">' + t("resetSure") + '</div><div class="seg2"><button data-act="doReset">' + t("yesErase") + '</button><button data-act="cancelReset">' + t("cancel") + '</button></div>' : ghost(t("reset"), "askReset"));
+    ('<p class="txt center" style="font-size:15px">Curious About Her · v37</p>') + (V.tmp.sure ? '<div class="box">' + t("resetSure") + '</div><div class="seg2"><button data-act="doReset">' + t("yesErase") + '</button><button data-act="cancelReset">' + t("cancel") + '</button></div>' : ghost(t("reset"), "askReset"));
   return { cls: "calm", html: h };
 };
 SC.loves = function () { return { cls: "calm", html: hdr("", x("lvC"), x("lvB")) + turn(x("lvL"), '<p class="mid">' + esc(x("lvQ")) + '</p>' + field("lovesTxt", x("lvPh"), "", true) + acts(btn(x("lvBtn"), "lovesSend") + '<button class="chip" data-act="lovesLater" style="justify-content:center">' + esc(x("lvLater")) + '</button>' + ghost(x("lvSkip"), "home"))) }; };
@@ -1742,6 +1746,9 @@ function render(anim) {
   var root = V.screen === "welcome" || V.screen === "whoLink" || (V.screen === "home" && !V.back.length);
   var nav = root || (!V.back.length && !V.fwd.length && !s.title) ? "" : topBar(V.back.length ? 'data-nav="back"' : 'data-act="home"', s.title, V.fwd.length, s.html.indexOf('class="tabs"') > -1);
   app.innerHTML = nav + s.html;
+  var pf = document.getElementById("privfix"), showEye = S.role && !/^(welcome|whoLink|notice|restoreAsk|intro[123]|herIntro[123]|explain)$/.test(V.screen);
+  if (showEye && !pf) { pf = document.createElement("button"); pf.id = "privfix"; pf.className = "privb"; pf.innerHTML = ic("eye"); pf.onclick = function () { A.privToggle(); }; document.body.appendChild(pf); }
+  if (pf) { pf.hidden = !showEye; pf.setAttribute("aria-label", x("privOn")); }
   /* coach and explanation boxes start closed: a small chip opens them */
   app.querySelectorAll(".howto, .cbub").forEach(function (el) {
     var d = document.createElement("details"), sm = document.createElement("summary"), lab = el.querySelector("small");
