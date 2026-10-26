@@ -494,6 +494,111 @@ body.her .zd { background: linear-gradient(135deg, #f3d9ff, #ffd6ea); }
 #app .invite .door svg.i { width: 18px; height: 18px; color: #fff; }
 .wback { display: inline-flex; align-items: center; gap: 6px; margin-inline-start: auto; }
 .wback svg.i { width: 16px; height: 16px; }
+
+/* v33 (chat 8). Face to face first: its own warm filled button, the note is a plain one under it. */
+#app .ropt.face { background: #f43f5e !important; border: 0 !important; color: #fff; box-shadow: 0 8px 20px rgba(244,63,94,.3) !important; }
+#app .ropt.face small { color: rgba(255,255,255,.9); }
+#app .ropt.face b { display: flex; align-items: center; gap: 8px; }
+#app .ropt.face svg.i { width: 18px; height: 18px; }
+/* ✎ inside the moment, next to what you wrote */
+.stop.done.ed .srow { padding-inline-end: 44px; }
+.sed { position: absolute; inset-inline-end: 0; top: 6px; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); color: var(--acc); font: inherit; font-size: 17px; cursor: pointer; display: grid; place-items: center; }
+.sed:active { transform: scale(.95); }
+/* Hearts in her reaction: how much it touched her (warmth, never a score) */
+#app .hearts { gap: 14px; }
+#app .hearts button { font-size: 44px; color: var(--line); padding: 2px; }
+#app .hearts button.on { color: #ec4899; text-shadow: 0 0 16px rgba(236,72,153,.4); }
+.hv { margin: -4px 0 0; font-size: 16px; font-weight: 500; color: var(--acc); min-height: 22px; }
+.warm { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 18px; background: rgba(236,72,153,.12); }
+.warm i { font-style: normal; font-size: 22px; letter-spacing: 2px; color: #ec4899; }
+.warm span { font-size: 17px; }
+/* The whisper screen: two big doors, each with one tempting line */
+.wbig { width: 100%; display: flex; flex-direction: column; gap: 6px; text-align: start; font: inherit; color: var(--ink); padding: 20px 18px; border-radius: 22px; border: 1px solid var(--line); background: var(--card); cursor: pointer; transition: transform .15s ease-out; }
+.wbig b { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 500; }
+.wbig b svg.i { width: 24px; height: 24px; color: var(--acc); }
+.wbig small { font-size: 16.5px; color: var(--muted); line-height: 1.4; }
+.wbig.on { background: var(--grad) !important; color: #fff; border-color: transparent !important; }
+.wbig.on small, .wbig.on b svg.i { color: rgba(255,255,255,.92); }
+.wbig:active { transform: scale(.97); }
+.wsplain { width: 100%; font: inherit; font-size: 17px; font-weight: 500; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 16px; padding: 14px; cursor: pointer; }
+/* Between the lines: two kinds, by color + small label. Warm = from your moments (first), cool = from the coach. */
+#app .zb .ins.wm { background: #2c1a24 !important; border-color: rgba(253,164,175,.35) !important; }
+#app .zb .ins.cl { background: #17213a !important; border-color: rgba(147,197,253,.3) !important; }
+body.her #app .zb .ins.wm { background: #ffe9f0 !important; border-color: #f7c3d4 !important; }
+body.her #app .zb .ins.cl { background: #e8eefc !important; border-color: #c7d4f5 !important; }
+#app .strip .ins.wm small { color: #fda4af; } #app .strip .ins.cl small { color: #93c5fd; }
+body.her #app .strip .ins.wm small { color: #be185d; } body.her #app .strip .ins.cl small { color: #3b5bab; }
+#app .strip .ins.cl i { color: #93c5fd; } body.her #app .strip .ins.cl i { color: #3b5bab; }
+/* "Only yours": private notes + saved whispers, saved only on this phone */
+body:not(.her) .ze { background: #0f0e14; } body.her .ze { background: #fff4f9; }
+.ze .zh svg.i { background: #3a3346; } body.her .ze .zh svg.i { background: #b5479a; }
+.ze .oys { margin: -6px 0 0; font-size: 15.5px; color: var(--muted); }
+.ze .oyl { margin: 6px 0 0; font-size: 16px; font-weight: 500; color: var(--acc); }
+.svw { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 18px; border: 1px dashed var(--line); background: var(--card); }
+.svw .k { font-size: 14px; font-weight: 600; color: var(--acc); }
+.svw .t { font-size: 17px; line-height: 1.4; }
+.svw .r { display: flex; gap: 6px; align-items: center; }
+/* v34 (chat 8, round 2): the moment reads as a story. Step k of 7 + dots; the moment and the last step stay open,
+   earlier steps fold into "the conversation so far"; each step is a sentence ("Morin shared…", "You thought you…"). */
+.thead { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-top: 2px; }
+.thead .tl2 { font-size: 16px; font-weight: 500; color: var(--muted); }
+.thead .tk { font-size: 16px; font-weight: 500; color: var(--acc); white-space: nowrap; }
+.pdots { display: flex; gap: 6px; margin: -4px 0 2px; }
+.pdots i { flex: 1; height: 5px; border-radius: 3px; background: var(--line); }
+.pdots i.d { background: var(--fill); opacity: .5; } .pdots i.c { background: var(--grad); }
+.srow2 { position: relative; display: flex; flex-direction: column; gap: 3px; padding: 12px 14px; border-radius: 18px; border: 1px solid var(--line); background: var(--card); }
+.srow2.ed { padding-inline-end: 54px; }
+.srow2 .sl { font-size: 16px; font-weight: 500; color: var(--muted); }
+.srow2.p .sl { color: #f9a8d4; } body.her .srow2.p .sl { color: var(--acc); }
+.srow2 .st2 { font-size: 18px; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; }
+.srow2 .sed { top: 50%; transform: translateY(-50%); inset-inline-end: 8px; }
+.srow2.top { border-inline-start: 3px solid #f9a8d4; } body.her .srow2.top { border-inline-start-color: var(--acc); }
+details.hist { border-radius: 18px; border: 1px dashed var(--line); }
+details.hist > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px; font-size: 16px; font-weight: 500; color: var(--acc); }
+details.hist > summary::-webkit-details-marker { display: none; }
+details.hist > summary svg.i { transform: rotate(-90deg); transition: transform .2s ease-out; } details.hist[open] > summary svg.i { transform: rotate(90deg); }
+.hsteps { display: flex; flex-direction: column; gap: 8px; padding: 0 8px 10px; }
+.nowc .sn2 { margin: 6px 0 8px; font-size: 17px; font-weight: 500; color: var(--acc); }
+.rnext { margin: 0; text-align: center; font-size: 15.5px; color: var(--muted); }
+.hq { margin: 0; font-size: 19px; font-weight: 500; }
+#app .hearts { gap: 8px; flex-wrap: nowrap; }
+#app .hearts button { font-size: 38px; }
+/* Whisper hearts: 1-5 small hearts on a received whisper (warmth, never a score) */
+#app .dcard.ws .r { flex-wrap: wrap; align-items: center; }
+#app .dcard.ws .r .wh { border: 0 !important; padding: 2px !important; font-size: 24px !important; line-height: 1; background: none !important; color: rgba(150,130,170,.45) !important; }
+#app .dcard.ws .r .wh.on { color: #ec4899 !important; }
+/* Hot / cold: how close was his guess (only when he wrote what he thinks) */
+.hc { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 4px; border-radius: 16px; background: linear-gradient(90deg, #60a5fa, #a78bfa 45%, #f472b6 70%, #f43f5e); }
+[dir="rtl"] .hc { background: linear-gradient(270deg, #60a5fa, #a78bfa 45%, #f472b6 70%, #f43f5e); }
+.hc button { font: inherit; font-size: 15px; font-weight: 500; color: #fff; border: 0; border-radius: 12px; padding: 10px 2px; background: transparent; cursor: pointer; }
+.hc button.on { background: rgba(255,255,255,.95); color: #2b1a3a; }
+.hcl { margin: -4px 0 0; font-size: 16px; color: var(--acc); min-height: 22px; }
+.hchip { display: inline-block; margin-inline-end: 6px; padding: 1px 10px; border-radius: 999px; font-size: 15px; color: #fff; background: linear-gradient(90deg, #a78bfa, #f43f5e); }
+/* v35: her home tiles, cooler. Each tile its own pink/violet gradient, a big faint icon in the corner, thin title;
+   the whisper tile is the one dark, glowing tile (the One Glow Rule). */
+body.her #app .hli.tl { position: relative; overflow: hidden; border: 0 !important; min-height: 148px; padding: 16px; justify-content: space-between; }
+body.her #app .hli.tl .tx { position: relative; z-index: 1; }
+body.her #app .hli.tl b { font-weight: 300 !important; font-size: 22px !important; line-height: 1.15; letter-spacing: -.01em; }
+body.her #app .hli.tl small { display: block !important; margin-top: 4px; font-size: 15px !important; }
+body.her #app .hli.tl .pb { position: relative; z-index: 1; width: 40px; height: 40px; background: rgba(255,255,255,.55) !important; color: #7c3aed !important; backdrop-filter: blur(6px); }
+body.her #app .hli.tl .deco { position: absolute; inset-inline-end: -18px; bottom: -22px; width: 112px; height: 112px; opacity: .16; color: #6d28d9; pointer-events: none; }
+body.her #app .hli.tl .deco svg.i { width: 100%; height: 100%; stroke-width: 1.2; }
+body.her #app .hli.t1 { background: linear-gradient(150deg, #ffe1f0 0%, #fbc4e0 100%) !important; }
+body.her #app .hli.t2 { background: linear-gradient(150deg, #efe8ff 0%, #d5c6ff 100%) !important; }
+body.her #app .hli.t3 { background: linear-gradient(150deg, #fff0f7 0%, #f6d3ec 55%, #e3d6ff 100%) !important; }
+body.her #app .hli.t4 { background: radial-gradient(120% 90% at 100% 0%, #f472b6 0%, transparent 60%), linear-gradient(150deg, #7c3aed 0%, #c026d3 60%, #ec4899 100%) !important; color: #fff; box-shadow: 0 12px 28px rgba(192,38,211,.28) !important; }
+body.her #app .hli.t4 small { color: rgba(255,255,255,.88); }
+body.her #app .hli.t4 .pb { background: rgba(255,255,255,.22) !important; color: #fff !important; }
+body.her #app .hli.t4 .deco { color: #fff; opacity: .22; }
+body.her #app .hli.tl.on .pb { background: #ec4899 !important; color: #fff !important; }
+body.her #app .hli.tl:active { transform: scale(.97); }
+/* Private mode: one tap blurs personal text on every screen; tap a blurred text to peek for a few seconds. */
+.privb { flex: none; margin-inline-start: auto; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); color: var(--muted); display: grid; place-items: center; cursor: pointer; padding: 0; }
+.privb svg.i { width: 19px; height: 19px; }
+body.priv .privb { background: var(--grad); color: #fff; border-color: transparent; }
+.hbar .privb { margin: 0; width: 46px; height: 46px; }
+body.priv #app :is(.st2, .sv, .dcard .q, .ins b, .ins span, .conv b, .conv small, .focal small, .wmsg .t, .svw .t, .warm span, .bub, .quote, .box, .srow2.top .st2, #notes:not(:focus)) { filter: blur(7px); transition: filter .2s ease-out; cursor: pointer; }
+body.priv #app .peek, body.priv #app .peek * { filter: none !important; }
 </style>
 </head>
 <body>
@@ -657,20 +762,20 @@ function apply(msg) {
     if (!m) { m = { id: d.mid, title: d.title, from: d.from || "her", createdAt: Date.now() }; S.moments.unshift(m); }
     m.askedHow = "person"; m.status = "talk";
   } else if (msg.t === "answer") {
-    m = byId(d.mid); if (m) { m.answer = d.a; m.status = "answered"; }
+    m = byId(d.mid); if (m) { m.answer = d.a; if (d.close) m.close = d.close; m.status = "answered"; }
   } else if (msg.t === "note" || msg.t === "listened") {
     m = byId(d.mid);
     if (!m) { m = { id: d.mid, title: d.title, from: "him", createdAt: Date.now() }; S.moments.unshift(m); }
     m.status = "listened"; if (d.note) m.note = d.note; if (d.face) m.toldHow = "person"; m.listenedAt = Date.now();
-    if (d.q && !m.question) m.question = d.q; if (d.a && !m.answer) m.answer = d.a; if (d.draw) m.draw = d.draw;
+    if (d.q && !m.question) m.question = d.q; if (d.a && !m.answer) m.answer = d.a; if (d.draw) m.draw = d.draw; if (d.hh) m.hisHearts = d.hh;
   } else if (msg.t === "tip") {
     S.tips = S.tips || []; var ex0 = S.tips.filter(function (x) { return x.id === d.id; })[0]; if (ex0) ex0.text = d.text; else S.tips.unshift({ id: d.id, from: msg.f, text: d.text, kind: d.kind, createdAt: Date.now() });
   } else if (msg.t === "edit") {
-    m = byId(d.mid); if (m) { if (d.field === "title") m.title = d.value; if (d.field === "reaction") m.reaction = d.value; if (d.field === "note") m.note = d.value; if (d.field === "answer") { m.answer = d.value; if (m.status === "asked") m.status = "answered"; } }
+    m = byId(d.mid); if (m) { if (d.field === "title") m.title = d.value; if (d.field === "reaction") m.reaction = d.value; if (d.field === "note") m.note = d.value; if (d.field === "question") m.question = d.value; if (d.field === "answer") { m.answer = d.value; if (m.status === "asked") m.status = "answered"; } }
   } else if (msg.t === "tipReply") {
     var tr = (S.tips || []).filter(function (z) { return z.id === d.id; })[0]; if (tr) tr.reply = d.r;
   } else if (msg.t === "reaction") {
-    m = byId(d.mid); if (m) { m.reaction = d.text; m.status = "done"; }
+    m = byId(d.mid); if (m) { m.reaction = d.text || ""; if (d.hearts) m.hearts = d.hearts; m.status = "done"; }
   }
   route(msg);
   S.seenSteps = S.seenSteps || {};
@@ -728,11 +833,12 @@ function pillFor(m) {
   return "";
 }
 /* Top bar on inner screens: round back button, centered label (DESIGN.md Navigation) */
-function topBar(backAttr, label, fwd) { return '<div class="hbar"><button class="rb" ' + backAttr + ' aria-label="' + esc(x("navBack")) + '">' + ic("back") + '</button><span class="hlab">' + (label || "") + '</span>' + (fwd ? '<button class="rb" data-nav="fwd" aria-label="' + esc(x("navFwd")) + '">' + ic("chev") + '</button>' : '<span class="rb ghostrb"></span>') + '</div>'; }
+function topBar(backAttr, label, fwd) { return '<div class="hbar"><button class="rb" ' + backAttr + ' aria-label="' + esc(x("navBack")) + '">' + ic("back") + '</button><span class="hlab">' + (label || "") + '</span>' + (fwd ? '<button class="rb" data-nav="fwd" aria-label="' + esc(x("navFwd")) + '">' + ic("chev") + '</button>' : privBtn()) + '</div>'; }
+function privBtn() { return '<button class="privb" data-act="privToggle" aria-pressed="' + (S.priv ? "true" : "false") + '" aria-label="' + esc(x(S.priv ? "privOff" : "privOn")) + '">' + ic(S.priv ? "eyeOff" : "eye") + '</button>'; }
 function tabs() {
   var a = [["moments", "tToday"], ["convs", "tConvs"], ["map", "tMapHim"], ["settings", "tSettingsS"]];
   if (S.role === "her") a = [["moments", "hubTab"], ["inbox", "tConvs"], ["map", "tMapHer"], ["settings", "tSettingsS"]];
-  return '<div class="tabs">' + a.map(function (x) { return '<button class="' + (V.tab === x[0] || (x[0] === "map" && /^(draws|tips|story)$/.test(V.tab)) ? "on" : "") + '" data-tab="' + x[0] + '">' + t(x[1]) + '</button>'; }).join("") + '</div>';
+  return '<div class="tabs">' + a.map(function (x) { return '<button class="' + (V.tab === x[0] || (x[0] === "map" && /^(draws|tips|story)$/.test(V.tab)) ? "on" : "") + '" data-tab="' + x[0] + '">' + t(x[1]) + '</button>'; }).join("") + privBtn() + '</div>';
 }
 
 /* ===================== Screens ===================== */
@@ -903,6 +1009,103 @@ var CX = {
     editShort: "עריכה", editMomentL: "עריכת הרגע שלך", editAnswerL: "עריכת התשובה שלך", editC: "אפשר לתקן הכל. הוא יקבל את הגרסה המתוקנת בוואטסאפ.", editBtn: "לשמור ולשלוח את התיקון", cancel: "ביטול"
   }
 };
+/* v33 copy (chat 8): face to face first, hearts, whisper screen, "only yours", between the lines, edits inside a moment */
+Object.assign(CX.en, {
+  rFaceT: "Tell her face to face", rFaceS: "Best. Tap once you've told her", rNoteT: "Send it as a note", rNoteS: "She gets it on WhatsApp",
+  rQ7h: "How much did it touch you?", rPh7o: "Words too, if you feel like it (optional)",
+  hI1: "It touched me", hI2: "It really touched me", hI3: "It moved me", hI4: "It moved me a lot", hI5: "It touched my heart deeply",
+  hS1: "It touched her", hS2: "It really touched her", hS3: "It moved her", hS4: "It moved her a lot", hS5: "It touched her heart deeply",
+  hH1: "It touched him", hH2: "It really touched him", hH3: "It moved him", hH4: "It moved him a lot", hH5: "It touched his heart deeply",
+  rHeartsHim: "How much did her answer touch you?",
+  trHead: "The conversation about this moment", trStep: "Step {k} of 7", trDone: "Closed", trSoFar: "The conversation so far · {k} steps",
+  slH1: "{n} shared with you:", slH1own: "You noticed a moment:", slH2: "You thought you did (only you see this):", slH3p: "You chose to talk with her tonight, face to face", slH3a: "You asked her:", slH3w: "You wrote her what you think:", slH4: "{n} answered:", slH4p: "{n} told you:", slH5: "You learned:", slH6: "You wrote her:", slH6p: "You told her face to face", slH7: "{n} replied:",
+  slS1: "You shared with him:", slS1his: "{n} noticed a moment:", slS2: "{n} thought about what he did there (only he sees it)", slS3p: "{n} wants to talk with you tonight, face to face", slS3a: "{n} asked you:", slS3w: "{n} wrote you what he thinks:", slS4: "You answered:", slS4p: "You told him face to face", slS5: "{n} learned:", slS6: "{n} wrote you:", slS6p: "{n} told you face to face", slS7: "You replied:",
+  pTouchQ: "{k} of {t} of her moments are about touch: a hand, a hug, a dance.", pTouchT: "Touch her on an ordinary day, for no reason and without it leading anywhere.",
+  pInitQ: "{k} of {t}: she lights up when you start something without being asked.", pInitT: "One small move this week, before she asks.",
+  pTeamQ: "{k} of {t}: what matters to her is feeling you're a team.", pTeamT: "Next time you're with others, stand by her out loud.",
+  pAttnQ: "{k} of {t}: she falls for you when you notice and listen.", pAttnT: "Tomorrow, remind her of something small she told you this week.",
+  pFamQ: "{k} of {t}: what you do for the people she loves touches her.", pFamT: "Call someone who matters to her this week, just to ask how they are.",
+  pFunQ: "{k} of {t}: laughing together brings her closer.", pFunT: "Make her laugh tonight, even if it's silly.",
+  pSurpQ: "{k} of {t}: small surprises do it for her.", pSurpT: "A small surprise, with no occasion and no date.",
+  pTopHimQ: "What touched her most: what you wrote her about “{w}”.", pTopHimT: "Do it again this week, in a new way.",
+  pAskHimQ: "She opens up when you ask what you did, not how she felt.", pAskHimT: "Next moment, ask her the same way.",
+  pDesQ: "{k} of {t} things he wrote you are about wanting you.", pDesT: "Let him feel wanted: a look, a touch, or one word.",
+  pAdmQ: "{k} of {t}: he admires you, and says so.", pAdmT: "Tell him one thing you admire in him, tonight.",
+  pSoftQ: "{k} of {t}: he shows you a soft side.", pSoftT: "Take it gently, without fixing it or joking.",
+  pCareQ: "{k} of {t}: he wants to take care of you.", pCareT: "Ask him for help with something small, and tell him it felt good.",
+  pTimeQ: "{k} of {t}: he misses time just for the two of you.", pTimeT: "Suggest a plan for the two of you this week. You decide what.",
+  pThxQ: "{k} of {t}: he thanks you.", pThxT: "Thank him back for something specific he did.",
+  pLoveQ: "{k} of {t}: he writes to you about love.", pLoveT: "Tell him which of his words stayed with you.",
+  pShortQ: "He writes short. For many men, few words hold a lot of feeling.", pShortT: "Ask him one question: “What touched you most?”",
+  pTopHerQ: "What touched him most: your answer about “{w}”.", pTopHerT: "Share another moment like that one.",
+  pAskHerQ: "He asks what he did, so he can do it again.", pAskHerT: "Answer with a small story: what happened just before.",
+  cH0q: "One more question beats any advice.", cH0t: "When she tells you something, ask one more question before you answer.",
+  cH1q: "Small and often beats big and rare.", cH1t: "One small gesture a day, this week.",
+  cH2q: "The clue is just before she smiles.", cH2t: "Notice today what happened just before she smiled.",
+  cH3q: "She doesn't need perfect words, just yours.", cH3t: "Write her one true sentence, without polishing it.",
+  cH4q: "Face to face touches more than any message.", cH4t: "Tonight, ten minutes without phones.",
+  cS0q: "A small story gives him something to hold on to.", cS0t: "In your next answer, tell him what happened just before.",
+  cS1q: "When he tries, even clumsily, he needs to see it reached you.", cS1t: "A smile or a touch right after he says something.",
+  cS2q: "Small everyday moments count too.", cS2t: "Share a small moment this week, not only a big one.",
+  cS3q: "A moment is a game, not a test.", cS3t: "Keep it light, even with a wink.",
+  cS4q: "Men repeat what they see works.", cS4t: "When he gets it right, tell him exactly what worked.",
+  cS5q: "A small hint saves him the guessing.", cS5t: "Whisper him something you want, from here.",
+  hcQ: "How close was he?", hc1: "Cold", hc2: "Cool", hc3: "Warm", hc4: "Hot", hc5: "Spot on!", hcHim: "How close you were: {c}", privOn: "Private mode: blur my texts", privOff: "Show my texts", privOnT: "Private mode on: texts are blurred. Tap one to peek.", privOffT: "Private mode off",
+  wsLineSecretHim: "Something no one knows yet. Only for her.", wsLineSecretHer: "Something no one knows yet. Only for him.", wsLineDesireHim: "Say it once, and see what happens tonight.", wsLineDesireHer: "Say it once, and see what happens tonight.",
+  wsLater: "Save for later", wsSavedT: "Saved in “Only yours” on the map",
+  oyT: "Only yours", oyS: "Saved only on this phone", oyNotes: "Private notes", oyNotesPh: "Just for you", oySaved: "Saved whispers", oySavedEmpty: "Save a whisper for later, and send it with one tap when the moment is right.", oySave: "Save notes",
+  btMoments: "From your moments", btCoach: "From the coach", mWordsHim: "In her words", btEmpty: "After your first moment, notes from it show up here.", mWhisperedHim: "{n} whispered it to you",
+  hisTip0: "When she tells you something, ask one more question before you answer.", hisTip1: "Small and often beats big and rare.", hisTip2: "Notice what happened just before she smiled. That's your clue.",
+  editWhyL: "Edit what you think you did", editQL: "Edit your question", editHerWordsL: "Edit what she said", editCHim: "Fix anything you like. She gets the corrected version on WhatsApp.", editLocalCHer: "Only you see this. Fix it however you like."
+});
+Object.assign(CX.he, {
+  rFaceT: "תגיד לה פנים אל פנים", rFaceS: "הכי טוב. תלחץ אחרי שאמרת לה", rNoteT: "תשלח לה את זה בפתק", rNoteS: "היא תקבל בוואטסאפ",
+  rQ7h: "כמה זה נגע בך?", rPh7o: "גם מילים, אם בא לך (לא חובה)",
+  hI1: "זה נגע בי", hI2: "זה ממש נגע בי", hI3: "זה ריגש אותי", hI4: "זה ריגש אותי מאוד", hI5: "זה נגע לי עמוק בלב",
+  hS1: "זה נגע בה", hS2: "זה ממש נגע בה", hS3: "זה ריגש אותה", hS4: "זה ריגש אותה מאוד", hS5: "זה נגע לה עמוק בלב",
+  hH1: "זה נגע בו", hH2: "זה ממש נגע בו", hH3: "זה ריגש אותו", hH4: "זה ריגש אותו מאוד", hH5: "זה נגע לו עמוק בלב",
+  rHeartsHim: "כמה התשובה שלה נגעה בך?",
+  trHead: "השיחה על הרגע הזה", trStep: "צעד {k} מתוך 7", trDone: "נסגר", trSoFar: "השיחה עד עכשיו · {k} צעדים",
+  slH1: "{n} שיתפה איתך:", slH1own: "שמת לב לרגע:", slH2: "חשבת שעשית (רק אצלך):", slH3p: "בחרת לדבר איתה הערב, פנים אל פנים", slH3a: "שאלת אותה:", slH3w: "כתבת לה מה אתה חושב:", slH4: "{n} ענתה:", slH4p: "{n} סיפרה לך:", slH5: "למדת:", slH6: "כתבת לה:", slH6p: "אמרת לה פנים אל פנים", slH7: "{n} הגיבה:",
+  slS1: "שיתפת איתו:", slS1his: "{n} שם לב לרגע:", slS2: "{n} חשב מה עשה שם (רק אצלו)", slS3p: "{n} רוצה לדבר איתך הערב, פנים אל פנים", slS3a: "{n} שאל אותך:", slS3w: "{n} כתב לך מה הוא חושב:", slS4: "ענית:", slS4p: "סיפרת לו פנים אל פנים", slS5: "{n} למד:", slS6: "{n} כתב לך:", slS6p: "{n} אמר לך פנים אל פנים", slS7: "הגבת:",
+  pTouchQ: "{k} מתוך {t} הרגעים שלה הם על מגע: יד, חיבוק, ריקוד.", pTouchT: "תיגע בה ביום רגיל, בלי סיבה ובלי שזה מוביל לשום מקום.",
+  pInitQ: "{k} מתוך {t}: היא נדלקת כשאתה יוזם בלי שביקשה.", pInitT: "יוזמה קטנה אחת השבוע, לפני שהיא מבקשת.",
+  pTeamQ: "{k} מתוך {t}: מה שחשוב לה זה להרגיש שאתם צוות.", pTeamT: "בפעם הבאה מול אחרים, תעמוד לצידה בקול.",
+  pAttnQ: "{k} מתוך {t}: היא מתאהבת כשאתה שם לב ומקשיב.", pAttnT: "תזכיר לה מחר משהו קטן שהיא סיפרה לך השבוע.",
+  pFamQ: "{k} מתוך {t}: מה שאתה עושה לאנשים שהיא אוהבת נוגע בה.", pFamT: "תתקשר השבוע למישהו שחשוב לה, סתם לשאול מה נשמע.",
+  pFunQ: "{k} מתוך {t}: צחוק ביחד מקרב אותה אליך.", pFunT: "תצחיק אותה הערב, גם אם זה מטופש.",
+  pSurpQ: "{k} מתוך {t}: הפתעות קטנות עושות לה את זה.", pSurpT: "הפתעה קטנה, בלי אירוע ובלי תאריך.",
+  pTopHimQ: "מה שהכי נגע בה: מה שכתבת לה על ״{w}״.", pTopHimT: "תעשה את זה שוב השבוע, בדרך חדשה.",
+  pAskHimQ: "היא נפתחת כשאתה שואל מה עשית, לא מה היא הרגישה.", pAskHimT: "ברגע הבא, תשאל אותה באותה דרך.",
+  pDesQ: "{k} מתוך {t} הדברים שהוא כתב לך מדברים על תשוקה אלייך.", pDesT: "תני לו להרגיש נחשק: מבט, נגיעה, או מילה אחת.",
+  pAdmQ: "{k} מתוך {t}: הוא מעריץ אותך, ואומר את זה.", pAdmT: "ספרי לו הערב דבר אחד שאת מעריכה בו.",
+  pSoftQ: "{k} מתוך {t}: הוא מראה לך צד רך.", pSoftT: "קבלי את זה ברכות, בלי לתקן ובלי להתבדח.",
+  pCareQ: "{k} מתוך {t}: הוא רוצה לדאוג לך.", pCareT: "בקשי ממנו עזרה במשהו קטן, ותגידי לו שזה עשה לך טוב.",
+  pTimeQ: "{k} מתוך {t}: הוא מתגעגע לזמן רק שלכם.", pTimeT: "הציעי תוכנית לשניכם השבוע. את מחליטה מה.",
+  pThxQ: "{k} מתוך {t}: הוא מודה לך.", pThxT: "הודי לו בחזרה על משהו מסוים שעשה.",
+  pLoveQ: "{k} מתוך {t}: הוא כותב לך על אהבה.", pLoveT: "ספרי לו איזו מילה שלו נשארה איתך.",
+  pShortQ: "הוא כותב קצר. אצל הרבה גברים, מעט מילים מחזיקות הרבה רגש.", pShortT: "שאלי אותו שאלה אחת: ״מה הכי נגע בך?״",
+  pTopHerQ: "מה שהכי נגע בו: התשובה שלך על ״{w}״.", pTopHerT: "שתפי עוד רגע מאותו סוג.",
+  pAskHerQ: "הוא שואל מה הוא עשה, כדי לעשות את זה שוב.", pAskHerT: "עני בסיפור קטן: מה קרה רגע לפני.",
+  cH0q: "שאלה אחת נוספת שווה יותר מכל עצה.", cH0t: "כשהיא מספרת לך משהו, תשאל עוד שאלה לפני שאתה עונה.",
+  cH1q: "קטן ולעתים קרובות עדיף על גדול ונדיר.", cH1t: "מחווה קטנה אחת ביום, השבוע.",
+  cH2q: "הרמז נמצא רגע לפני שהיא מחייכת.", cH2t: "תשים לב היום מה קרה רגע לפני שהיא חייכה.",
+  cH3q: "היא לא צריכה מילים מושלמות, רק שלך.", cH3t: "תכתוב לה משפט אחד אמיתי, בלי ללטש.",
+  cH4q: "פנים אל פנים נוגע יותר מכל הודעה.", cH4t: "הערב, עשר דקות בלי טלפונים.",
+  cS0q: "סיפור קטן נותן לו משהו להיאחז בו.", cS0t: "בתשובה הבאה, ספרי לו מה קרה רגע לפני.",
+  cS1q: "כשהוא מנסה, גם אם מגושם, הוא צריך לראות שזה הגיע.", cS1t: "חיוך או נגיעה מיד אחרי שהוא אומר משהו.",
+  cS2q: "גם רגעים קטנים מהיומיום נחשבים.", cS2t: "שתפי השבוע רגע קטן, לא רק גדול.",
+  cS3q: "רגע הוא משחק, לא מבחן.", cS3t: "שמרי על זה קליל, אפילו עם קריצה.",
+  cS4q: "גברים חוזרים על מה שהם רואים שעובד.", cS4t: "כשהוא מצליח, תגידי לו בדיוק מה עבד.",
+  cS5q: "רמז קטן חוסך לו לנחש.", cS5t: "לחשי לו משהו שאת רוצה, מכאן.",
+  hcQ: "כמה הוא היה קרוב?", hc1: "קר", hc2: "פושר", hc3: "חמים", hc4: "חם", hc5: "בול!", hcHim: "כמה היית קרוב: {c}", privOn: "מצב פרטי: לטשטש את הטקסטים", privOff: "להציג את הטקסטים", privOnT: "מצב פרטי: הטקסטים מטושטשים. לחיצה על טקסט מציגה אותו לרגע.", privOffT: "מצב פרטי כבוי",
+  wsLineSecretHim: "משהו שאף אחד עוד לא יודע. רק בשבילה.", wsLineSecretHer: "משהו שאף אחד עוד לא יודע. רק בשבילו.", wsLineDesireHim: "תגיד את זה פעם אחת, ותראה מה יקרה הערב.", wsLineDesireHer: "תגידי את זה פעם אחת, ותראי מה יקרה הערב.",
+  wsLater: "שמור לאחר כך", wsSavedT: "נשמר ב״רק שלך״ במפה",
+  oyT: "רק שלך", oyS: "נשמר רק בטלפון הזה", oyNotes: "הערות פרטיות", oyNotesPh: "רק בשבילך", oySaved: "לחישות ששמרת", oySavedEmpty: "אפשר לשמור לחישה לאחר כך, ולשלוח בלחיצה אחת כשהרגע מתאים.", oySave: "שמירה",
+  btMoments: "מהרגעים שלכם", btCoach: "מהמאמן", mWordsHim: "במילים שלה", btEmpty: "אחרי הרגע הראשון, יופיעו כאן תובנות ממנו.", mWhisperedHim: "{n} לחשה לך",
+  hisTip0: "כשהיא מספרת לך משהו, תשאל עוד שאלה אחת לפני שאתה עונה.", hisTip1: "קטן ולעתים קרובות עדיף על גדול ונדיר.", hisTip2: "תשים לב מה קרה רגע לפני שהיא חייכה. זה הרמז שלך.",
+  editWhyL: "עריכת מה שלדעתך עשית", editQL: "עריכת השאלה שלך", editHerWordsL: "עריכת מה שהיא אמרה", editCHim: "אפשר לתקן הכל. היא תקבל את הגרסה המתוקנת בוואטסאפ.", editLocalCHer: "רק את רואה את זה. אפשר לתקן איך שרוצים."
+});
 function x(k) { var s = CX[S.lang][k] || CX.en[k] || ""; return s.replace(/\{n\}/g, S.partner || (S.lang === "he" ? (S.role === "him" ? "היא" : "הוא") : (S.role === "him" ? "She" : "He"))); }
 function turn(lab, inner) { return '<div class="turn">' + (lab ? '<p class="lab tl">' + esc(lab) + '</p>' : "") + inner + '</div>'; }
 function acts(inner) { return '<div class="acts">' + inner + '</div>'; }
@@ -976,8 +1179,12 @@ function stopText(m, k) {
   if (k === 4) return m.answer;
   if (k === 5) return m.draw || (him ? "" : x("rOnlyHim"));
   if (k === 6) return m.note || (m.toldHow === "person" ? x(him ? "rFaceSys" : "rFaceSysHer") : "");
-  return m.reaction;
+  return (m.hearts ? hearts(m.hearts) + " " : "") + (m.reaction || "");
 }
+function hearts(n) { return new Array((+n || 0) + 1).join("♥"); }
+function warmth(m) { return m.hearts ? '<div class="warm"><i>' + hearts(m.hearts) + '</i><span>' + esc(x((S.role === "him" ? "hS" : "hI") + m.hearts)) + '</span></div>' : ""; }
+/* 1-5 hearts: how much it touched you. Warmth only, never a score. who: "s" = her reaction (stop 7), "h" = him on her answer (stop 5) */
+function heartRow(who, n) { return '<div class="hearts" role="group">' + [1, 2, 3, 4, 5].map(function (i) { return '<button data-heart="' + who + '|' + i + '" class="' + (i <= n ? "on" : "") + '" aria-label="' + esc(x("hI" + i)) + '">♥</button>'; }).join("") + '</div><p class="hv">' + (n ? esc(x("hI" + n)) : "") + '</p>'; }
 function waitCard(a, b) { return '<div class="rwait"><span class="dots3"><i></i><i></i><i></i></span><span><b>' + esc(a) + '</b><small>' + esc(b) + '</small></span></div>'; }
 function rq(q, sub) { return '<p class="mid">' + esc(q) + '</p>' + (sub ? '<p class="txt">' + esc(sub) + '</p>' : ""); }
 function coachB(c) { return c ? '<div class="howto"><small>' + esc(x("dCoach")) + '</small><p class="ctx">' + esc(c) + '</p></div>' : ""; }
@@ -987,8 +1194,9 @@ function stopNow(m, k) {
     var w = him ? { 4: ["rW4", "rW4s"], 7: ["rW7", "rW7s"] }[k] : m.status === "talk" ? ["rTalkW", "rTalkWs"] : { 2: ["rW2", "rW2s"], 3: ["rW3", "rW3s"], 4: ["rW4", "rW4s"], 5: ["rW5", "rW5s"], 6: ["rW6", "rW6s"] }[k];
     return waitCard(x(w[0]), x(w[1])) + (him && k === 4 ? copyLinkBlock() + ghost(x("rRecAlt"), "recAlt") : "");
   }
-  if (!him && k === 4) { var c = herCoach({ question: m.question })[0]; return rq(m.askedHow === "write" ? x("rQ4w") : x("rQ4"), x("rQ4s")) + field("herAns", t("hAnsPh"), m.answer, true) + btn(x("ansBtn"), "sendAnswer") + (c ? coachB(c.text) : ""); }
-  if (!him) { var c7 = herCoach(m)[0]; return rq(x("rQ7"), x("rQ7s")) + field("reactTxt", x("rPh7"), m.reaction, true) + btn(x("rBtn7"), "sendReaction") + (c7 ? coachB(c7.text) : ""); }
+  if (!him && k === 4) { var c = herCoach({ question: m.question })[0], hc = m.closeDraft || 0; return rq(m.askedHow === "write" ? x("rQ4w") : x("rQ4"), x("rQ4s")) +
+    (m.askedHow === "write" ? '<p class="hq">' + esc(x("hcQ")) + '</p><div class="hc" role="group">' + [1, 2, 3, 4, 5].map(function (i) { return '<button data-close="' + i + '" class="' + (i === hc ? "on" : "") + '">' + esc(x("hc" + i)) + '</button>'; }).join("") + '</div>' : "") + field("herAns", t("hAnsPh"), m.answerDraft || m.answer, true) + btn(x("ansBtn"), "sendAnswer") + (c ? coachB(c.text) : ""); }
+  if (!him) { var c7 = herCoach(m)[0], hn = m.heartsDraft || 0; return rq(x("rQ7h")) + heartRow("s", hn) + field("reactTxt", x("rPh7o"), m.reactDraft || m.reaction, true) + btn(x("rBtn7"), "sendReaction") + (c7 ? coachB(c7.text) : ""); }
   if (k === 2) return rq(x("rQ2"), x("rQ2s")) + field("why", x("rPh2"), m.why, true) + btn(x("rNext"), "saveWhy") + coachB(x("rC2"));
   if (k === 3) {
     var how = V.tmp.how && V.tmp.howFor === m.id ? V.tmp.how : "";
@@ -998,29 +1206,58 @@ function stopNow(m, k) {
     return rq(x("rQ3")) + o(x("rTalk"), x("rTalkS"), "howTalk", true) + o(x("rAsk"), x("rAskS"), "howAsk") + o(x("rWrite"), x("rWriteS"), "howWrite") + coachB(x("askC"));
   }
   if (k === 4) return rq(x("rRecQ"), x("rRecS")) + field("ans", x("rRecPh"), m.answer, true) + btn(x("rNext"), "saveRecord");
-  if (k === 5) return rq(x("rQ5"), x("rQ5s")) + '<p class="rlead">' + esc(x("rLead")) + '…</p>' + field("draw", "", m.drawEnd || "", true) + btn(x("rSave"), "saveLoves") + coachB(x("learnedC0"));
+  if (k === 5) return '<p class="hq">' + esc(x("rHeartsHim")) + '</p>' + heartRow("h", m.hisHeartsDraft || m.hisHearts || 0) + rq(x("rQ5"), x("rQ5s")) + '<p class="rlead">' + esc(x("rLead")) + '…</p>' + field("draw", "", m.drawDraft || m.drawEnd || "", true) + btn(x("rSave"), "saveLoves") + coachB(x("learnedC0"));
   /* brief: his main struggle is naming what he feels, so stop 6 starts with 1-3 feeling words, then his own words */
   var sel = m.feelings || [];
   if (!m.feltDone) return rq(t("m5a"), t("pickUp")) + '<div class="chips">' + t("feelings").map(function (w, i) { return '<button data-feel="' + i + '" class="' + (sel.indexOf(i) > -1 ? "sel" : "") + '">' + w + '</button>'; }).join("") + '</div>' + btn(x("rNext"), "feelNext", !sel.length) + coachB(x("feelC"));
   var felt = sel.map(function (i) { return "<b>" + t("feelings")[i] + "</b>"; }).join(S.lang === "he" ? " ו" : " and ");
-  return '<div class="box">' + t("youFelt") + " " + felt + '. <button class="edit" data-act="feelBack">✎</button></div>' + rq(x("rQ6"), x("rQ6s")) + field("noteTxt", x("rPh6"), m.noteDraft, true) + btn(x("rSend"), "sendNote") + ghost(x("rFace"), "tellFace") + coachB(x("rC6"));
+  return '<div class="box">' + t("youFelt") + " " + felt + '. <button class="edit" data-act="feelBack">✎</button></div>' + rq(x("rQ6"), x("rQ6s")) + field("noteTxt", x("rPh6"), m.noteDraft, true) +
+    '<button class="ropt face" data-act="tellFace"><b>' + ic("heart") + esc(x("rFaceT")) + '</b><small>' + esc(x("rFaceS")) + '</small></button>' +
+    '<button class="ropt" data-act="sendNote"><b>' + esc(x("rNoteT")) + '</b><small>' + esc(x("rNoteS")) + '</small></button>' + coachB(x("rC6"));
 }
+/* ✎ inside the moment: only next to what you wrote yourself */
+function editableAt(m, s) {
+  if (S.role === "him") return s === 1 ? (m.from === "him" ? "title" : "") : s === 2 ? (m.why ? "why" : "") : s === 3 ? (m.askedHow !== "person" && m.question ? "question" : "") : s === 4 ? (m.askedHow === "person" && m.answer ? "answer" : "") : s === 5 ? (m.draw ? "draw" : "") : s === 6 ? (m.note ? "note" : "") : "";
+  return s === 1 ? (m.from === "her" ? "title" : "") : s === 4 ? (m.answer && (m.ansMine || m.askedHow !== "person") ? "answer" : "") : s === 7 ? (m.reaction || m.hearts ? "reaction" : "") : "";
+}
+/* each step as a sentence, from the reader's side: [what happened, what was said] */
+function storyLine(m, s) {
+  var him = S.role === "him", P = m.askedHow === "person", hl = function (n, k) { return n ? hearts(n) + " " + x(k + n) : ""; }, j = function (a) { return a.filter(Boolean).join(" · "); };
+  if (him) {
+    if (s === 1) return [x(m.from === "her" ? "slH1" : "slH1own"), m.title];
+    if (s === 2) return [x("slH2"), m.why];
+    if (s === 3) return P ? [x("slH3p"), ""] : [x(m.askedHow === "write" ? "slH3w" : "slH3a"), m.question];
+    if (s === 4) return [x(P ? "slH4p" : "slH4"), (m.close ? "[" + x("hc" + m.close) + "] " : "") + (m.answer || "")];
+    if (s === 5) return [x("slH5"), j([m.draw, m.hisHearts ? hearts(m.hisHearts) : ""])];
+    if (s === 6) return m.toldHow === "person" ? [x("slH6p"), m.note] : [x("slH6"), m.note];
+    return [x("slH7"), j([hl(m.hearts, "hS"), m.reaction])];
+  }
+  if (s === 1) return [x(m.from === "her" ? "slS1" : "slS1his"), m.title];
+  if (s === 2) return [x("slS2"), ""];
+  if (s === 3) return P ? [x("slS3p"), ""] : [x(m.askedHow === "write" ? "slS3w" : "slS3a"), m.question];
+  if (s === 4) return [x(P && !m.ansMine ? "slS4p" : "slS4"), (m.close ? "[" + x("hc" + m.close) + "] " : "") + (m.answer || "")];
+  if (s === 5) return [x("slS5"), j([m.draw, hl(m.hisHearts, "hH")])];
+  if (s === 6) return m.toldHow === "person" ? [x("slS6p"), m.note] : [x("slS6"), m.note];
+  return [x("slS7"), j([hl(m.hearts, "hI"), m.reaction])];
+}
+function storyRow(m, s, top) {
+  var L = storyLine(m, s), ef = editableAt(m, s), mine = S.role === "him" ? [2, 3, 5, 6].indexOf(s) > -1 || (s === 1 && m.from === "him") : s === 1 ? m.from === "her" : s === 4 || s === 7;
+  return '<div class="srow2' + (top ? " top" : "") + (mine ? "" : " p") + (ef ? " ed" : "") + '"><span class="sl">' + esc(L[0]) + '</span>' + (L[1] ? '<span class="st2">' + esc(L[1]) + '</span>' : "") + (ef ? '<button class="sed" data-edit="' + ef + ':' + m.id + '" aria-label="' + esc(x("editShort")) + '">✎</button>' : "") + '</div>';
+}
+/* A moment (chat 8, round 2): step k of 7 with dots; the moment and the last step stay open, earlier steps fold;
+   then the current step (your move, or who you are waiting for). Reads top to bottom as a story. */
 SC.round = function () {
   var m = M(); if (!m) return SC.home();
-  var him = S.role === "him", k = stopOf(m), h = "";
-  for (var s = 1; s <= 7; s++) {
-    var hers = (s === 1 && m.from === "her") || s === 4 || s === 7, cls = "stop" + (hers ? " hers" : "");
-    if (s < k) {
-      var tx = stopText(m, s), priv = him && s === 2 && m.askedHow !== "write";
-      h += '<div class="' + cls + ' done"><button class="srow" data-fold aria-expanded="false"><span class="sn">' + esc(stopName(m, s)) + (priv ? ' · ' + esc(x("rOnlyMe")) : "") + '</span>' + (tx ? '<span class="sv">' + esc(tx) + '</span>' : "") + '</button></div>';
-    } else if (s === k) {
-      h += '<div class="' + cls + ' now' + (myTurn(m, k) ? " mine" : "") + '"><p class="sn">' + esc(stopName(m, s)) + '</p><div class="scard">' + stopNow(m, k) + '</div></div>';
-    } else h += '<div class="' + cls + ' next"><p class="sn">' + esc(stopName(m, s)) + '</p></div>';
-  }
-  var left = 7 - k;
-  var foot = k >= 8 ? '<div class="scard closed"><p class="mid">' + esc(x("rDone")) + '</p><p class="txt">' + esc(him ? (m.draw || "") : x("rDoneHer")) + '</p>' + btn(him ? x("dTileM") : x("rShare"), him ? "newConv" : "toAddMore") + ghost(bk() + t("backHome"), "home") + '</div>'
-    : '<p class="rleft">' + esc(left > 1 ? x("rLeft").replace("{k}", left) : left === 1 ? x("rLeft1") : x("rLast")) + '</p>';
-  return { cls: "calm", title: partnerTitle(), html: '<div class="trail">' + h + '</div>' + foot };
+  var him = S.role === "him", k = stopOf(m), last = Math.min(k - 1, 7), dots = "";
+  for (var s = 1; s <= 7; s++) dots += '<i class="' + (s < k ? "d" : s === k ? "c" : "") + '"></i>';
+  var h = '<div class="thead"><span class="tl2">' + esc(x("trHead")) + '</span><span class="tk">' + esc(k >= 8 ? x("trDone") : x("trStep").replace("{k}", k)) + '</span></div><div class="pdots" aria-hidden="true">' + dots + '</div>';
+  h += storyRow(m, 1, true);
+  var mid = []; for (s = 2; s < last; s++) mid.push(storyRow(m, s));
+  if (mid.length) h += '<details class="hist"><summary><span>' + esc(x("trSoFar").replace("{k}", mid.length)) + '</span>' + ic("chev") + '</summary><div class="hsteps">' + mid.join("") + '</div></details>';
+  if (last >= 2) h += storyRow(m, last);
+  if (k >= 8) h += '<div class="scard closed"><p class="mid">' + esc(x("rDone")) + '</p><p class="txt">' + esc(him ? (m.draw || "") : x("rDoneHer")) + '</p>' + warmth(m) + btn(him ? x("dTileM") : x("rShare"), him ? "newConv" : "toAddMore") + ghost(bk() + t("backHome"), "home") + '</div>';
+  else h += '<div class="nowc' + (myTurn(m, k) ? " mine" : "") + '"><p class="sn2">' + esc(stopName(m, k)) + '</p><div class="scard">' + stopNow(m, k) + '</div></div>' + (k < 7 ? '<p class="rnext">' + esc(7 - k > 1 ? x("rLeft").replace("{k}", 7 - k) : x("rLeft1")) + '</p>' : "");
+  return { cls: "calm", title: partnerTitle(), html: h };
 };
 /* old screen names (back history, links) all open the Trail */
 ["sealed", "guess", "reveal", "why", "ask", "record", "sent", "learned", "feel", "words", "say", "note", "rate", "answer", "listened", "conv"].forEach(function (n) { SC[n] = SC.round; });
@@ -1028,16 +1265,41 @@ SC.round = function () {
    the coach's conclusions ("between the lines"), his own words (her side, only words he sent) and the whisper box. */
 function mapCards() {
   var him = S.role === "him", out = [];
-  S.moments.forEach(function (m) { if (him && m.draw) out.push({ q: m.draw, src: x("mFromMoment").replace("{t}", snip(m.title)), at: m.listenedAt || m.createdAt || 0 }); });
-  (S.tips || []).forEach(function (tp) { if (tp.from !== S.role && tp.myReply) out.push({ q: tp.text, src: x("mWhispered").replace("{n}", S.partner || ""), at: tp.createdAt || 0 }); });
+  /* mirrored (chat 8): his deck = what he learned + her whispers + her reactions; hers = his whispers + the words he wrote her at the end of each moment */
+  S.moments.forEach(function (m) {
+    var src = x("mFromMoment").replace("{t}", snip(m.title)), at = m.listenedAt || m.createdAt || 0;
+    if (him && m.draw) out.push({ q: m.draw, src: src, at: at });
+    if (him && m.reaction) out.push({ q: (m.hearts ? hearts(m.hearts) + " " : "") + m.reaction, src: src, at: at + 1 });
+    if (!him && m.note) out.push({ q: m.note, src: src, at: at });
+  });
+  (S.tips || []).forEach(function (tp) { if (tp.from !== S.role) out.push({ q: tp.text, src: x(him ? "mWhisperedHim" : "mWhispered").replace("{n}", S.partner || ""), at: tp.createdAt || 0 }); });
   return out.sort(function (a, b) { return b.at - a.at; });
 }
-function hisInsights() {
-  var txt = S.moments.map(function (m) { return [m.title, m.answer, m.draw].join(" "); }).join(" "), out = [];
-  var R = [["mcTouch", /יד|חיבוק|נגיע|ריקוד|רקד|מגע|hand|hug|touch|danc/i], ["mcInit", /בלי ש?(לבקש|ביקשתי|אבקש)|לא חיכית|יוזמ|without (me )?asking|didn.t wait|on your own/i], ["mcTeam", /צוות|בצד שלי|בצד שלך|ביחד|team|my side|together/i]];
-  R.forEach(function (r) { if (r[1].test(txt)) out.push({ q: x(r[0] + "Q"), t: x(r[0] + "T") }); });
-  if (S.moments.some(function (m) { return m.answer; })) out.push({ q: x("mcAskQ"), t: x("mcAskT") });
+/* Between the lines (chat 8, round 2): the coach reads ALL the partner's words and names patterns
+   ("k of t…"), each with a try-line tied to it. No quotes of messages. */
+var PAT_HIM = [["pTouch", /יד|חיבוק|חיבקת|נגיע|נגעת|ריקוד|רקד|מגע|נשיק|hand|hug|touch|danc|kiss/i], ["pInit", /בלי ש?(לבקש|ביקשתי|אבקש|אמרתי)|לא חיכית|יוזמ|לבד|without (me )?asking|didn.t wait|on your own/i], ["pTeam", /צוות|בצד שלי|לצידי|ביחד|גיבית|team|my side|together|backed/i], ["pAttn", /שמת לב|הקשבת|זכרת|ראית אותי|noticed|listened|remembered|saw me/i], ["pFam", /סבתא|סבא|אמא|אבא|אחות|אח שלי|ילדים|הילד|משפחה|grandm|mother|mom|sister|kids|family/i], ["pFun", /צחק|מצחיק|הצחקת|laugh|funny/i], ["pSurp", /הפתע|surpris/i]];
+var PAT_HER = [["pDes", /beautiful|sexy|\bhot\b|gorgeous|want you|attract|kiss|(^|[^א-ת])ו?יפה|סקסית|לוהטת|מושכת|רוצה אותך|נשיק|מהממת/i], ["pAdm", /proud|admire|amazing|strong|smart|talented|גאה|מעריץ|מדהימה|חזקה|חכמה|מוכשרת/i], ["pSoft", /afraid|scared|sorry|hard for me|nervous|worried|מפחד|פחדתי|סליחה|קשה לי|לחוץ|חושש/i], ["pCare", /take care|care of|safe|protect|help|לדאוג|דואג|לשמור עלייך|מוגנת|לעזור/i], ["pTime", /miss|together|time with|weekend|trip|מתגעגע|ביחד|זמן איתך|סופ"ש|טיול/i], ["pThx", /thank|grateful|appreciate|תודה|מודה|מעריך/i], ["pLove", /love|heart|אוהב|אהבה|הלב/i]];
+function patterns() {
+  var him = S.role === "him", items = [], out = [];
+  S.moments.forEach(function (m) { var w = him ? [m.from === "her" ? m.title : "", m.answer, m.reaction] : [m.note, m.question]; w = w.filter(Boolean).join(" "); if (w) items.push(w); });
+  (S.tips || []).forEach(function (tp) { if (tp.from !== S.role && tp.sent !== false) items.push(tp.text); });
+  var tt = items.length;
+  (him ? PAT_HIM : PAT_HER).forEach(function (p) { var k = items.filter(function (w) { return p[1].test(w); }).length; if (k) out.push({ q: x(p[0] + "Q").replace("{k}", k).replace("{t}", tt), t: x(p[0] + "T"), k: k }); });
+  out.sort(function (a, b) { return b.k - a.k; });
+  /* what touched most: from the hearts, never a score or an average */
+  var top = S.moments.filter(function (m) { return (him ? m.hearts : m.hisHearts) >= 4; })[0];
+  if (top) out.unshift({ q: x(him ? "pTopHimQ" : "pTopHerQ").replace("{w}", snip(top.title)), t: x(him ? "pTopHimT" : "pTopHerT") });
+  if (!him) { var notes = S.moments.filter(function (m) { return m.note; }); if (notes.length && notes.every(function (m) { return m.note.length < 50; })) out.push({ q: x("pShortQ"), t: x("pShortT") }); }
+  if (S.moments.some(function (m) { return him ? m.answer : m.question; })) out.push({ q: x(him ? "pAskHimQ" : "pAskHerQ"), t: x(him ? "pAskHimT" : "pAskHerT") });
   return out;
+}
+/* "Only yours" (chat 8): private notes + saved whispers. Never leaves this phone until you send one. */
+function onlyYours() {
+  var him = S.role === "him", G = function (k) { return x(k + (him ? "Him" : "Her")); };
+  var saved = (S.tips || []).filter(function (tp) { return tp.from === S.role && !tp.sent; });
+  return '<section class="zone ze" id="onlyyours"><p class="zh">' + ic("lock") + '<span>' + esc(x("oyT")) + '</span></p><p class="oys">' + esc(x("oyS")) + '</p>' +
+    '<p class="oyl">' + esc(x("oySaved")) + '</p>' + (saved.length ? saved.map(function (tp) { return '<div class="svw"><span class="k">' + esc(wsKind(tp.kind)) + '</span><span class="t">' + esc(tp.text) + '</span><span class="r"><button class="minisend" data-sendtip="' + tp.id + '">' + esc(G("tSendOne")) + '</button><button class="edit" data-edit="tip:' + tp.id + '" aria-label="' + esc(x("editShort")) + '">✎</button><button class="edit" data-deltip="' + tp.id + '" aria-label="✕">✕</button></span></div>'; }).join("") : '<div class="dk-empty">' + esc(x("oySavedEmpty")) + '</div>') +
+    '<p class="oyl">' + esc(x("oyNotes")) + '</p><textarea id="notes" placeholder="' + esc(x("oyNotesPh")) + '">' + esc(S.notes || "") + '</textarea>' + ghost(x("oySave"), "saveNotes") + '</section>';
 }
 SC.map = function () {
   var him = S.role === "him", G = function (k) { return x(k + (him ? "Him" : "Her")); };
@@ -1053,11 +1315,13 @@ SC.map = function () {
     if (n > 1) h += '<div class="dnav"><button class="dic" data-act="deckNext" aria-label="›">' + ic("back") + '</button><span>' + esc(x("mOf").replace("{i}", i + 1).replace("{c}", n)) + '</span><button class="dic" data-act="deckPrev" aria-label="‹">' + ic("chev") + '</button></div>';
   }
   h += '</section>';
-  var ins = him ? hisInsights() : herCoachAll().filter(function (c) { return !c.from; }).map(function (c) { return { q: c.text }; });
-  var words = him ? [] : herCoachAll().filter(function (c) { return c.from; }).map(function (c) { return { q: "״" + snip(c.from) + "״", t: c.text }; });
-  var card = function (c) { return '<div class="ins"><b>' + esc(c.q) + '</b>' + (c.t ? '<span><i>' + esc(x(him ? "mTry" : "mTryHer")) + '</i> ' + esc(c.t) + '</span>' : "") + '</div>'; };
-  h += '<section class="zone zb"><p class="zh">' + ic("spark") + '<span>' + esc(x("mCoach")) + '</span></p>' + (ins.length || words.length ? '<div class="strip">' + ins.map(card).join("") + words.map(function (c) { return card(c).replace('<div class="ins">', '<div class="ins w"><small>' + esc(x("mWords")) + '</small>'); }).join("") + '</div>' : '<div class="dk-empty">' + esc(x("mCoachEmpty")) + '</div>') + '</section>';
-  return { cls: "calm", html: h + whisperBox() };
+  var ins = patterns(), coach = him ? [0, 1, 2, 3, 4].map(function (i) { return { q: x("cH" + i + "q"), t: x("cH" + i + "t") }; }) : [0, 1, 2, 3, 4, 5].map(function (i) { return { q: x("cS" + i + "q"), t: x("cS" + i + "t") }; });
+  var card = function (c, kind) { return '<div class="ins ' + kind + '"><small>' + esc(x(kind === "wm" ? "btMoments" : "btCoach")) + '</small><b>' + esc(c.q) + '</b>' + (c.t ? '<span><i>' + esc(x(him ? "mTry" : "mTryHer")) + '</i> ' + esc(c.t) + '</span>' : "") + '</div>'; };
+  h += '<section class="zone zb"><p class="zh">' + ic("spark") + '<span>' + esc(x("mCoach")) + '</span></p><div class="strip">' +
+    ins.map(function (c) { return card(c, "wm"); }).join("") +
+    (ins.length ? "" : '<div class="ins wm"><small>' + esc(x("btMoments")) + '</small><span>' + esc(x("btEmpty")) + '</span></div>') +
+    coach.map(function (c) { return card(c, "cl"); }).join("") + '</div></section>';
+  return { cls: "calm", html: h + whisperBox() + onlyYours() };
 };
 /* Whispers: what the partner whispered (a deck to flip, answer ♥ / "on it"; answered ones join the map),
    then an invitation with two doors: a little secret (closeness) or what turns me on (desire). */
@@ -1078,22 +1342,21 @@ function whisperBox() {
       var pos = (j - i + n) % n; if (pos > 2) return "";
       var from = tp.from !== S.role, who = from ? P : me;
       return '<div class="dcard ws ' + ((from ? (him ? "her" : "him") : (him ? "him" : "her")) === "her" ? "from-her" : "from-him") + ' p' + pos + '"><span class="wsfrom"><span class="wsav">' + esc(who.charAt(0) || "♡") + '</span>' + esc(wsKind(tp.kind)) + '<span class="wsd">' + wsDate(tp.createdAt) + '</span></span><span class="q">' + esc(tp.text) + '</span>' +
-        (pos === 0 ? (from ? '<span class="r">' + ["♥", x("mOnIt")].map(function (r) { return '<button data-reply="' + tp.id + '|' + r + '" class="' + (tp.myReply === r ? "sel" : "") + '">' + esc(r) + '</button>'; }).join("") + '<button class="wback" data-act="whBack">' + ic("msg") + esc(x("wsBack")) + '</button></span>' : '<span class="wsans">' + esc(tp.reply ? x("mGot").replace("{n}", P).replace("{r}", tp.reply) : x("wsWaiting").replace("{n}", P)) + '</span>') : "") + '</div>';
+        (pos === 0 ? (from ? '<span class="r">' + [1, 2, 3, 4, 5].map(function (n) { var on = /^♥+$/.test(tp.myReply || "") && tp.myReply.length >= n; return '<button class="wh' + (on ? " on" : "") + '" data-reply="' + tp.id + '|' + hearts(n) + '" aria-label="' + esc(x("hI" + n)) + '">♥</button>'; }).join("") + '<button data-reply="' + tp.id + '|' + esc(x("mOnIt")) + '" class="' + (tp.myReply === x("mOnIt") ? "sel" : "") + '">' + esc(x("mOnIt")) + '</button>' + '<button class="wback" data-act="whBack">' + ic("msg") + esc(x("wsBack")) + '</button></span>' : '<span class="wsans">' + esc(tp.reply ? x("mGot").replace("{n}", P).replace("{r}", /^♥+$/.test(tp.reply) ? tp.reply + " " + x((him ? "hS" : "hH") + tp.reply.length) : tp.reply) : x("wsWaiting").replace("{n}", P)) + '</span>') : "") + '</div>';
     }).join("") + '</div>';
     if (n > 1) h += '<div class="dnav"><button class="dic" data-act="wsNext" aria-label="›">' + ic("back") + '</button><span>' + esc(x("mOf").replace("{i}", i + 1).replace("{c}", n)) + '</span><button class="dic" data-act="wsPrev" aria-label="‹">' + ic("chev") + '</button></div>';
   }
-  if (V.tmp.inviteAt === "map") h += inviteBlock();
   return h + '</section>';
 }
-/* The invitation: two small buttons (a little secret / what turns me on), then the box to write. Opens from the home tile or "whisper back". */
-function inviteBlock() {
+/* The whisper screen (chat 8): a title, two big doors with one tempting line each, then the box,
+   "whisper it" and "save for later" (saved ones wait in "Only yours" on the map). Opens from the home tile and "whisper back". */
+SC.whisper = function () {
   var him = S.role === "him", G = function (k) { return x(k + (him ? "Him" : "Her")); }, k = V.tmp.whKind || "";
-  var h = '<div class="invite"><div class="doors">' +
-    '<button class="door' + (k === "secret" ? " on" : "") + '" data-act="whSecret">' + ic("lock") + '<span>' + esc(G("wsDoorSecret")) + '</span></button>' +
-    '<button class="door' + (k === "desire" ? " on" : "") + '" data-act="whDesire">' + ic("spark") + '<span>' + esc(G("wsDoorDesire")) + '</span></button></div>';
-  if (k) h += field("tipTxt", G(k === "secret" ? "wsPhSecret" : "wsPhDesire"), "", true) + btn(G("wsSend"), "whSend");
-  return h + '</div>';
-}
+  var door = function (kind, icon, lab, line) { return '<button class="wbig' + (k === kind ? " on" : "") + '" data-act="wh' + (kind === "secret" ? "Secret" : "Desire") + '"><b>' + ic(icon) + esc(G(lab)) + '</b><small>' + esc(G(line)) + '</small></button>'; };
+  var h = '<p class="big">' + esc(G("wsInv")) + '</p>' + door("secret", "lock", "wsDoorSecret", "wsLineSecret") + door("desire", "spark", "wsDoorDesire", "wsLineDesire");
+  if (k) h += field("tipTxt", G(k === "secret" ? "wsPhSecret" : "wsPhDesire"), V.tmp.whDraft || "", true) + btn(G("wsSend"), "whSend") + '<button class="wsplain" data-act="whLater">' + esc(x("wsLater")) + '</button>';
+  return { cls: "calm", html: h };
+};
 /* His Today (DESIGN.md, Dial alert): the dial says what waits, then his move, coach, two tiles, small date link */
 SC.hisToday = function () {
   var w = S.moments.filter(function (m) { return m.status === "answered"; })[0] || S.moments.filter(function (m) { return m.status === "sealed"; })[0];
@@ -1109,7 +1372,6 @@ SC.hisToday = function () {
   var h = tabs() + '<div class="dhead"><p class="dt">' + esc(x("dMonth")) + '</p><p class="ds">' + esc(x("dSub")) + '</p></div>' + dial +
     '<div class="cbub"><small>' + esc(x("dCoach")) + '</small>' + esc(coach) + '</div>' +
     '<div class="htiles">' + tile(x("dTileM"), x("dTileMs"), 'data-tab="convs"', "plus") + tile(x("dTileT"), x("dTileTs"), 'data-act="toWhisper"', "msg") + '</div>' +
-    (V.tmp.inviteAt === "home" ? inviteBlock() : "") +
     '<button class="datelink" data-act="inviteDate">' + ic("heart") + esc(x("dDate")) + '</button>';
   return { cls: "night", html: h };
 };
@@ -1222,7 +1484,7 @@ SC.herHub = function () {
     : listened.length ? [x("hlT"), listened[0].title, x("hlBtn"), 'data-act="listened:' + listened[0].id + '"']
     : newTips.length ? [x("htT"), "", x("htBtn"), 'data-tab="tips"']
     : [x("hiT"), x("hiSub"), x("hiBtn"), 'data-act="toAddMore"'];
-  var row = function (lab, sub, attr, icon, on) { return '<button class="hli' + (on ? " on" : "") + '" ' + attr + '><span class="tx"><b>' + esc(lab) + '</b><small>' + esc(sub) + '</small></span><span class="pb">' + ic(icon) + '</span></button>'; };
+  var tn = 0, row = function (lab, sub, attr, icon, on) { tn++; return '<button class="hli tl t' + tn + (on ? " on" : "") + '" ' + attr + '><span class="deco" aria-hidden="true">' + ic(icon) + '</span><span class="tx"><b>' + esc(lab) + '</b><small>' + esc(sub) + '</small></span><span class="pb">' + ic(icon) + '</span></button>'; };
   var h = tabs() + '<p class="hlab">' + esc(x("hHello").replace("{me}", S.me || "")) + '</p>' +
     '<div class="focal"><div><span>' + esc(f[0]) + (f[1] ? '<small>' + esc(snip(f[1])) + '</small>' : "") + '</span></div></div>' +
     '<button class="cta2" ' + f[3] + '>' + esc(f[2]) + '</button>' +
@@ -1231,10 +1493,10 @@ SC.herHub = function () {
     row(x("rFrom"), newN === 1 ? x("rFromOne") : newN ? x("rFromNew").replace("{k}", newN) : x("rFromNone"), 'data-tab="inbox"', "play", newN) +
     row(x("rStory"), x("rStoryS").replace("{k}", mapCards().length), 'data-tab="map"', "spark") +
     row(x("rShare"), x("rShareS"), 'data-act="toAddMore"', "plus") +
-    row(x("rTips"), x("rTipsS"), 'data-act="toWhisper"', "heart") + '</div>' + (V.tmp.inviteAt === "home" ? inviteBlock() : "");
+    row(x("rTips"), x("rTipsS"), 'data-act="toWhisper"', "heart") + '</div>';
   return { cls: "soft", html: h };
 };
-var ICONS = { heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>', msg: '<path d="M5 5h14v10H9l-4 4z"/>', menu: '<path d="M4 7h16M4 12h16M4 17h16"/>', play: '<path d="M9 6.5v11l9-5.5z"/>', plus: '<path d="M12 5v14M5 12h14"/>', chev: '<path d="M15 6l-6 6 6 6"/>', back: '<path d="M9 6l6 6-6 6"/>', lock: '<path d="M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3"/>', spark: '<path d="M12 3v5M12 16v5M3 12h5M16 12h5M6.5 6.5l2.5 2.5M15 15l2.5 2.5M6.5 17.5L9 15M15 9l2.5-2.5"/>' };
+var ICONS = { heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>', msg: '<path d="M5 5h14v10H9l-4 4z"/>', menu: '<path d="M4 7h16M4 12h16M4 17h16"/>', play: '<path d="M9 6.5v11l9-5.5z"/>', plus: '<path d="M12 5v14M5 12h14"/>', chev: '<path d="M15 6l-6 6 6 6"/>', back: '<path d="M9 6l6 6-6 6"/>', lock: '<path d="M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3"/>', eye: '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><path d="M12 9.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"/>', eyeOff: '<path d="M4 4l16 16M10.6 6.1A9 9 0 0 1 12 6c6 0 9.5 6 9.5 6a16 16 0 0 1-3 3.6M6.7 7.6C4 9.4 2.5 12 2.5 12S6 18 12 18c1.5 0 2.9-.4 4.1-1"/>', spark: '<path d="M12 3v5M12 16v5M3 12h5M16 12h5M6.5 6.5l2.5 2.5M15 15l2.5 2.5M6.5 17.5L9 15M15 9l2.5-2.5"/>' };
 function ic(n) { return '<svg class="i" viewBox="0 0 24 24" aria-hidden="true">' + ICONS[n] + '</svg>'; }
 SC.addMore = function () {
   return { cls: "", html: orbs() + hdr(x("amL"), x("amC")) + '<p class="mid">' + t("hFirstQ") + '</p>' + field("herMoment", t("hFirstPh"), "", true) +
@@ -1244,14 +1506,22 @@ SC.explain = function () {
   var e = EXPLAIN[V.after];
   return { cls: "", html: orbs() + '<p class="lab">' + esc(x(e[0])) + '</p><p class="icon" style="margin-top:50px">' + e[2] + '</p><div class="push"><p class="explain">' + esc(x(e[1])) + '</p><p class="gain big2"><span>✦ ' + esc(x("gainL")) + '</span>' + esc(x(e[3])) + '</p>' + btn(x("gotItDo"), "explainDone") + '</div>' };
 };
-var EDITLAB = { title: "editMomentL", answer: "editAnswerL", reaction: "editReactL", note: "editNoteL", draw: "editDrawL", howItWent: "editHowL", tip: "editTipL" };
-var SENT_FIELDS = { title: 1, answer: 1, reaction: 1, note: 1 };
+var EDITLAB = { title: "editMomentL", answer: "editAnswerL", reaction: "editReactL", note: "editNoteL", draw: "editDrawL", howItWent: "editHowL", tip: "editTipL", why: "editWhyL", question: "editQL" };
+/* a text the partner already got goes out again as a correction; private ones are only saved */
+function sentField(m, f) {
+  var him = S.role === "him";
+  if (f === "title") return m.from === S.role && (!him || !!(m.question || m.note || m.toldHow));
+  if (f === "question") return him && m.askedHow !== "person" && !!m.question;
+  if (f === "answer" || f === "reaction") return !him;
+  return f === "note" && him;
+}
 SC.edit = function () {
   var f = V.tmp.editField, cur;
   if (f === "tip") { var tp = (S.tips || []).filter(function (x) { return x.id === V.tmp.tipId; })[0]; if (!tp) return SC.home(); cur = tp.text; }
-  else { var m = M(); if (!m) return SC.home(); cur = m[f]; }
-  var sent = f === "tip" ? tp.sent : SENT_FIELDS[f];
-  return { cls: "calm", html: orbs() + hdr(x(EDITLAB[f]), x(sent ? "editC" : "editLocalC")) + (f === "answer" && M() ? '<p class="txt">' + esc(M().question || "") + '</p>' : "") + field("editTxt", "", cur, true) + '<div class="push">' + btn(sent ? x("editBtn") : t("save"), "saveEdit") + ghost(x("cancel"), "cancelEdit") + '</div>' };
+  else { var m = M(); if (!m) return SC.home(); cur = f === "draw" ? (m.drawEnd || m.draw) : m[f]; }
+  var sent = f === "tip" ? tp.sent : sentField(m, f), him = S.role === "him";
+  var lab = f === "answer" && him ? "editHerWordsL" : EDITLAB[f];
+  return { cls: "calm", html: orbs() + hdr(x(lab), x(sent ? (him ? "editCHim" : "editC") : (him ? "editLocalC" : "editLocalCHer"))) + (f === "answer" && M() ? '<p class="txt">' + esc(M().question || "") + '</p>' : "") + field("editTxt", "", cur, true) + '<div class="push">' + btn(sent ? x("editBtn") : t("save"), "saveEdit") + ghost(x("cancel"), "cancelEdit") + '</div>' };
 };
 SC.story = function () {
   var list = S.moments.filter(function (m) { return m.from === "her" || m.question || m.note || m.status === "listened"; });
@@ -1318,7 +1588,7 @@ var A = {
   askSend: function () { askWith("link"); },
   askWrite: function () { askWith("write"); },
   saveRecord: function () { var m = M(); var a = val("ans"); if (!a) return; m.answer = a; m.status = "answered"; if (m.askedHow !== "person") m.askedHow = "person"; V.tmp.rec = null; persist(); go("round"); },
-  saveLoves: function () { var m = M(); var d = val("draw"); if (!d) return; if (m.draw) S.draws = S.draws.filter(function (x) { return x !== m.draw; }); m.drawEnd = d; m.draw = x("rLead") + " " + d; S.draws.unshift(m.draw); m.status = "learned"; persist(); go("round"); },
+  saveLoves: function () { var m = M(); var d = val("draw"); if (!d) return; if (m.draw) S.draws = S.draws.filter(function (x) { return x !== m.draw; }); m.drawEnd = d; m.draw = x("rLead") + " " + d; S.draws.unshift(m.draw); m.hisHearts = m.hisHeartsDraft || m.hisHearts || 0; m.drawDraft = ""; m.status = "learned"; persist(); go("round"); },
 
 
 
@@ -1327,15 +1597,16 @@ var A = {
   sendNote: function () { var m = M(); var n = val("noteTxt"); if (!n) return; m.noteDraft = n; m.note = n; m.toldHow = "note"; m.status = "told"; persist(); send("note", told(m, { note: n }), "wNote"); setTimeout(function () { render(); }, 300); },
   deckNext: function () { var n = mapCards().length; if (n) { V.tmp.deckI = ((V.tmp.deckI || 0) + 1) % n; render(); } },
   deckPrev: function () { var n = mapCards().length; if (n) { V.tmp.deckI = ((V.tmp.deckI || 0) - 1 + n) % n; render(); } },
-  whSecret: function () { V.tmp.whKind = V.tmp.whKind === "secret" ? "" : "secret"; render(); },
-  whDesire: function () { V.tmp.whKind = V.tmp.whKind === "desire" ? "" : "desire"; render(); },
+  whSecret: function () { V.tmp.whDraft = val("tipTxt"); V.tmp.whKind = V.tmp.whKind === "secret" ? "" : "secret"; render(); },
+  whDesire: function () { V.tmp.whDraft = val("tipTxt"); V.tmp.whKind = V.tmp.whKind === "desire" ? "" : "desire"; render(); },
   wsNext: function () { var n = wsCount(); if (n) { V.tmp.wsI = ((V.tmp.wsI || 0) + 1) % n; render(); } },
   wsPrev: function () { var n = wsCount(); if (n) { V.tmp.wsI = ((V.tmp.wsI || 0) - 1 + n) % n; render(); } },
   wsGot: function () { V.tmp.wsDir = "got"; V.tmp.wsI = 0; render(); },
   wsSent: function () { V.tmp.wsDir = "sent"; V.tmp.wsI = 0; render(); },
-  whSend: function () { var v = val("tipTxt"); if (!v) return; var tp = { id: uid(), from: S.role, text: v, kind: V.tmp.whKind || "secret", sent: true, createdAt: Date.now() }; S.tips = S.tips || []; S.tips.unshift(tp); V.tmp.whKind = ""; V.tmp.inviteAt = ""; persist(); send("tip", { id: tp.id, text: tp.text, kind: tp.kind }, tp.kind === "desire" ? "wDesire" : "wSecret"); setTimeout(render, 300); },
-  toWhisper: function () { V.tmp.inviteAt = V.tmp.inviteAt === "home" ? "" : "home"; V.tmp.whKind = ""; render(); },
-  whBack: function () { V.tmp.inviteAt = V.tmp.inviteAt === "map" ? "" : "map"; V.tmp.whKind = ""; render(); },
+  whSend: function () { var v = val("tipTxt"); if (!v) return; var tp = { id: uid(), from: S.role, text: v, kind: V.tmp.whKind || "secret", sent: true, createdAt: Date.now() }; S.tips = S.tips || []; S.tips.unshift(tp); V.tmp.whKind = ""; V.tmp.whDraft = ""; persist(); send("tip", { id: tp.id, text: tp.text, kind: tp.kind }, tp.kind === "desire" ? "wDesire" : "wSecret"); setTimeout(function () { V.tab = "map"; V.tmp.wsDir = "sent"; V.tmp.wsI = 0; go("home"); }, 300); },
+  whLater: function () { var v = val("tipTxt"); if (!v) return; S.tips = S.tips || []; S.tips.unshift({ id: uid(), from: S.role, text: v, kind: V.tmp.whKind || "secret", sent: false, createdAt: Date.now() }); V.tmp.whKind = ""; V.tmp.whDraft = ""; persist(); toast(x("wsSavedT")); V.tab = "map"; go("home"); },
+  toWhisper: function () { V.tmp.whKind = ""; V.tmp.whDraft = ""; go("whisper"); },
+  whBack: function () { V.tmp.whKind = ""; V.tmp.whDraft = ""; go("whisper"); },
   howItWorks: function () { V.mid = null; go(S.role === "her" ? "herIntro1" : "intro1"); },
   feelNext: function () { var m = M(); if (!(m.feelings || []).length) return; m.feltDone = true; persist(); render(); },
   feelBack: function () { var m = M(); m.feltDone = false; persist(); render(); },
@@ -1345,19 +1616,22 @@ var A = {
   goTips: function () { V.tab = "tips"; go("home"); },
   lovesLater: function () { var v = val("lovesTxt"); if (!v) return; S.tips = S.tips || []; S.tips.unshift({ id: uid(), from: S.role, text: v, kind: "loves", sent: false, createdAt: Date.now() }); persist(); toast(t("savedToast")); V.tab = "tips"; go("home"); },
   lovesSend: function () { var v = val("lovesTxt"); if (!v) return; var tp = { id: uid(), from: S.role, text: v, kind: "loves", sent: true, createdAt: Date.now() }; S.tips = S.tips || []; S.tips.unshift(tp); persist(); send("tip", { id: tp.id, text: v, kind: "loves" }, "wLoves"); setTimeout(function () { V.tab = "tips"; go("home"); }, 400); },
-  sendAnswer: function () { var m = M(); var a = val("herAns"); if (!a) return; m.answer = a; m.status = "answeredByMe"; persist(); send("answer", { mid: m.id, a: a }, "wAnswer"); setTimeout(function () { render(); }, 300); },
-  sendReaction: function () { var m = M(); var r = val("reactTxt"); if (!r) return; m.reaction = r; m.status = "done"; persist(); send("reaction", { mid: m.id, text: r }, "wReaction"); setTimeout(function () { render(); }, 300); },
+  sendAnswer: function () { var m = M(); var a = val("herAns"); if (!a) return; m.answer = a; m.ansMine = true; m.close = m.closeDraft || 0; m.status = "answeredByMe"; persist(); send("answer", { mid: m.id, a: a, close: m.close }, "wAnswer"); setTimeout(function () { render(); }, 300); },
+  sendReaction: function () { var m = M(); var r = val("reactTxt"), hn = m.heartsDraft || 0; if (!r && !hn) return; m.reaction = r; m.hearts = hn; m.reactDraft = ""; m.status = "done"; persist(); send("reaction", { mid: m.id, text: r, hearts: hn }, "wReaction"); setTimeout(function () { render(); }, 300); },
   toAddMore: function () { V.mid = null; go("addMore"); },
   herAddMoment: function () { var v = val("herMoment"); if (!v) return; var m = { id: uid(), title: v, from: "her", status: "sent", createdAt: Date.now() }; S.moments.unshift(m); persist(); var first = !S.invited; S.invited = true; send(first ? "invite" : "moment", { mid: m.id, title: v }, first ? "wInvite" : "wMoment"); setTimeout(function () { if (V.screen === "addMore") { V.tab = "story"; go("home"); } else render(); }, 400); },
   saveNotes: function () { S.notes = document.getElementById("notes").value; persist(); toast(t("savedToast")); },
   saveEdit: function () {
     var f = V.tmp.editField, v = val("editTxt"); if (!v) return;
-    var back = function () { V.tab = V.tmp.editFrom || (S.role === "her" ? "story" : "draws"); go("home"); };
+    var back = function () { if (V.tmp.editFrom === "round") return go("round"); V.tab = V.tmp.editFrom || "map"; go("home"); };
     if (f === "tip") { var tp = S.tips.filter(function (x) { return x.id === V.tmp.tipId; })[0]; tp.text = v; persist(); if (tp.sent) send("tip", { id: tp.id, text: v }, "wEdit"); return setTimeout(back, 300); }
-    var m = M(); if (!m) return; m[f] = v; if (f === "draw") { S.draws = S.draws || []; } persist();
-    if (SENT_FIELDS[f]) { send("edit", { mid: m.id, field: f, value: v }, "wEdit"); setTimeout(back, 300); } else { toast(t("savedToast")); back(); }
+    var m = M(); if (!m) return;
+    if (f === "draw") { var old = m.draw; m.drawEnd = v; m.draw = x("rLead") + " " + v; S.draws = (S.draws || []).map(function (d) { return d === old ? m.draw : d; }); if (S.draws.indexOf(m.draw) < 0) S.draws.unshift(m.draw); }
+    else m[f] = v;
+    persist();
+    if (sentField(m, f)) { send("edit", { mid: m.id, field: f, value: v }, "wEdit"); setTimeout(back, 300); } else { toast(t("savedToast")); back(); }
   },
-  cancelEdit: function () { V.tab = V.tmp.editFrom || (S.role === "her" ? "story" : "draws"); go("home"); },
+  cancelEdit: function () { if (V.tmp.editFrom === "round") return go("round"); V.tab = V.tmp.editFrom || "map"; go("home"); },
   herIntro2: function () { go("herIntro2"); }, herIntro3: function () { go("herIntro3"); },
   herIntroDone: function () { S.introHer = true; persist(); if (V.mid && byId(V.mid)) go("round"); else go("home"); },
   saveNames: function () { S.me = val("me"); S.partner = val("partner"); persist(); toast(t("savedToast")); },
@@ -1375,10 +1649,11 @@ var A = {
   doReset: function () { try { localStorage.removeItem(KEY); } catch (e) {} S = blank(); V = { screen: "welcome", mid: null, tab: "moments", tmp: {}, back: [], fwd: [] }; render(); },
   inviteDate: function () { send("date", {}, "wDate"); },
   copyLink: function () { copy(V.lastLink); },
+  privToggle: function () { S.priv = !S.priv; persist(); render(); toast(x(S.priv ? "privOnT" : "privOffT")); },
   newConv: function () { V.mid = null; V.tab = "convs"; go("home"); },
 
 };
-function told(m, extra) { var d = { mid: m.id, title: m.title, q: m.question || "", a: m.answer || "", guess: m.guess || m.why || "", draw: m.draw || "" }; for (var k in extra) d[k] = extra[k]; return d; }
+function told(m, extra) { var d = { mid: m.id, title: m.title, q: m.question || "", a: m.answer || "", guess: m.guess || m.why || "", draw: m.draw || "", hh: m.hisHearts || 0 }; for (var k in extra) d[k] = extra[k]; return d; }
 function addMoment(title) { var m = { id: uid(), title: title, from: "him", status: "new", createdAt: Date.now() }; S.moments.unshift(m); V.mid = m.id; persist(); go("round"); }
 /* "ask her" sends his own question; "write back" sends what he thinks he did. Both reach her as a question; his private guess goes only with "write back". */
 function askWith(how) { var m = M(); var q = val("q"); if (!q) return; m.question = q; m.askedHow = how; m.status = "asked"; V.tmp.how = ""; persist(); send("question", { mid: m.id, title: m.title, q: q, from: m.from, how: how }, "wQuestion"); setTimeout(function () { render(); }, 300); }
@@ -1411,17 +1686,17 @@ function go(s) {
   if (S.role === "him" && EXPLAIN[s] && !S.seenSteps[s]) { V.after = s; s = "explain"; }
   V.screen = s; render(true);
   /* the Trail opens at the current stop */
-  var tn = app.querySelector(".stop.now:not(:nth-child(-n+2))");
+  var tn = app.querySelector(".nowc");
   window.scrollTo(0, tn ? tn.getBoundingClientRect().top + window.scrollY - 120 : 0);
 }
 function render(anim) {
   if (!S.role && V.screen !== "welcome" && V.screen !== "notice" && V.screen !== "whoLink") V.screen = "welcome";
   var f = SC[V.screen] || SC.home;
   var s = f();
-  document.body.className = S.role === "her" || (!S.role && V.tmp.role === "her") ? "her" : "";
+  document.body.className = (S.role === "her" || (!S.role && V.tmp.role === "her") ? "her" : "") + (S.priv && S.role ? " priv" : "");
   document.body.dir = S.lang === "he" ? "rtl" : "ltr";
   document.documentElement.lang = S.lang;
-  var meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = document.body.className === "her" ? "#ffffff" : "#0d0d12";
+  var meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = document.body.classList.contains("her") ? "#ffffff" : "#0d0d12";
   app.className = (s.cls || "") + (anim ? " anim" : "");
   var root = V.screen === "welcome" || V.screen === "whoLink" || (V.screen === "home" && !V.back.length);
   var nav = root || (!V.back.length && !V.fwd.length && !s.title) ? "" : topBar(V.back.length ? 'data-nav="back"' : 'data-act="home"', s.title, V.fwd.length);
@@ -1447,14 +1722,19 @@ function bind() {
     };
   });
   app.querySelectorAll("[data-nav]").forEach(function (b) { b.onclick = function () { if (b.dataset.nav === "back") { try { history.back(); } catch (e) { goBack(); } } else goFwd(); }; });
-  app.querySelectorAll("[data-sendtip]").forEach(function (b) { b.onclick = function () { var tp = (S.tips || []).filter(function (x) { return x.id === b.dataset.sendtip; })[0]; if (!tp) return; tp.sent = true; persist(); send("tip", { id: tp.id, text: tp.text, kind: tp.kind }, tp.kind === "loves" ? "wLoves" : "wTip"); setTimeout(render, 300); }; });
+  app.querySelectorAll("[data-sendtip]").forEach(function (b) { b.onclick = function () { var tp = (S.tips || []).filter(function (x) { return x.id === b.dataset.sendtip; })[0]; if (!tp) return; tp.sent = true; persist(); send("tip", { id: tp.id, text: tp.text, kind: tp.kind }, { loves: "wLoves", secret: "wSecret", desire: "wDesire" }[tp.kind] || "wTip"); setTimeout(render, 300); }; });
   app.querySelectorAll("[data-deltip]").forEach(function (b) { b.onclick = function () { S.tips = S.tips.filter(function (x) { return x.id !== b.dataset.deltip; }); persist(); render(); }; });
-  app.querySelectorAll("[data-edit]").forEach(function (b) { b.onclick = function () { var k = b.dataset.edit.split(":"); V.tmp.editFrom = V.tab; V.tmp.editField = k[0]; if (k[0] === "tip") V.tmp.tipId = k[1]; else V.mid = k[1]; go("edit"); }; });
+  app.querySelectorAll("[data-edit]").forEach(function (b) { b.onclick = function () { var k = b.dataset.edit.split(":"); V.tmp.editFrom = V.screen === "round" ? "round" : V.tab; V.tmp.editField = k[0]; if (k[0] === "tip") V.tmp.tipId = k[1]; else V.mid = k[1]; go("edit"); }; });
   app.querySelectorAll("[data-tab]").forEach(function (b) { b.onclick = function () { V.tmp.inviteAt = ""; V.tab = b.dataset.tab; V.tmp.sure = false; V.tmp.restoring = false; go("home"); }; });
   app.querySelectorAll("[data-lang]").forEach(function (b) { b.onclick = function () { saveTyped(); S.lang = b.dataset.lang; persist(); render(); }; });
   app.querySelectorAll("[data-role]").forEach(function (b) { b.onclick = function () { saveTyped(); V.tmp.role = b.dataset.role; render(); }; });
   app.querySelectorAll("[data-mic]").forEach(function (b) { b.onclick = function () { startMic(b, b.dataset.mic); }; });
   app.querySelectorAll("[data-feel]").forEach(function (b) { b.onclick = function () { var m = M(), k = +b.dataset.feel; m.feelings = m.feelings || []; var p = m.feelings.indexOf(k); if (p > -1) m.feelings.splice(p, 1); else if (m.feelings.length < 3) m.feelings.push(k); persist(); render(); }; });
+  app.querySelectorAll("[data-heart]").forEach(function (b) { b.onclick = function () {
+    var m = M(); if (!m) return; var p = b.dataset.heart.split("|"), n = +p[1], key = p[0] === "h" ? "hisHeartsDraft" : "heartsDraft";
+    if (p[0] === "h") m.drawDraft = val("draw"); else m.reactDraft = val("reactTxt");
+    var cur = m[key] || (p[0] === "h" ? m.hisHearts : 0) || 0; m[key] = cur === n ? n - 1 : n; persist(); render(); }; });
+  app.querySelectorAll("[data-close]").forEach(function (b) { b.onclick = function () { var m = M(); if (!m) return; m.answerDraft = val("herAns"); var n = +b.dataset.close; m.closeDraft = m.closeDraft === n ? 0 : n; persist(); render(); }; });
   app.querySelectorAll("[data-reply]").forEach(function (b) { b.onclick = function () { var p = b.dataset.reply.split("|"), tp = (S.tips || []).filter(function (z) { return z.id === p[0]; })[0]; if (!tp) return; tp.myReply = tp.myReply === p[1] ? "" : p[1]; persist(); if (tp.myReply) send("tipReply", { id: tp.id, r: tp.myReply }, "wReply"); setTimeout(render, 300); }; });
   app.querySelectorAll(".dcard[data-act]").forEach(function (c) { c.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); A.deckNext(); } }; });
   app.querySelectorAll("[data-fold]").forEach(function (b) { b.onclick = function () { b.setAttribute("aria-expanded", b.getAttribute("aria-expanded") === "true" ? "false" : "true"); }; });
@@ -1463,6 +1743,12 @@ function bind() {
 }
 function saveTyped() { if (document.getElementById("me")) S.me = val("me"); if (document.getElementById("partner")) S.partner = val("partner"); }
 
+var PRIV_SEL = ".st2, .sv, .dcard .q, .ins b, .ins span, .conv b, .conv small, .focal small, .wmsg .t, .svw .t, .warm span, .bub, .quote, .box";
+app.addEventListener("click", function (e) {
+  if (!S.priv) return; var el = e.target.closest && e.target.closest(PRIV_SEL); if (!el || el.classList.contains("peek")) return;
+  if (!el.closest("button.conv")) { e.stopPropagation(); e.preventDefault(); }
+  el.classList.add("peek"); setTimeout(function () { el.classList.remove("peek"); }, 4000);
+}, true);
 /* ===================== Start ===================== */
 window.addEventListener("popstate", function () { if ((location.hash || "").indexOf("m=") > -1) return; if (V.back.length) goBack(); });
 window.addEventListener("hashchange", function () { if (receive()) render(true); });
