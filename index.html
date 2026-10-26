@@ -592,13 +592,14 @@ body.her #app .hli.t4 .pb { background: rgba(255,255,255,.22) !important; color:
 body.her #app .hli.t4 .deco { color: #fff; opacity: .22; }
 body.her #app .hli.tl.on .pb { background: #ec4899 !important; color: #fff !important; }
 body.her #app .hli.tl:active { transform: scale(.97); }
-/* Private mode: one tap blurs personal text on every screen; tap a blurred text to peek for a few seconds. */
+/* Private mode = a demo couple (v36): one tap swaps your data for a sample couple whose moments show what the app does.
+   Everything works; sending asks "send this now?" and never leaves the phone. The eye looks the same either way. */
+.cfm { position: fixed; inset: 0; z-index: 20; display: grid; place-items: end center; padding: 16px; background: rgba(10,8,16,.45); }
+.cfm .cc { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 10px; padding: 20px 18px calc(18px + env(safe-area-inset-bottom, 0px)); border-radius: 26px; background: var(--bg); color: var(--ink); box-shadow: 0 -10px 40px rgba(0,0,0,.3); }
+.cfm .cq { margin: 0 0 4px; font-weight: 300; font-size: 26px; line-height: 1.2; }
 .privb { flex: none; margin-inline-start: auto; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); color: var(--muted); display: grid; place-items: center; cursor: pointer; padding: 0; }
 .privb svg.i { width: 19px; height: 19px; }
-body.priv .privb { background: var(--grad); color: #fff; border-color: transparent; }
 .hbar .privb { margin: 0; width: 46px; height: 46px; }
-body.priv #app :is(.st2, .sv, .dcard .q, .ins b, .ins span, .conv b, .conv small, .focal small, .wmsg .t, .svw .t, .warm span, .bub, .quote, .box, .srow2.top .st2, #notes:not(:focus)) { filter: blur(7px); transition: filter .2s ease-out; cursor: pointer; }
-body.priv #app .peek, body.priv #app .peek * { filter: none !important; }
 </style>
 </head>
 <body>
@@ -692,10 +693,37 @@ var T = {
 
 /* ===================== State ===================== */
 var KEY = "cah1";
-var S = load();
+var S = load(), REAL = null, DEMO = false;
+/* the demo couple: real-looking moments that show the app's value, mirrored for the side you are on */
+function demoState() {
+  var him = S.role === "him", he = S.lang === "he", day = 864e5, now = Date.now();
+  var W = he ? { her: "דנה", him: "יואב",
+      m1: "כשהוא רקד איתי במטבח בלי מוזיקה", m1why: "אולי שעצרתי הכל בשבילה", m1q: "אני חושב שזה כי עזבתי את הטלפון והייתי רק איתך", m1a: "בול. הרגשתי שאני הכי חשובה לך באותו רגע, ושאתה בוחר בי.", m1draw: "היא אוהבת כשאני עוצר הכל בשבילה", m1note: "לא ידעתי כמה רגע קטן כזה שווה לך. אני אוהב אותך כשאת צוחקת ככה, ואני רוצה עוד ריקודים כאלה, גם בימים רגילים.", m1react: "בכיתי קצת. תודה שאתה רואה אותי.",
+      m2: "כשהוא הכין לי קפה בלי שביקשתי, ביום הכי עמוס שלי", m2why: "שמתי לב שהיא לחוצה", m2q: "מה הרגשת באותו בוקר?", m2a: "הרגשתי שמישהו שומר עליי. וזה הדליק אותי, האמת.",
+      m3: "כשהיא צחקה עם אמא שלי בטלפון", m3q: "מה גרם לך לחייך ככה באותה שיחה?",
+      d2: "היא אוהבת כשאני שם לב שהיא עייפה ומבשל", d3: "היא אוהבת כשאני מחבק אותה מאחור",
+      wHer: "אני אוהבת כשאתה מחבק אותי מאחור כשאני מבשלת", wHim: "אף פעם לא סיפרתי לך, אבל אני מסתכל עלייך כשאת ישנה ומרגיש מזל", svHer: "בא לי שנברח לסופ״ש, רק שנינו", svHim: "יש לי רעיון לערב שלנו ביום חמישי…", notesHer: "להפתיע אותו בהופעה ב-12 בחודש", notesHim: "לקנות לה פרחים מהשוק ביום שישי" }
+    : { her: "Dana", him: "Yoav",
+      m1: "When he danced with me in the kitchen with no music", m1why: "Maybe that I stopped everything for her", m1q: "I think it's because I put my phone away and was only with you", m1a: "Spot on. I felt I was the most important thing to you in that moment, that you chose me.", m1draw: "She loves it when I stop everything for her", m1note: "I didn't know how much a small moment like that means to you. I love you when you laugh like that, and I want more dances like this, on ordinary days too.", m1react: "I cried a little. Thank you for seeing me.",
+      m2: "When he made me coffee without asking, on my busiest day", m2why: "I noticed she was stressed", m2q: "What did you feel that morning?", m2a: "I felt someone was taking care of me. And honestly, it turned me on.",
+      m3: "When she laughed with my mom on the phone", m3q: "What made you smile like that in that call?",
+      d2: "She loves it when I notice she's tired and cook", d3: "She loves it when I hug her from behind",
+      wHer: "I love it when you hug me from behind while I cook", wHim: "I never told you, but I watch you sleep and feel lucky", svHer: "I want us to run away for a weekend, just us", svHim: "I have an idea for our Thursday night…", notesHer: "Surprise him with the concert on the 12th", notesHim: "Buy her flowers at the market on Friday" };
+  var m1 = { id: "dm1", title: W.m1, from: "her", status: "done", why: W.m1why, askedHow: "write", question: W.m1q, answer: W.m1a, ansMine: !him, close: 5, hisHearts: 5, draw: W.m1draw, drawEnd: W.m1draw.replace(/^(היא אוהבת כשאני|She loves it when I) /, ""), feelings: [1, 4], feltDone: true, note: W.m1note, toldHow: "note", reaction: W.m1react, hearts: 5, createdAt: now - 6 * day, listenedAt: now - 5 * day };
+  var m2 = { id: "dm2", title: W.m2, from: "her", status: him ? "answered" : "answeredByMe", why: him ? W.m2why : "", askedHow: "ask", question: W.m2q, answer: W.m2a, ansMine: !him, createdAt: now - 2 * day };
+  var m3 = { id: "dm3", title: W.m3, from: "him", status: "asked", askedHow: "ask", question: W.m3q, createdAt: now - day };
+  var tips = [
+    { id: "dt1", from: "her", text: W.wHer, kind: "desire", sent: true, createdAt: now - 3 * day, myReply: him ? "♥♥♥♥♥" : "", reply: him ? "" : "♥♥♥♥♥" },
+    { id: "dt2", from: "him", text: W.wHim, kind: "secret", sent: true, createdAt: now - 4 * day, myReply: him ? "" : "♥♥♥♥", reply: him ? "♥♥♥♥" : "" },
+    { id: "dt3", from: S.role, text: him ? W.svHim : W.svHer, kind: him ? "secret" : "desire", sent: false, createdAt: now - day }];
+  return Object.assign(blank(), { lang: S.lang, role: S.role, me: him ? W.him : W.her, partner: him ? W.her : W.him, couple: "demo", moments: [m3, m2, m1], draws: [W.m1draw, W.d2, W.d3], notes: him ? W.notesHim : W.notesHer, seen: [], introHim: true, introHer: true, seenSteps: {}, tips: tips, invited: true });
+}
+function enterDemo() { if (DEMO || !S.role) return; REAL = S; S = demoState(); DEMO = true; V.mid = null; V.back = []; V.fwd = []; V.tmp = {}; }
+function leaveDemo() { if (!DEMO) return; S = REAL; REAL = null; DEMO = false; V.mid = null; V.back = []; V.fwd = []; V.tmp = {}; }
+function saveReal(o) { try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} }
 function blank() { return { lang: (navigator.language || "").indexOf("he") === 0 ? "he" : "en", role: null, me: "", partner: "", couple: "", moments: [], draws: [], notes: "", seen: [], introHim: false, introHer: false, tips: [] }; }
 function load() { try { var d = JSON.parse(localStorage.getItem(KEY)); if (d && d.moments) return Object.assign(blank(), d); } catch (e) {} return blank(); }
-function persist() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+function persist() { if (DEMO) return; saveReal(S); }
 var V = { screen: "welcome", mid: null, tab: "moments", tmp: {}, back: [], fwd: [] };
 function t(k, n) { var s = T[S.lang][k]; if (s == null) s = T.en[k]; return typeof s === "string" ? s.replace("{n}", n == null ? (S.partner || "") : n) : s; }
 function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
@@ -710,6 +738,7 @@ function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).r
 function dec(s) { s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; return JSON.parse(decodeURIComponent(escape(atob(s)))); }
 function baseUrl() { return location.origin + location.pathname; }
 function send(type, data, waKey) {
+  if (DEMO) { V.lastLink = null; toast(x("dmSent")); return ""; }
   if (!S.couple) S.couple = uid();
   var msg = { v: 1, c: S.couple, id: uid(), t: type, f: S.role, n: S.me, l: S.lang, p: S.partner, d: data };
   var link = baseUrl() + "#m=" + enc(msg);
@@ -724,6 +753,7 @@ function send(type, data, waKey) {
 }
 function receive() {
   var h = location.hash || "";
+  if (DEMO && /[#&](m|r)=/.test(h)) { REAL.priv = false; saveReal(REAL); leaveDemo(); }
   if (h.indexOf("#r=") === 0) {
     var bk = readBackup(h); history.replaceState(null, "", baseUrl());
     if (!bk) { V.screen = "notice"; V.tmp.notice = t("bkBad"); return true; }
@@ -833,8 +863,8 @@ function pillFor(m) {
   return "";
 }
 /* Top bar on inner screens: round back button, centered label (DESIGN.md Navigation) */
-function topBar(backAttr, label, fwd) { return '<div class="hbar"><button class="rb" ' + backAttr + ' aria-label="' + esc(x("navBack")) + '">' + ic("back") + '</button><span class="hlab">' + (label || "") + '</span>' + (fwd ? '<button class="rb" data-nav="fwd" aria-label="' + esc(x("navFwd")) + '">' + ic("chev") + '</button>' : privBtn()) + '</div>'; }
-function privBtn() { return '<button class="privb" data-act="privToggle" aria-pressed="' + (S.priv ? "true" : "false") + '" aria-label="' + esc(x(S.priv ? "privOff" : "privOn")) + '">' + ic(S.priv ? "eyeOff" : "eye") + '</button>'; }
+function topBar(backAttr, label, fwd, noPriv) { return '<div class="hbar"><button class="rb" ' + backAttr + ' aria-label="' + esc(x("navBack")) + '">' + ic("back") + '</button><span class="hlab">' + (label || "") + '</span>' + (fwd ? '<button class="rb" data-nav="fwd" aria-label="' + esc(x("navFwd")) + '">' + ic("chev") + '</button>' : noPriv ? '<span class="rb ghostrb"></span>' : privBtn()) + '</div>'; }
+function privBtn() { return '<button class="privb" data-act="privToggle" aria-label="' + esc(x("privOn")) + '">' + ic("eye") + '</button>'; }
 function tabs() {
   var a = [["moments", "tToday"], ["convs", "tConvs"], ["map", "tMapHim"], ["settings", "tSettingsS"]];
   if (S.role === "her") a = [["moments", "hubTab"], ["inbox", "tConvs"], ["map", "tMapHer"], ["settings", "tSettingsS"]];
@@ -924,8 +954,8 @@ var CX = {
     hubAskBtn: "Answer him ♡", hubLisBtn: "See what he said ♡", hubStat: "Questions from him: {q} · Times he listened: {l}",
     hubD0: "Being asked about yourself feels good. Enjoy it.", hubD1: "He's learning you, one moment at a time.", hubD2: "Your moments are the map. He's the one exploring.", hubD3: "Some things are worth being asked about twice.", hubD4: "Tonight, notice one small thing he gets right.",
     tiFrom: "From him", tiFromS: "{k} new", tiFromNone: "Nothing new yet", tiStory: "Our moments", tiStoryS: "{k} moments together", tiAdd: "Send a moment", tiAddS: "Let him find out", tiTips: "Tips", tiTipsS: "For him, from you",
-    hqT: "{n} is curious about you, he has a question", hqBtn: "Answer him", htT: "{n} sent you a tip", htBtn: "Read it", hlT: "{n} listened to you", hlBtn: "See what he wrote", hiT: "Did he do something that touched you?", hiSub: "Tell him about it", hiBtn: "Share a moment",
-    hHello: "Hi {me}", learnedL: "{n} learned <b>{k}</b> things about you", rFrom: "Our moments", rFromNew: "{k} new", rFromOne: "1 new", rFromNone: "Nothing new yet", rStory: "His map", rStoryS: "{k} things", rShare: "Share a moment", rShareS: "Something you want him to know", rTips: "Feel like whispering to him?", rTipsS: "A little secret, or what turns you on", menuL: "Settings",
+    hqT: "{n} is curious about you, he has a question", hqBtn: "Answer him", htT: "{n} whispered you something ♡", htBtn: "Read it", hlT: "{n} listened to you", hlBtn: "See what he wrote", hiT: "Did he do something that touched you?", hiSub: "Tell him about it", hiBtn: "Share a moment",
+    hHello: "Hi {me}", learnedL: "{n} learned <b>{k}</b> things about you", learnedL1: "{n} learned <b>one</b> thing about you", rFrom: "Our moments", rFromNew: "{k} new", rFromOne: "1 new", rFromNone: "Nothing new yet", rStory: "His map", rStoryS: "{k} things", rShare: "Share a moment", rShareS: "Something you want him to know", rTips: "Feel like whispering to him?", rTipsS: "A little secret, or what turns you on", menuL: "Settings",
     hHomeC: "This is where he shows up: his questions, his notes, his curiosity about you.", hAddC: "Send him another moment. Each one starts a new round.", hAddBtn: "Send it to him on WhatsApp", hNotesC: "Just for you. Not him, not anyone.",
     ansL: "A question from {n}", ansC: "{n} is curious about you. Answer however you like, there's no wrong answer.", ansBtn: "Send my answer on WhatsApp",
     lisL: "{n} listened", lisC: "{n} heard you, and here's what he made of it.", lisReactBtn: "Send it back to him on WhatsApp", lisMore: "Add another moment",
@@ -996,8 +1026,8 @@ var CX = {
     hubAskBtn: "לענות לו ♡", hubLisBtn: "לראות מה הוא אמר ♡", hubStat: "שאלות ממנו: {q} · פעמים שהקשיב: {l}",
     hubD0: "כשמתעניינים בך, זה מרגיש טוב. תיהני מזה.", hubD1: "הוא לומד אותך, רגע אחרי רגע.", hubD2: "הרגעים שלך הם המפה. הוא זה שמגלה.", hubD3: "יש דברים ששווה שישאלו עליהם פעמיים.", hubD4: "הערב, שימי לב לדבר קטן אחד שהוא עושה נכון.",
     tiFrom: "ממנו", tiFromS: "{k} חדשים", tiFromNone: "עדיין אין חדש", tiStory: "הרגעים שלנו", tiStoryS: "{k} רגעים ביחד", tiAdd: "שלחי לו רגע", tiAddS: "שיגלה", tiTips: "טיפים", tiTipsS: "בשבילו, ממך",
-    hqT: "{n} סקרן לגבייך, יש לו שאלה", hqBtn: "לענות לו", htT: "{n} שלח לך טיפ", htBtn: "לקרוא", hlT: "{n} הקשיב לך", hlBtn: "לראות מה הוא כתב", hiT: "הוא עשה משהו שנגע בך?", hiSub: "ספרי לו על זה", hiBtn: "לשתף רגע",
-    hHello: "היי {me}", learnedL: "{n} למד עלייך <b>{k}</b> דברים", rFrom: "הרגעים שלנו", rFromNew: "{k} חדשים", rFromOne: "משהו חדש", rFromNone: "עדיין אין משהו חדש", rStory: "המפה שלו", rStoryS: "{k} דברים", rShare: "לשתף רגע", rShareS: "משהו שאת רוצה שהוא ידע", rTips: "בא לך ללחוש לו?", rTipsS: "סוד קטן, או מה מדליק אותך", menuL: "הגדרות",
+    hqT: "{n} סקרן לגבייך, יש לו שאלה", hqBtn: "לענות לו", htT: "{n} לחש לך משהו ♡", htBtn: "לקרוא", hlT: "{n} הקשיב לך", hlBtn: "לראות מה הוא כתב", hiT: "הוא עשה משהו שנגע בך?", hiSub: "ספרי לו על זה", hiBtn: "לשתף רגע",
+    hHello: "היי {me}", learnedL: "{n} למד עלייך <b>{k}</b> דברים", learnedL1: "{n} למד עלייך <b>דבר אחד</b>", rFrom: "הרגעים שלנו", rFromNew: "{k} חדשים", rFromOne: "משהו חדש", rFromNone: "עדיין אין משהו חדש", rStory: "המפה שלו", rStoryS: "{k} דברים", rShare: "לשתף רגע", rShareS: "משהו שאת רוצה שהוא ידע", rTips: "בא לך ללחוש לו?", rTipsS: "סוד קטן, או מה מדליק אותך", menuL: "הגדרות",
     hHomeC: "כאן הוא מופיע: השאלות שלו, הפתקים שלו, הסקרנות שלו לגבייך.", hAddC: "שלחי לו עוד רגע. כל אחד מתחיל סיבוב חדש.", hAddBtn: "שלחי לו בוואטסאפ", hNotesC: "רק בשבילך. לא בשבילו, לא בשביל אף אחד.",
     ansL: "שאלה מ{n}", ansC: "{n} סקרן לגבייך. עני איך שבא לך, אין תשובה לא נכונה.", ansBtn: "שלחי את התשובה בוואטסאפ",
     lisL: "{n} הקשיב", lisC: "{n} הקשיב לך, וזה מה שיצא לו מזה.", lisReactBtn: "שלחי לו בחזרה בוואטסאפ", lisMore: "הוסיפי עוד רגע",
@@ -1050,7 +1080,7 @@ Object.assign(CX.en, {
   cS3q: "A moment is a game, not a test.", cS3t: "Keep it light, even with a wink.",
   cS4q: "Men repeat what they see works.", cS4t: "When he gets it right, tell him exactly what worked.",
   cS5q: "A small hint saves him the guessing.", cS5t: "Whisper him something you want, from here.",
-  hcQ: "How close was he?", hc1: "Cold", hc2: "Cool", hc3: "Warm", hc4: "Hot", hc5: "Spot on!", hcHim: "How close you were: {c}", privOn: "Private mode: blur my texts", privOff: "Show my texts", privOnT: "Private mode on: texts are blurred. Tap one to peek.", privOffT: "Private mode off",
+  hcQ: "How close was he?", hc1: "Cold", hc2: "Cool", hc3: "Warm", hc4: "Hot", hc5: "Spot on!", hcHim: "How close you were: {c}", privOn: "Private mode", dmQ: "Send this now?", dmYes: "Yes, send", dmNo: "Not yet", dmSent: "Sent ♡",
   wsLineSecretHim: "Something no one knows yet. Only for her.", wsLineSecretHer: "Something no one knows yet. Only for him.", wsLineDesireHim: "Say it once, and see what happens tonight.", wsLineDesireHer: "Say it once, and see what happens tonight.",
   wsLater: "Save for later", wsSavedT: "Saved in “Only yours” on the map",
   oyT: "Only yours", oyS: "Saved only on this phone", oyNotes: "Private notes", oyNotesPh: "Just for you", oySaved: "Saved whispers", oySavedEmpty: "Save a whisper for later, and send it with one tap when the moment is right.", oySave: "Save notes",
@@ -1098,7 +1128,7 @@ Object.assign(CX.he, {
   cS3q: "רגע הוא משחק, לא מבחן.", cS3t: "שמרי על זה קליל, אפילו עם קריצה.",
   cS4q: "גברים חוזרים על מה שהם רואים שעובד.", cS4t: "כשהוא מצליח, תגידי לו בדיוק מה עבד.",
   cS5q: "רמז קטן חוסך לו לנחש.", cS5t: "לחשי לו משהו שאת רוצה, מכאן.",
-  hcQ: "כמה הוא היה קרוב?", hc1: "קר", hc2: "פושר", hc3: "חמים", hc4: "חם", hc5: "בול!", hcHim: "כמה היית קרוב: {c}", privOn: "מצב פרטי: לטשטש את הטקסטים", privOff: "להציג את הטקסטים", privOnT: "מצב פרטי: הטקסטים מטושטשים. לחיצה על טקסט מציגה אותו לרגע.", privOffT: "מצב פרטי כבוי",
+  hcQ: "כמה הוא היה קרוב?", hc1: "קר", hc2: "פושר", hc3: "חמים", hc4: "חם", hc5: "בול!", hcHim: "כמה היית קרוב: {c}", privOn: "מצב פרטי", dmQ: "לשלוח את זה עכשיו?", dmYes: "כן, לשלוח", dmNo: "עוד לא", dmSent: "נשלח ♡",
   wsLineSecretHim: "משהו שאף אחד עוד לא יודע. רק בשבילה.", wsLineSecretHer: "משהו שאף אחד עוד לא יודע. רק בשבילו.", wsLineDesireHim: "תגיד את זה פעם אחת, ותראה מה יקרה הערב.", wsLineDesireHer: "תגידי את זה פעם אחת, ותראי מה יקרה הערב.",
   wsLater: "שמור לאחר כך", wsSavedT: "נשמר ב״רק שלך״ במפה",
   oyT: "רק שלך", oyS: "נשמר רק בטלפון הזה", oyNotes: "הערות פרטיות", oyNotesPh: "רק בשבילך", oySaved: "לחישות ששמרת", oySavedEmpty: "אפשר לשמור לחישה לאחר כך, ולשלוח בלחיצה אחת כשהרגע מתאים.", oySave: "שמירה",
@@ -1488,7 +1518,7 @@ SC.herHub = function () {
   var h = tabs() + '<p class="hlab">' + esc(x("hHello").replace("{me}", S.me || "")) + '</p>' +
     '<div class="focal"><div><span>' + esc(f[0]) + (f[1] ? '<small>' + esc(snip(f[1])) + '</small>' : "") + '</span></div></div>' +
     '<button class="cta2" ' + f[3] + '>' + esc(f[2]) + '</button>' +
-    '<button class="learned" data-tab="map"><span>' + x("learnedL").replace("{k}", learned) + '</span><span class="tr"><i style="width:' + (learned ? Math.max(8, Math.min(learned, 10) * 10) : 0) + '%"></i></span>' + ic("chev") + '</button>' +
+    '<button class="learned" data-tab="map"><span>' + x(learned === 1 ? "learnedL1" : "learnedL").replace("{k}", learned) + '</span><span class="tr"><i style="width:' + (learned ? Math.max(8, Math.min(learned, 10) * 10) : 0) + '%"></i></span>' + ic("chev") + '</button>' +
     '<div class="hlist">' +
     row(x("rFrom"), newN === 1 ? x("rFromOne") : newN ? x("rFromNew").replace("{k}", newN) : x("rFromNone"), 'data-tab="inbox"', "play", newN) +
     row(x("rStory"), x("rStoryS").replace("{k}", mapCards().length), 'data-tab="map"', "spark") +
@@ -1635,8 +1665,8 @@ var A = {
   herIntro2: function () { go("herIntro2"); }, herIntro3: function () { go("herIntro3"); },
   herIntroDone: function () { S.introHer = true; persist(); if (V.mid && byId(V.mid)) go("round"); else go("home"); },
   saveNames: function () { S.me = val("me"); S.partner = val("partner"); persist(); toast(t("savedToast")); },
-  backup: function () { copy(backupLink()); },
-  backupSend: function () {
+  backup: function () { if (DEMO) return toast(t("copied")); copy(backupLink()); },
+  backupSend: function () { if (DEMO) return toast(x("dmSent"));
     var text = t("wBackup") + "\n" + backupLink();
     if (navigator.share) { navigator.share({ text: text }).catch(function () {}); return; }
     var wa = "https://wa.me/?text=" + encodeURIComponent(text), w = null; try { w = window.open(wa, "_blank"); } catch (e) {} if (!w) window.location.href = wa;
@@ -1646,10 +1676,10 @@ var A = {
   restoreOpen: function () { V.tmp.restoring = true; render(); },
   doRestore: function () { var d = readBackup(val("restore")); if (!d) return toast(t("bkBad")); doRestoreFrom(d); render(true); },
   askReset: function () { V.tmp.sure = true; render(); }, cancelReset: function () { V.tmp.sure = false; render(); },
-  doReset: function () { try { localStorage.removeItem(KEY); } catch (e) {} S = blank(); V = { screen: "welcome", mid: null, tab: "moments", tmp: {}, back: [], fwd: [] }; render(); },
+  doReset: function () { if (DEMO) { S = demoState(); V.tmp = {}; return go("home"); } try { localStorage.removeItem(KEY); } catch (e) {} S = blank(); V = { screen: "welcome", mid: null, tab: "moments", tmp: {}, back: [], fwd: [] }; render(); },
   inviteDate: function () { send("date", {}, "wDate"); },
   copyLink: function () { copy(V.lastLink); },
-  privToggle: function () { S.priv = !S.priv; persist(); render(); toast(x(S.priv ? "privOnT" : "privOffT")); },
+  privToggle: function () { if (DEMO) { REAL.priv = false; saveReal(REAL); leaveDemo(); } else { S.priv = true; persist(); enterDemo(); } go("home"); window.scrollTo(0, 0); },
   newConv: function () { V.mid = null; V.tab = "convs"; go("home"); },
 
 };
@@ -1672,6 +1702,17 @@ function fallbackCopy(s) { var a = document.createElement("textarea"); a.value =
 var toastTimer;
 function toast(s) { var e = document.querySelector(".toast"); if (!e) { e = document.createElement("div"); e.className = "toast"; document.body.appendChild(e); } e.textContent = s; clearTimeout(toastTimer); toastTimer = setTimeout(function () { e.remove(); }, 1800); }
 
+/* demo: every real send first asks "send this now?"; yes = a quiet "sent ♡", nothing leaves the phone */
+var DEMO_SENDS = { sendInvite: 1, howTalk: 1, askSend: 1, askWrite: 1, sendNote: 1, tellFace: 1, whSend: 1, sendAnswer: 1, sendReaction: 1, herAddMoment: 1, inviteDate: 1, saveEdit: 1, tipSend: 1, lovesSend: 1, backupSend: 1 };
+function editSends() { var f = V.tmp.editField; if (f === "tip") { var tp = (S.tips || []).filter(function (z) { return z.id === V.tmp.tipId; })[0]; return tp && tp.sent; } return M() && sentField(M(), f); }
+function demoConfirm(fn) {
+  var d = document.createElement("div"); d.className = "cfm";
+  d.innerHTML = '<div class="cc" role="dialog" aria-modal="true"><p class="cq">' + esc(x("dmQ")) + '</p><button class="btn" data-y>' + esc(x("dmYes")) + '</button><button class="ghost" data-n>' + esc(x("dmNo")) + '</button></div>';
+  document.body.appendChild(d);
+  d.querySelector("[data-y]").onclick = function () { d.remove(); fn(); };
+  d.querySelector("[data-n]").onclick = function () { d.remove(); };
+  d.onclick = function (e) { if (e.target === d) d.remove(); };
+}
 /* ===================== Render ===================== */
 var app = document.getElementById("app");
 var EXPLAIN_OFF = { why: ["st2", "whyC", "🔍", "whyB"], ask: ["st3", "askC", "💬", "askB"], learned: ["st4", "learnedC0", "✦", "learnedB"], feel: ["st5", "feelC", "♡", "feelB"], words: ["st5", "wordsC", "✎", "wordsB"], say: ["st5", "sayC", "🗣", "sayB"], rate: ["st6", "rateC", "♥", "rateB"] };
@@ -1693,13 +1734,13 @@ function render(anim) {
   if (!S.role && V.screen !== "welcome" && V.screen !== "notice" && V.screen !== "whoLink") V.screen = "welcome";
   var f = SC[V.screen] || SC.home;
   var s = f();
-  document.body.className = (S.role === "her" || (!S.role && V.tmp.role === "her") ? "her" : "") + (S.priv && S.role ? " priv" : "");
+  document.body.className = (S.role === "her" || (!S.role && V.tmp.role === "her") ? "her" : "") + "";
   document.body.dir = S.lang === "he" ? "rtl" : "ltr";
   document.documentElement.lang = S.lang;
   var meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = document.body.classList.contains("her") ? "#ffffff" : "#0d0d12";
   app.className = (s.cls || "") + (anim ? " anim" : "");
   var root = V.screen === "welcome" || V.screen === "whoLink" || (V.screen === "home" && !V.back.length);
-  var nav = root || (!V.back.length && !V.fwd.length && !s.title) ? "" : topBar(V.back.length ? 'data-nav="back"' : 'data-act="home"', s.title, V.fwd.length);
+  var nav = root || (!V.back.length && !V.fwd.length && !s.title) ? "" : topBar(V.back.length ? 'data-nav="back"' : 'data-act="home"', s.title, V.fwd.length, s.html.indexOf('class="tabs"') > -1);
   app.innerHTML = nav + s.html;
   /* coach and explanation boxes start closed: a small chip opens them */
   app.querySelectorAll(".howto, .cbub").forEach(function (el) {
@@ -1718,11 +1759,11 @@ function bind() {
       if (k[0] === "answer") { V.mid = k[1]; return go(S.introHer ? "round" : "herIntro1"); }
       if (k[0] === "listened") { V.mid = k[1]; return go("round"); }
       if (k[0] === "addSug") return addMoment(t(k[1]));
-      if (A[a]) A[a]();
+      if (A[a]) { if (DEMO && DEMO_SENDS[a] && !(a === "saveEdit" && !editSends())) return demoConfirm(A[a]); A[a](); }
     };
   });
   app.querySelectorAll("[data-nav]").forEach(function (b) { b.onclick = function () { if (b.dataset.nav === "back") { try { history.back(); } catch (e) { goBack(); } } else goFwd(); }; });
-  app.querySelectorAll("[data-sendtip]").forEach(function (b) { b.onclick = function () { var tp = (S.tips || []).filter(function (x) { return x.id === b.dataset.sendtip; })[0]; if (!tp) return; tp.sent = true; persist(); send("tip", { id: tp.id, text: tp.text, kind: tp.kind }, { loves: "wLoves", secret: "wSecret", desire: "wDesire" }[tp.kind] || "wTip"); setTimeout(render, 300); }; });
+  app.querySelectorAll("[data-sendtip]").forEach(function (b) { b.onclick = function () { if (DEMO && !b.dataset.ok) return demoConfirm(function () { b.dataset.ok = 1; b.click(); }); var tp = (S.tips || []).filter(function (x) { return x.id === b.dataset.sendtip; })[0]; if (!tp) return; tp.sent = true; persist(); send("tip", { id: tp.id, text: tp.text, kind: tp.kind }, { loves: "wLoves", secret: "wSecret", desire: "wDesire" }[tp.kind] || "wTip"); setTimeout(render, 300); }; });
   app.querySelectorAll("[data-deltip]").forEach(function (b) { b.onclick = function () { S.tips = S.tips.filter(function (x) { return x.id !== b.dataset.deltip; }); persist(); render(); }; });
   app.querySelectorAll("[data-edit]").forEach(function (b) { b.onclick = function () { var k = b.dataset.edit.split(":"); V.tmp.editFrom = V.screen === "round" ? "round" : V.tab; V.tmp.editField = k[0]; if (k[0] === "tip") V.tmp.tipId = k[1]; else V.mid = k[1]; go("edit"); }; });
   app.querySelectorAll("[data-tab]").forEach(function (b) { b.onclick = function () { V.tmp.inviteAt = ""; V.tab = b.dataset.tab; V.tmp.sure = false; V.tmp.restoring = false; go("home"); }; });
@@ -1743,15 +1784,10 @@ function bind() {
 }
 function saveTyped() { if (document.getElementById("me")) S.me = val("me"); if (document.getElementById("partner")) S.partner = val("partner"); }
 
-var PRIV_SEL = ".st2, .sv, .dcard .q, .ins b, .ins span, .conv b, .conv small, .focal small, .wmsg .t, .svw .t, .warm span, .bub, .quote, .box";
-app.addEventListener("click", function (e) {
-  if (!S.priv) return; var el = e.target.closest && e.target.closest(PRIV_SEL); if (!el || el.classList.contains("peek")) return;
-  if (!el.closest("button.conv")) { e.stopPropagation(); e.preventDefault(); }
-  el.classList.add("peek"); setTimeout(function () { el.classList.remove("peek"); }, 4000);
-}, true);
 /* ===================== Start ===================== */
 window.addEventListener("popstate", function () { if ((location.hash || "").indexOf("m=") > -1) return; if (V.back.length) goBack(); });
 window.addEventListener("hashchange", function () { if (receive()) render(true); });
+if (S.priv && S.role) enterDemo();
 if (!receive()) V.screen = S.role ? "home" : "welcome";
 render(true);
 if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(function () {});
